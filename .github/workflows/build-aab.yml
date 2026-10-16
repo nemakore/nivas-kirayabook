@@ -25,43 +25,18 @@ jobs:
       - name: Install Cordova and Build Signed AAB
         run: |
           sudo npm install -g cordova
-          # Correct package ID com.nivaskirayabook.app
           cordova create myapp com.nivaskirayabook.app "Nivas KirayaBook"
           cd myapp
           cordova platform add android
 
-          # Copy App Icon
+          # Copy App Icon and Config
           mkdir -p res
           if [ -f "../icon-512.png" ]; then
             cp ../icon-512.png res/icon.png
           fi
-
-          # Custom config.xml with direct URL, App Icon & WhatsApp / UPI deep linking
-          cat << 'EOF' > config.xml
-<?xml version='1.0' encoding='utf-8'?>
-<widget id="com.nivaskirayabook.app" version="1.0.0" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
-    <name>Nivas KirayaBook</name>
-    <description>Smart Landlord &amp; Tenant Rent Manager</description>
-    <author email="support@nivaskirayabook.com">Nivas KirayaBook</author>
-    <content src="https://nivaskirayabook.blogspot.com/" />
-    <access origin="*" />
-    <allow-navigation href="https://nivaskirayabook.blogspot.com/*" />
-    <allow-navigation href="https://*.firebaseapp.com/*" />
-    <allow-navigation href="https://*.googleapis.com/*" />
-    <allow-navigation href="https://accounts.google.com/*" />
-    <allow-intent href="http://*/*" />
-    <allow-intent href="https://*/*" />
-    <allow-intent href="tel:*" />
-    <allow-intent href="sms:*" />
-    <allow-intent href="mailto:*" />
-    <allow-intent href="geo:*" />
-    <allow-intent href="whatsapp:*" />
-    <allow-intent href="upi:*" />
-    <icon src="res/icon.png" />
-    <preference name="Orientation" value="portrait" />
-    <preference name="BackgroundColor" value="0xff0B0F19" />
-</widget>
-EOF
+          if [ -f "../build-config.xml" ]; then
+            cp ../build-config.xml config.xml
+          fi
 
           # Build Release AAB
           cordova build android --release -- --bundle
@@ -74,7 +49,7 @@ EOF
           echo "Found AAB at: $AAB_PATH"
           jarsigner -verbose -sigalg SHA256withRSA -digestalg SHA-256 -keystore nivas-release.keystore -storepass nivas2026 -keypass nivas2026 "$AAB_PATH" nivas_key
 
-          # Copy to easy output directory
+          # Copy to output directory
           mkdir -p ../dist
           cp "$AAB_PATH" ../dist/nivas-kirayabook-signed.aab
           cp nivas-release.keystore ../dist/nivas-release.keystore
