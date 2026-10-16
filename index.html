@@ -5,7 +5,7 @@
   <meta charset="UTF-8">
   <meta name="viewport"
     content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-  <title>Nivas KirayaBook | Smart Rent & Bijli Bill App</title>
+  <title>Nivas KirayaBook | Smart Rent &amp; Bijli Bill App</title>
   <meta name="description"
     content="Nivas KirayaBook - Smart rent collection, electricity bill calculator, and 1-click WhatsApp reminders for landlords.">
   <meta name="theme-color" content="#0B0F19">
@@ -22,7 +22,8 @@
 
   <link rel="stylesheet" href="styles.css">
   <link rel="icon" type="image/svg+xml" href="icon.svg">
-  <link rel="apple-touch-icon" href="icon.svg">
+  <link rel="apple-touch-icon" href="icon-192.png">
+  <link rel="manifest" href="manifest.json">
 
   <!-- Firebase App, Auth & Firestore SDKs (Compat for static/Blogger) -->
   <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
@@ -77,7 +78,7 @@
             <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
           </svg>
           <div class="nav-text">
-            <span>Rooms & Tenants</span>
+            <span>Rooms &amp; Tenants</span>
             <small>कमरे और किरायेदार</small>
           </div>
           <span class="nav-badge" id="tenant-count-badge">0</span>
@@ -122,11 +123,21 @@
             </path>
           </svg>
           <div class="nav-text">
-            <span>Owner Settings & UPI</span>
+            <span>Owner Settings &amp; UPI</span>
             <small>मालिक प्रोफाइल & सेटिंग्स</small>
           </div>
         </button>
       </nav>
+
+      <!-- Sidebar App Guide Box -->
+      <div class="sidebar-guide-box" onclick="openAppIntroModal()" title="यह ऐप क्या है &amp; कैसे काम करती है?">
+        <div class="sidebar-guide-top">
+          <span class="guide-badge">💡 App Guide</span>
+          <span class="guide-arrow">›</span>
+        </div>
+        <div class="sidebar-guide-title">यह ऐप क्या है &amp; कैसे काम करती है?</div>
+        <div class="sidebar-guide-sub">3 आसान स्टेप्स में गाइड देखें</div>
+      </div>
 
       <div class="sidebar-user-card" onclick="switchView('settings')">
         <div class="user-avatar" id="sidebar-avatar">M</div>
@@ -163,6 +174,10 @@
         </div>
 
         <div class="header-right">
+          <button class="header-guide-pill" onclick="openAppIntroModal()" title="App Guide: Yeh app kya hai? (गाइड)">
+            <span class="guide-icon">💡</span>
+            <span class="guide-text">गाइड</span>
+          </button>
           <button class="cloud-sync-pill logged-out" id="header-cloud-btn" onclick="openCloudModal()" title="Firebase Cloud Sync">
             <svg class="cloud-icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
               <path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z"></path>
@@ -258,6 +273,9 @@
                 <button type="button" class="btn-demo-primary" onclick="openOnboardingModal()">
                   <span>🚀 Apna Asli Khata Setup Karein</span>
                   <small>(Name, Mobile & UPI jodein • 2 min)</small>
+                </button>
+                <button type="button" class="btn-demo-secondary" onclick="openAppIntroModal()">
+                  <span>💡 Yeh App Kya Hai? Guide Dekhein ›</span>
                 </button>
                 <button type="button" class="btn-demo-secondary" onclick="switchView('calculator')">
                   <span>⚡ Bijli Calculator Test Karein ›</span>
@@ -870,6 +888,18 @@
             </div>
           </div>
 
+          <!-- App Guide & Intro Card -->
+          <div class="settings-guide-card" onclick="openAppIntroModal()" title="Yeh App Kya Hai? Guide Dekhein">
+            <div class="settings-guide-left">
+              <div class="settings-guide-icon">💡</div>
+              <div class="settings-guide-info">
+                <h4>यह ऐप क्या है और कैसे काम करती है? (App Guide)</h4>
+                <p>बिजली बिल कैलकुलेटर, 1-क्लिक व्हाट्सएप रिमाइंडर और कानूनी किराया रसीद का पूरा परिचय व गाइड देखें।</p>
+              </div>
+            </div>
+            <button type="button" class="btn btn-secondary btn-sm">गाइड खोलें ›</button>
+          </div>
+
           <div class="settings-app-grid">
             <div class="settings-app-card">
               <h3 class="card-subtitle">Landlord / House Owner Details</h3>
@@ -994,6 +1024,14 @@
                   <button type="button" class="btn btn-outline-danger btn-sm" onclick="resetToSampleData()">
                     Clear All Data (Fresh Start)
                   </button>
+                </div>
+
+                <div style="border-top: 1px dashed var(--border-subtle); margin: 16px 0 12px 0;"></div>
+                <div style="display: flex; align-items: center; justify-content: space-between; font-size: 0.78rem; color: var(--text-muted); flex-wrap: wrap; gap: 8px;">
+                  <span>🔒 100% Private &amp; Offline-First</span>
+                  <a href="privacy.html" target="_blank" style="color: #818CF8; text-decoration: none; font-weight: 600;">
+                    Privacy Policy (गोपनीयता नीति) ›
+                  </a>
                 </div>
               </div>
             </div>
@@ -1359,16 +1397,287 @@
     </div>
   </div>
 
+  <!-- ==========================================
+       MODAL: Welcome App Walkthrough & Guide
+       (यह ऐप क्या है, किस काम की है, कैसे करती है?)
+       ========================================== -->
+  <div class="modal-overlay" id="modal-app-intro" onclick="closeModalOnOverlay(event, 'modal-app-intro')">
+    <div class="modal-card modal-intro-card">
+      <div class="modal-sheet-handle"></div>
+
+      <!-- Header -->
+      <div class="modal-header intro-modal-header">
+        <div class="intro-header-brand">
+          <div class="intro-logo-glow">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3">
+              <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+              <polyline points="9 22 9 12 15 12 15 22"></polyline>
+            </svg>
+          </div>
+          <div>
+            <div class="intro-tagline-badge">
+              <span class="intro-badge-dot"></span>
+              <span>निवास किरायाबुक • गाइड &amp; परिचय</span>
+            </div>
+            <h3 class="intro-main-title">Nivas KirayaBook क्या है &amp; कैसे काम करती है?</h3>
+          </div>
+        </div>
+        <button class="modal-close" onclick="closeAppIntroModal()" aria-label="Close">&times;</button>
+      </div>
+
+      <!-- 3 Segmented Tabs Matching User's Exact 3 Questions -->
+      <div class="intro-tabs-nav" role="tablist">
+        <button type="button" class="intro-tab-btn active" id="tab-btn-what" onclick="switchIntroTab('what')">
+          <span class="tab-step-num">1</span>
+          <div class="tab-label-wrap">
+            <span class="tab-title">1. यह ऐप क्या है?</span>
+            <small class="tab-sub">Smart Kiraya Ledger</small>
+          </div>
+        </button>
+
+        <button type="button" class="intro-tab-btn" id="tab-btn-use" onclick="switchIntroTab('use')">
+          <span class="tab-step-num">2</span>
+          <div class="tab-label-wrap">
+            <span class="tab-title">2. किस काम की है?</span>
+            <small class="tab-sub">Features &amp; Benefits</small>
+          </div>
+        </button>
+
+        <button type="button" class="intro-tab-btn" id="tab-btn-how" onclick="switchIntroTab('how')">
+          <span class="tab-step-num">3</span>
+          <div class="tab-label-wrap">
+            <span class="tab-title">3. कैसे करती है?</span>
+            <small class="tab-sub">3 Simple Steps</small>
+          </div>
+        </button>
+      </div>
+
+      <!-- TAB 1: यह ऐप क्या है? (What is this app?) -->
+      <div class="intro-tab-content active" id="tab-pane-what">
+        <div class="intro-hero-box">
+          <h4 class="intro-hero-title">
+            <span>🇮🇳</span>
+            <span>मकान मालिकों का आधुनिक डिजिटल बही-खाता</span>
+          </h4>
+          <p class="intro-hero-sub">
+            <strong>Nivas KirayaBook</strong> भारत के मकान मालिकों (House Owners), पीजी (PGs), फ्लैट और हॉस्टल संचालकों के लिए बना <strong>100% फ्री और सुरक्षित</strong> वेब ऐप है। अब पुरानी डायरी, बार-बार कैलकुलेटर चलाने और हिसाब गड़बड़ होने की चिंता हमेशा के लिए खत्म!
+          </p>
+        </div>
+
+        <div class="intro-feat-grid">
+          <div class="intro-feat-card">
+            <div class="intro-feat-top">
+              <span class="intro-feat-icon">📖</span>
+              <span class="intro-feat-tag">No Diary</span>
+            </div>
+            <div class="intro-feat-title">डायरी व रफ कॉपी की छुट्टी</div>
+            <div class="intro-feat-desc">पन्ने फटने या खोने का कोई डर नहीं। हर कमरे, किरायेदार और बिल का पूरा रिकॉर्ड हमेशा आपकी उंगलियों पर रहेगा।</div>
+          </div>
+
+          <div class="intro-feat-card">
+            <div class="intro-feat-top">
+              <span class="intro-feat-icon">🛡️</span>
+              <span class="intro-feat-tag">100% Private</span>
+            </div>
+            <div class="intro-feat-title">प्राइवेट &amp; ऑफलाइन काम करे</div>
+            <div class="intro-feat-desc">आपका पूरा डेटा आपके ही डिवाइस में सुरक्षित रहता है। इंटरनेट न होने पर भी यह ऐप बिना रुके बिजली की तेजी से चलती है।</div>
+          </div>
+
+          <div class="intro-feat-card">
+            <div class="intro-feat-top">
+              <span class="intro-feat-icon">☁️</span>
+              <span class="intro-feat-tag">Auto Cloud</span>
+            </div>
+            <div class="intro-feat-title">फ्री गूगल क्लाउड बैकअप</div>
+            <div class="intro-feat-desc">फोन बदलने, खोने या नया मोबाइल लेने पर भी आपका एक रुपया का हिसाब नहीं खोएगा। 1-क्लिक में सब वापस!</div>
+          </div>
+
+          <div class="intro-feat-card">
+            <div class="intro-feat-top">
+              <span class="intro-feat-icon">💸</span>
+              <span class="intro-feat-tag">Zero Fee</span>
+            </div>
+            <div class="intro-feat-title">100% फ्री, कोई चार्ज नहीं</div>
+            <div class="intro-feat-desc">न कोई छुपा हुआ चार्ज, न कोई मंथली सब्सक्रिप्शन। सिर्फ शुद्ध, भरोसेमंद बही-खाता।</div>
+          </div>
+        </div>
+
+        <div class="intro-compare-box">
+          <div class="compare-col bad">
+            <div class="compare-title">❌ पुरानी डायरी व रफ हिसाब</div>
+            <ul class="compare-list">
+              <li>कैलकुलेटर से बार-बार बिजली यूनिट जोड़ना</li>
+              <li>किरायेदार से किराया मांगने में संकोच</li>
+              <li>पन्ने फटना या हिसाब खो जाना</li>
+            </ul>
+          </div>
+          <div class="compare-col good">
+            <div class="compare-title">✅ निवास किरायाबुक</div>
+            <ul class="compare-list">
+              <li>मीटर रीडिंग डालते ही ऑटोमैटिक बिल</li>
+              <li>1-क्लिक में WhatsApp पर UPI लिंक सहित बिल</li>
+              <li>सरकारी HRA मान्य पक्की रसीद PDF</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- TAB 2: किस काम की है? (What is it used for / Features) -->
+      <div class="intro-tab-content" id="tab-pane-use">
+        <div class="intro-hero-box">
+          <h4 class="intro-hero-title">
+            <span>🎯</span>
+            <span>मकान मालिक के रोजमर्रा के सभी झंझटों का एक हल</span>
+          </h4>
+          <p class="intro-hero-sub">
+            यह ऐप किराएदारों को मैनेज करने, बिजली बिल की पाई-पाई जोड़ने, बिना झिझक व्हाट्सएप पर पेमेंट मांगने और कानूनी रसीद बनाने के काम आती है:
+          </p>
+        </div>
+
+        <div class="intro-feat-grid">
+          <div class="intro-feat-card">
+            <div class="intro-feat-top">
+              <span class="intro-feat-icon">⚡</span>
+              <span class="intro-feat-tag">Auto Calc</span>
+            </div>
+            <div class="intro-feat-title">बिजली बिल ऑटो-कैलकुलेटर</div>
+            <div class="intro-feat-desc">पिछली रीडिंग और नई रीडिंग भरें। यूनिट दर (जैसे ₹8/Unit) के हिसाब से बिजली का बिल 1 सेकंड में खुद-ब-खुद निकल जाता है।</div>
+          </div>
+
+          <div class="intro-feat-card">
+            <div class="intro-feat-top">
+              <span class="intro-feat-icon">💬</span>
+              <span class="intro-feat-tag">1-Click</span>
+            </div>
+            <div class="intro-feat-title">1-क्लिक व्हाट्सएप बिल व रिमाइंडर</div>
+            <div class="intro-feat-desc">किरायेदार से किराया मांगते समय कोई झिझक नहीं! 1-क्लिक में रूम नंबर, किराया, बिजली बिल का ब्रेकअप और आपकी UPI ID के साथ सुंदर संदेश जाता है।</div>
+          </div>
+
+          <div class="intro-feat-card">
+            <div class="intro-feat-top">
+              <span class="intro-feat-icon">📲</span>
+              <span class="intro-feat-tag">0% Commission</span>
+            </div>
+            <div class="intro-feat-title">सीधा आपके बैंक में UPI पेमेंट</div>
+            <div class="intro-feat-desc">संदेश में आपकी PhonePe, GPay या Paytm लिंक होती है। किरायेदार क्लिक करके सीधा आपके बैंक खाते में पैसे भेजता है।</div>
+          </div>
+
+          <div class="intro-feat-card">
+            <div class="intro-feat-top">
+              <span class="intro-feat-icon">🧾</span>
+              <span class="intro-feat-tag">HRA Valid</span>
+            </div>
+            <div class="intro-feat-title">ऑफिशियल पक्की किराया रसीद</div>
+            <div class="intro-feat-desc">किराया मिलने पर 1-क्लिक में इनकम टैक्स (HRA) मान्य पक्की रसीद PDF जनरेट करें और किरायेदार को व्हाट्सएप भेजें या प्रिंट निकालें।</div>
+          </div>
+
+          <div class="intro-feat-card" style="grid-column: span 2;">
+            <div class="intro-feat-top">
+              <span class="intro-feat-icon">📊</span>
+              <span class="intro-feat-tag">P&amp;L Report</span>
+            </div>
+            <div class="intro-feat-title">मासिक आय, बकाया और बिल्डिंग खर्चों का पूरा हिसाब</div>
+            <div class="intro-feat-desc">किस महीने कितना किराया आया, कितना बकाया है, और घर की मेंटेनेंस (प्लंबर, पेंट, बिजली रिपेयरिंग) में कितना खर्च हुआ—साफ-सुथरी रिपोर्ट देखें।</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- TAB 3: कैसे करती है? (How it works - 3 Simple Steps) -->
+      <div class="intro-tab-content" id="tab-pane-how">
+        <div class="intro-hero-box">
+          <h4 class="intro-hero-title">
+            <span>🚀</span>
+            <span>सिर्फ 3 आसान स्टेप्स में चालू करें</span>
+          </h4>
+          <p class="intro-hero-sub">
+            किसी तकनीकी ज्ञान की जरूरत नहीं! कोई भी मकान मालिक सिर्फ 2 मिनट में अपना पूरा खाता शुरू कर सकता है:
+          </p>
+        </div>
+
+        <div class="intro-steps-list">
+          <div class="intro-step-item">
+            <div class="intro-step-badge step-badge-1">1</div>
+            <div class="intro-step-content">
+              <div class="intro-step-heading">
+                <span>अपनी प्रोफाइल व UPI जोड़ें</span>
+                <span class="intro-step-time">⏱️ सिर्फ 30 सेकंड</span>
+              </div>
+              <div class="intro-step-desc">
+                अपना नाम, बिल्डिंग का नाम और अपनी UPI ID (जैसे 9876543210@paytm) सेट करें ताकि किरायेदार से पैसा सीधा आपके बैंक खाते में आए।
+              </div>
+            </div>
+          </div>
+
+          <div class="intro-step-item">
+            <div class="intro-step-badge step-badge-2">2</div>
+            <div class="intro-step-content">
+              <div class="intro-step-heading">
+                <span>कमरे और किरायेदार जोड़ें</span>
+                <span class="intro-step-time">🚪 Rooms &amp; Tenants</span>
+              </div>
+              <div class="intro-step-desc">
+                रूम नंबर, किरायेदार का नाम, मोबाइल नंबर, फिक्स किराया और बिजली सब-मीटर की वर्तमान रीडिंग दर्ज करें।
+              </div>
+            </div>
+          </div>
+
+          <div class="intro-step-item">
+            <div class="intro-step-badge step-badge-3">3</div>
+            <div class="intro-step-content">
+              <div class="intro-step-heading">
+                <span>हर महीने 1-क्लिक में बिल व रसीद बनाएं</span>
+                <span class="intro-step-time">⚡ Ready to Go</span>
+              </div>
+              <div class="intro-step-desc">
+                महीने की नई मीटर रीडिंग डालें—बिल अपने आप बन जाएगा। 1-क्लिक में व्हाट्सएप रिमाइंडर भेजें और किराया मिलने पर रसीद काटें!
+              </div>
+
+              <!-- Preview of WhatsApp Message -->
+              <div class="intro-preview-bubble">
+                <div>🏠 <strong>Nivas Bhawan • Room 101</strong></div>
+                <div>👤 किरायेदार: राहुल शर्मा | माह: Oct 2026</div>
+                <div>💵 किराया: ₹6,000 | ⚡ बिजली (45 Unit × ₹8): ₹360</div>
+                <div>📌 <strong>कुल देय राशि: ₹6,360</strong></div>
+                <div>📲 UPI द्वारा भुगतान करें: upi://pay?pa=ramesh@upi</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Footer & Navigation Controls -->
+      <div class="intro-modal-footer">
+        <div class="intro-step-indicators" title="Step navigation">
+          <span class="intro-dot active" id="intro-dot-what" onclick="switchIntroTab('what')"></span>
+          <span class="intro-dot" id="intro-dot-use" onclick="switchIntroTab('use')"></span>
+          <span class="intro-dot" id="intro-dot-how" onclick="switchIntroTab('how')"></span>
+        </div>
+
+        <div class="intro-footer-actions">
+          <button type="button" class="btn btn-secondary" id="intro-btn-prev" onclick="navigateIntroPrev()" style="display: none;">
+            ‹ पिछला
+          </button>
+          <button type="button" class="btn btn-secondary" id="intro-btn-next" onclick="navigateIntroNext()">
+            अगला: किस काम की है ›
+          </button>
+          <button type="button" class="btn btn-primary intro-btn-setup" onclick="startSetupFromIntro()">
+            <span>🚀 अपना खाता सेटअप करें ›</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <!-- MODAL: Welcome Onboarding / Start Fresh Setup -->
   <div class="modal-overlay" id="modal-onboarding" onclick="closeModalOnOverlay(event, 'modal-onboarding')">
     <div class="modal-card">
       <div class="modal-sheet-handle"></div>
       <div class="modal-header">
         <div>
-          <h3 class="modal-title">🚀 Apna Asli Khata Shuru Karein</h3>
-          <p class="modal-subtitle">Apni building aur UPI setup karein, demo data clear ho jayega</p>
+          <h3 class="modal-title">👋 Swagat Hai Nivas KirayaBook Mein!</h3>
+          <p class="modal-subtitle">Apni building aur UPI setup karein (Sirf 1 minute)</p>
         </div>
-        <button class="modal-close" onclick="closeModal('modal-onboarding')" aria-label="Close">&times;</button>
+        <button class="modal-close" onclick="skipOnboardingSetup()" aria-label="Close">&times;</button>
       </div>
 
       <form id="onboarding-form" onsubmit="handleSaveOnboarding(event)">
@@ -1383,24 +1692,24 @@
           </div>
           <div class="form-group full-width">
             <label for="onboard-property-name">Building / Property Ka Naam *</label>
-            <input type="text" id="onboard-property-name" placeholder="e.g. Gokul Nivas, Sharma Bhawan" required>
+            <input type="text" id="onboard-property-name" placeholder="e.g. Nivas Bhawan, Sharma Sadan" required>
           </div>
           <div class="form-group full-width">
-            <label for="onboard-owner-upi">UPI ID (For Direct Payments) *</label>
+            <label for="onboard-owner-upi">UPI ID (Kiraya Direct Pane Ke Liye) *</label>
             <input type="text" id="onboard-owner-upi" placeholder="e.g. 9876543210@paytm ya ramesh@okaxis" required>
             <small class="form-help">Tenant WhatsApp reminder par click karke direct aapko payment bhej sakega.</small>
           </div>
         </div>
 
         <div
-          style="background: rgba(99, 102, 241, 0.12); border: 1px dashed rgba(99, 102, 241, 0.35); border-radius: var(--radius-sm); padding: 10px 12px; margin: 14px 0; font-size: 0.78rem; color: #C7D2FE;">
-          💡 <strong>Tip:</strong> Iske baad aapka property setup ho jayega aur aap apne pehle room aur kirayedar ko add kar sakenge!
+          style="background: rgba(16, 185, 129, 0.12); border: 1px dashed rgba(16, 185, 129, 0.35); border-radius: var(--radius-sm); padding: 10px 12px; margin: 14px 0; font-size: 0.78rem; color: #6EE7B7;">
+          🔒 <strong>100% Private &amp; Secure:</strong> Setup hote hi aap turant apna pehla room aur kirayedar add kar sakenge!
         </div>
 
         <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" onclick="closeModal('modal-onboarding')">Baad Mein</button>
+          <button type="button" class="btn btn-secondary" onclick="skipOnboardingSetup()">Baad Mein (Skip)</button>
           <button type="submit" class="btn btn-primary">
-            <span>🚀 Save & Start Real Khata</span>
+            <span>🚀 Save &amp; Pehla Room Jodein ›</span>
           </button>
         </div>
       </form>

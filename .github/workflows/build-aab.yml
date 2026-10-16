@@ -22,22 +22,71 @@ jobs:
           yes | ${ANDROID_HOME}/cmdline-tools/latest/bin/sdkmanager --licenses || true
           yes | ${ANDROID_HOME}/tools/bin/sdkmanager --licenses || true
 
-      - name: Install Cordova and Build AAB
+      - name: Install Cordova and Build Signed AAB
         run: |
           sudo npm install -g cordova
-          cordova create myapp com.nisavkirayabook.app "Nivas KirayaBook"
+          # Correct package ID com.nivaskirayabook.app
+          cordova create myapp com.nivaskirayabook.app "Nivas KirayaBook"
           cd myapp
           cordova platform add android
-          
-          # HTML custom configuration for Blogspot redirect
-          # ⚠️ APNI WEBSITE KA LINK Niche 'https://blogspot.com' KI JAGAH DALEIN
-          echo '<!DOCTYPE html><html><head><meta http-equiv="refresh" content="0; url=https://nivaskirayabook.blogspot.com/"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Blog</title></head><body></body></html>' > www/index.html
-          
-          # Build Release Android App Bundle (.aab) direct command se
+
+          # Copy App Icon
+          mkdir -p res
+          if [ -f "../icon-512.png" ]; then
+            cp ../icon-512.png res/icon.png
+          fi
+
+          # Custom config.xml with direct URL, App Icon & WhatsApp / UPI deep linking
+          cat << 'EOF' > config.xml
+<?xml version='1.0' encoding='utf-8'?>
+<widget id="com.nivaskirayabook.app" version="1.0.0" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+    <name>Nivas KirayaBook</name>
+    <description>Smart Landlord &amp; Tenant Rent Manager</description>
+    <author email="support@nivaskirayabook.com">Nivas KirayaBook</author>
+    <content src="https://nivaskirayabook.blogspot.com/" />
+    <access origin="*" />
+    <allow-navigation href="https://nivaskirayabook.blogspot.com/*" />
+    <allow-navigation href="https://*.firebaseapp.com/*" />
+    <allow-navigation href="https://*.googleapis.com/*" />
+    <allow-navigation href="https://accounts.google.com/*" />
+    <allow-intent href="http://*/*" />
+    <allow-intent href="https://*/*" />
+    <allow-intent href="tel:*" />
+    <allow-intent href="sms:*" />
+    <allow-intent href="mailto:*" />
+    <allow-intent href="geo:*" />
+    <allow-intent href="whatsapp:*" />
+    <allow-intent href="upi:*" />
+    <icon src="res/icon.png" />
+    <preference name="Orientation" value="portrait" />
+    <preference name="BackgroundColor" value="0xff0B0F19" />
+</widget>
+EOF
+
+          # Build Release AAB
           cordova build android --release -- --bundle
 
-      - name: Upload Play Store AAB Artifact
+          # Generate Keystore and Sign the AAB for Google Play Store
+          keytool -genkey -v -keystore nivas-release.keystore -alias nivas_key -keyalg RSA -keysize 2048 -validity 10000 -storepass nivas2026 -keypass nivas2026 -dname "CN=Nivas KirayaBook, OU=App, O=Nivas, L=Mumbai, ST=Maharashtra, C=IN"
+
+          # Find generated AAB and sign it
+          AAB_PATH=$(find platforms/android/app/build/outputs/bundle/release/ -name "*.aab" | head -n 1)
+          echo "Found AAB at: $AAB_PATH"
+          jarsigner -verbose -sigalg SHA256withRSA -digestalg SHA-256 -keystore nivas-release.keystore -storepass nivas2026 -keypass nivas2026 "$AAB_PATH" nivas_key
+
+          # Copy to easy output directory
+          mkdir -p ../dist
+          cp "$AAB_PATH" ../dist/nivas-kirayabook-signed.aab
+          cp nivas-release.keystore ../dist/nivas-release.keystore
+
+      - name: Upload Signed Play Store AAB
         uses: actions/upload-artifact@v4
         with:
-          name: PlayStore-Release-AAB
-          path: myapp/platforms/android/app/build/outputs/bundle/release/app-release.aab
+          name: Nivas-KirayaBook-Signed-AAB
+          path: dist/nivas-kirayabook-signed.aab
+
+      - name: Upload Release Keystore (Save this file safely!)
+        uses: actions/upload-artifact@v4
+        with:
+          name: Nivas-Release-Keystore-Backup
+          path: dist/nivas-release.keystore

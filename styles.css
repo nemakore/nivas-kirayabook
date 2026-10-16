@@ -3893,3 +3893,665 @@ input:focus, select:focus, textarea:focus {
   padding: 10px 12px;
 }
 
+/* ===================================================================
+   Welcome App Intro Walkthrough & Guide Styles
+   =================================================================== */
+
+.modal-intro-card {
+  max-width: 680px;
+  background: linear-gradient(180deg, #131d36 0%, #0d1527 100%);
+  border: 1px solid rgba(99, 102, 241, 0.3);
+  box-shadow: 0 25px 60px -12px rgba(0, 0, 0, 0.75), 0 0 45px rgba(99, 102, 241, 0.15);
+  border-radius: var(--radius-xl);
+  padding: 24px;
+}
+
+.intro-modal-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 18px;
+  padding-bottom: 14px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.intro-header-brand {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.intro-logo-glow {
+  width: 46px;
+  height: 46px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, rgba(99, 102, 241, 0.3), rgba(16, 185, 129, 0.25));
+  border: 1px solid rgba(99, 102, 241, 0.45);
+  color: #6EE7B7;
+  box-shadow: 0 0 20px rgba(99, 102, 241, 0.35);
+  flex-shrink: 0;
+}
+
+.intro-tagline-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: #10B981;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 2px;
+}
+
+.intro-badge-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #10B981;
+  box-shadow: 0 0 8px #10B981;
+  animation: pulse-ring 2s infinite;
+}
+
+.intro-main-title {
+  font-family: var(--font-display);
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: #FFFFFF;
+  line-height: 1.25;
+}
+
+/* Segmented 3-Tab Control */
+.intro-tabs-nav {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 6px;
+  background: rgba(11, 18, 32, 0.85);
+  padding: 5px;
+  border-radius: var(--radius-md);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  margin-bottom: 18px;
+}
+
+.intro-tab-btn {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  border-radius: 10px;
+  border: 1px solid transparent;
+  background: transparent;
+  color: var(--text-secondary);
+  cursor: pointer;
+  text-align: left;
+  transition: all 0.22s ease;
+}
+
+.intro-tab-btn:hover {
+  background: rgba(255, 255, 255, 0.04);
+  color: #FFFFFF;
+}
+
+.intro-tab-btn.active {
+  background: linear-gradient(135deg, rgba(79, 70, 229, 0.28), rgba(16, 185, 129, 0.2));
+  border-color: rgba(99, 102, 241, 0.5);
+  color: #FFFFFF;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.35);
+}
+
+.tab-step-num {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.72rem;
+  font-weight: 800;
+  background: rgba(255, 255, 255, 0.1);
+  color: var(--text-secondary);
+  flex-shrink: 0;
+  transition: all 0.2s ease;
+}
+
+.intro-tab-btn.active .tab-step-num {
+  background: var(--accent-gradient);
+  color: #FFFFFF;
+  box-shadow: 0 0 10px rgba(99, 102, 241, 0.6);
+}
+
+.tab-label-wrap {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.tab-title {
+  font-size: 0.82rem;
+  font-weight: 700;
+  line-height: 1.2;
+  white-space: nowrap;
+}
+
+.tab-sub {
+  font-size: 0.66rem;
+  color: var(--text-muted);
+  white-space: nowrap;
+}
+
+.intro-tab-btn.active .tab-sub {
+  color: #CBD5E1;
+}
+
+/* Tab Panes */
+.intro-tab-content {
+  display: none;
+  animation: introFade 0.26s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.intro-tab-content.active {
+  display: block;
+}
+
+@keyframes introFade {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Hero Box */
+.intro-hero-box {
+  background: linear-gradient(135deg, rgba(79, 70, 229, 0.16) 0%, rgba(16, 185, 129, 0.12) 100%);
+  border: 1px solid rgba(99, 102, 241, 0.32);
+  border-radius: var(--radius-md);
+  padding: 16px 18px;
+  margin-bottom: 16px;
+  position: relative;
+  overflow: hidden;
+}
+
+.intro-hero-box::before {
+  content: '';
+  position: absolute;
+  top: -30px;
+  right: -30px;
+  width: 100px;
+  height: 100px;
+  background: radial-gradient(circle, rgba(99, 102, 241, 0.25) 0%, transparent 70%);
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.intro-hero-title {
+  font-family: var(--font-display);
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: #FFFFFF;
+  margin-bottom: 6px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.intro-hero-sub {
+  font-size: 0.82rem;
+  color: #CBD5E1;
+  line-height: 1.5;
+}
+
+/* Feature Grid */
+.intro-feat-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.intro-feat-card {
+  background: rgba(15, 23, 42, 0.65);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: var(--radius-md);
+  padding: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  transition: transform 0.2s, border-color 0.2s;
+}
+
+.intro-feat-card:hover {
+  transform: translateY(-2px);
+  border-color: rgba(99, 102, 241, 0.4);
+}
+
+.intro-feat-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.intro-feat-icon {
+  width: 34px;
+  height: 34px;
+  border-radius: 9px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.15rem;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.09);
+}
+
+.intro-feat-tag {
+  font-size: 0.66rem;
+  font-weight: 700;
+  padding: 2px 7px;
+  border-radius: 999px;
+  background: rgba(16, 185, 129, 0.15);
+  color: #34D399;
+  border: 1px solid rgba(16, 185, 129, 0.3);
+}
+
+.intro-feat-title {
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: #FFFFFF;
+  line-height: 1.25;
+}
+
+.intro-feat-desc {
+  font-size: 0.76rem;
+  color: var(--text-secondary);
+  line-height: 1.45;
+}
+
+/* Comparison Box (Purani Diary vs Nivas KirayaBook) */
+.intro-compare-box {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  background: rgba(11, 18, 32, 0.65);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: var(--radius-md);
+  padding: 14px;
+  margin-bottom: 16px;
+}
+
+.compare-col {
+  padding: 8px;
+  border-radius: var(--radius-sm);
+}
+
+.compare-col.bad {
+  background: rgba(239, 68, 68, 0.08);
+  border: 1px dashed rgba(239, 68, 68, 0.3);
+}
+
+.compare-col.good {
+  background: rgba(16, 185, 129, 0.09);
+  border: 1px dashed rgba(16, 185, 129, 0.35);
+}
+
+.compare-title {
+  font-size: 0.78rem;
+  font-weight: 700;
+  margin-bottom: 6px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.compare-col.bad .compare-title {
+  color: #F87171;
+}
+
+.compare-col.good .compare-title {
+  color: #34D399;
+}
+
+.compare-list {
+  font-size: 0.73rem;
+  color: var(--text-secondary);
+  line-height: 1.5;
+  margin: 0;
+  padding-left: 18px;
+}
+
+/* 3-Step Timeline (Kaise Karti Hai) */
+.intro-steps-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.intro-step-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  background: rgba(15, 23, 42, 0.7);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: var(--radius-md);
+  padding: 14px 16px;
+  position: relative;
+  transition: all 0.2s ease;
+}
+
+.intro-step-item:hover {
+  border-color: rgba(99, 102, 241, 0.4);
+  background: rgba(20, 31, 56, 0.75);
+}
+
+.intro-step-badge {
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.95rem;
+  font-weight: 800;
+  flex-shrink: 0;
+}
+
+.step-badge-1 {
+  background: linear-gradient(135deg, #3B82F6, #1D4ED8);
+  color: #FFFFFF;
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.35);
+}
+
+.step-badge-2 {
+  background: linear-gradient(135deg, #8B5CF6, #6D28D9);
+  color: #FFFFFF;
+  box-shadow: 0 4px 12px rgba(139, 92, 246, 0.35);
+}
+
+.step-badge-3 {
+  background: linear-gradient(135deg, #10B981, #047857);
+  color: #FFFFFF;
+  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.35);
+}
+
+.intro-step-content {
+  flex: 1;
+}
+
+.intro-step-heading {
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: #FFFFFF;
+  margin-bottom: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.intro-step-time {
+  font-size: 0.68rem;
+  font-weight: 600;
+  color: #F59E0B;
+  background: rgba(245, 158, 11, 0.12);
+  padding: 2px 7px;
+  border-radius: 999px;
+  border: 1px solid rgba(245, 158, 11, 0.25);
+}
+
+.intro-step-desc {
+  font-size: 0.77rem;
+  color: var(--text-secondary);
+  line-height: 1.45;
+}
+
+/* Simulation Bubble of WhatsApp Reminder */
+.intro-preview-bubble {
+  background: #0B1E19;
+  border: 1px solid rgba(16, 185, 129, 0.3);
+  border-radius: var(--radius-md);
+  padding: 12px 14px;
+  font-family: monospace;
+  font-size: 0.74rem;
+  color: #A7F3D0;
+  line-height: 1.45;
+  margin-top: 8px;
+}
+
+.intro-preview-bubble strong {
+  color: #34D399;
+}
+
+/* Footer & Action Bar */
+.intro-modal-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding-top: 14px;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  margin-top: 8px;
+}
+
+.intro-step-indicators {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.intro-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.2);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.intro-dot.active {
+  width: 22px;
+  border-radius: 999px;
+  background: #6366F1;
+  box-shadow: 0 0 8px rgba(99, 102, 241, 0.6);
+}
+
+.intro-footer-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.intro-btn-setup {
+  background: linear-gradient(135deg, #10B981 0%, #059669 100%) !important;
+  color: #FFFFFF !important;
+  font-weight: 700 !important;
+  box-shadow: 0 4px 16px rgba(16, 185, 129, 0.4) !important;
+  border: 1px solid rgba(255, 255, 255, 0.2) !important;
+  animation: pulse-border 2.5s infinite;
+}
+
+.intro-btn-setup:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(16, 185, 129, 0.55) !important;
+}
+
+@keyframes pulse-border {
+  0% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.5); }
+  70% { box-shadow: 0 0 0 8px rgba(16, 185, 129, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
+}
+
+/* Header Guide Pill */
+.header-guide-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 5px 10px;
+  border-radius: 999px;
+  background: rgba(99, 102, 241, 0.16);
+  border: 1px solid rgba(99, 102, 241, 0.38);
+  color: #C7D2FE;
+  font-size: 0.74rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.header-guide-pill:hover {
+  background: rgba(99, 102, 241, 0.3);
+  color: #FFFFFF;
+  border-color: rgba(99, 102, 241, 0.6);
+  transform: translateY(-1px);
+}
+
+.header-guide-pill .guide-icon {
+  font-size: 0.85rem;
+}
+
+/* Sidebar Guide Box */
+.sidebar-guide-box {
+  margin: 10px 12px 14px;
+  padding: 12px 14px;
+  background: linear-gradient(135deg, rgba(99, 102, 241, 0.14), rgba(16, 185, 129, 0.1));
+  border: 1px solid rgba(99, 102, 241, 0.28);
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: all 0.22s ease;
+}
+
+.sidebar-guide-box:hover {
+  background: linear-gradient(135deg, rgba(99, 102, 241, 0.24), rgba(16, 185, 129, 0.18));
+  border-color: rgba(99, 102, 241, 0.5);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3);
+}
+
+.sidebar-guide-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 4px;
+}
+
+.sidebar-guide-top .guide-badge {
+  font-size: 0.68rem;
+  font-weight: 800;
+  color: #38BDF8;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+}
+
+.sidebar-guide-top .guide-arrow {
+  color: #94A3B8;
+  font-weight: 700;
+}
+
+.sidebar-guide-title {
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: #FFFFFF;
+  line-height: 1.25;
+}
+
+.sidebar-guide-sub {
+  font-size: 0.68rem;
+  color: var(--text-secondary);
+  margin-top: 2px;
+}
+
+/* Settings View Guide Card */
+.settings-guide-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  background: linear-gradient(135deg, rgba(79, 70, 229, 0.15), rgba(16, 185, 129, 0.12));
+  border: 1px solid rgba(99, 102, 241, 0.32);
+  border-radius: var(--radius-md);
+  padding: 16px 18px;
+  margin-bottom: 18px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.settings-guide-card:hover {
+  border-color: rgba(99, 102, 241, 0.5);
+  transform: translateY(-2px);
+}
+
+.settings-guide-left {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.settings-guide-icon {
+  width: 42px;
+  height: 42px;
+  border-radius: 12px;
+  background: rgba(99, 102, 241, 0.25);
+  border: 1px solid rgba(99, 102, 241, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.3rem;
+  flex-shrink: 0;
+}
+
+.settings-guide-info h4 {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #FFFFFF;
+  margin-bottom: 3px;
+}
+
+.settings-guide-info p {
+  font-size: 0.78rem;
+  color: var(--text-secondary);
+  line-height: 1.4;
+}
+
+/* Responsive Overrides for Small Mobile Devices */
+@media (max-width: 600px) {
+  .intro-tabs-nav {
+    grid-template-columns: 1fr;
+    gap: 4px;
+  }
+  
+  .intro-tab-btn {
+    padding: 8px 10px;
+  }
+
+  .intro-feat-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .intro-compare-box {
+    grid-template-columns: 1fr;
+  }
+
+  .intro-modal-footer {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+  }
+
+  .intro-step-indicators {
+    justify-content: center;
+  }
+
+  .intro-footer-actions {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .intro-footer-actions button {
+    width: 100%;
+    justify-content: center;
+  }
+}
+

@@ -89,6 +89,20 @@ function initApp() {
   const payDateEl = document.getElementById('pay-date');
   if (payDateEl) payDateEl.value = today;
 
+  // Auto-prompt Welcome Guide or Setup Wizard for first-time user
+  const setupDone = localStorage.getItem('nivas_setup_completed') === 'true';
+  const introSeen = localStorage.getItem('nivas_intro_seen') === 'true';
+  const hasCustomOwner = state.settings.ownerName && state.settings.ownerName !== 'Makan Malik';
+  if (!introSeen && !setupDone && !hasCustomOwner && state.units.length === 0) {
+    setTimeout(() => {
+      openAppIntroModal(true);
+    }, 600);
+  } else if (!setupDone && !hasCustomOwner && state.units.length === 0) {
+    setTimeout(() => {
+      openOnboardingModal();
+    }, 600);
+  }
+
   // Request Persistent Storage for Reliable Offline Landlord Bahi-Khata
   if (typeof navigator !== 'undefined' && navigator.storage && navigator.storage.persist) {
     navigator.storage.persist().then(granted => {
@@ -1549,7 +1563,7 @@ function openAddTenantModal() {
   if (form) form.reset();
 
   const propName = document.getElementById('input-property-name');
-  if (propName) propName.value = state.settings.defaultProperty || 'Gokul Nivas';
+  if (propName) propName.value = state.settings.defaultProperty || 'Apna Nivas';
 
   const todayStr = new Date().toISOString().split('T')[0];
   const todayDay = new Date().getDate();
@@ -3424,21 +3438,113 @@ function resetToSampleData() {
 }
 
 // ==========================================
-// Onboarding & Demo Banner Handlers
+// Welcome Walkthrough & App Guide Handlers
+// (यह ऐप क्या है, किस काम की है, कैसे करती है?)
+// ==========================================
+
+let currentIntroTab = 'what';
+
+function openAppIntroModal(isFirstTime = false) {
+  currentIntroTab = 'what';
+  switchIntroTab('what');
+
+  const setupBtn = document.querySelector('.intro-btn-setup');
+  if (setupBtn) {
+    setupBtn.innerHTML = isFirstTime
+      ? '<span>🚀 अपना खाता सेटअप करें ›</span>'
+      : '<span>🚀 अपना खाता सेटअप / Edit करें ›</span>';
+  }
+
+  openModal('modal-app-intro');
+}
+
+function closeAppIntroModal() {
+  localStorage.setItem('nivas_intro_seen', 'true');
+  closeModal('modal-app-intro');
+}
+
+function startSetupFromIntro() {
+  localStorage.setItem('nivas_intro_seen', 'true');
+  closeModal('modal-app-intro');
+  setTimeout(() => {
+    openOnboardingModal();
+  }, 220);
+}
+
+function switchIntroTab(tabKey) {
+  currentIntroTab = tabKey;
+  const tabs = ['what', 'use', 'how'];
+
+  tabs.forEach(t => {
+    const btn = document.getElementById(`tab-btn-${t}`);
+    const pane = document.getElementById(`tab-pane-${t}`);
+    const dot = document.getElementById(`intro-dot-${t}`);
+
+    if (btn) btn.classList.toggle('active', t === tabKey);
+    if (pane) pane.classList.toggle('active', t === tabKey);
+    if (dot) dot.classList.toggle('active', t === tabKey);
+  });
+
+  const prevBtn = document.getElementById('intro-btn-prev');
+  const nextBtn = document.getElementById('intro-btn-next');
+
+  if (prevBtn) {
+    prevBtn.style.display = (tabKey === 'what') ? 'none' : 'inline-flex';
+  }
+
+  if (nextBtn) {
+    if (tabKey === 'what') {
+      nextBtn.style.display = 'inline-flex';
+      nextBtn.innerHTML = 'अगला: किस काम की है ›';
+    } else if (tabKey === 'use') {
+      nextBtn.style.display = 'inline-flex';
+      nextBtn.innerHTML = 'अगला: कैसे करती है ›';
+    } else {
+      nextBtn.style.display = 'none';
+    }
+  }
+}
+
+function navigateIntroNext() {
+  if (currentIntroTab === 'what') {
+    switchIntroTab('use');
+  } else if (currentIntroTab === 'use') {
+    switchIntroTab('how');
+  }
+}
+
+function navigateIntroPrev() {
+  if (currentIntroTab === 'how') {
+    switchIntroTab('use');
+  } else if (currentIntroTab === 'use') {
+    switchIntroTab('what');
+  }
+}
+
+// ==========================================
+// Onboarding & First-Time Setup Handlers
 // ==========================================
 
 function openOnboardingModal() {
   const nameEl = document.getElementById('onboard-owner-name');
-  if (nameEl) nameEl.value = state.settings.ownerName || '';
+  if (nameEl) {
+    nameEl.value = (state.settings.ownerName && state.settings.ownerName !== 'Makan Malik') ? state.settings.ownerName : '';
+  }
 
   const phoneEl = document.getElementById('onboard-owner-phone');
-  if (phoneEl) phoneEl.value = state.settings.ownerPhone || '';
+  if (phoneEl) {
+    phoneEl.value = state.settings.ownerPhone || '';
+  }
 
   const propEl = document.getElementById('onboard-property-name');
-  if (propEl) propEl.value = state.settings.defaultProperty || '';
+  if (propEl) {
+    propEl.value = (state.settings.defaultProperty && state.settings.defaultProperty !== 'Apna Nivas') ? state.settings.defaultProperty : '';
+  }
 
   const upiEl = document.getElementById('onboard-owner-upi');
-  if (upiEl) upiEl.value = state.settings.ownerUPI || '';
+  if (upiEl) {
+    upiEl.value = state.settings.ownerUPI || '';
+  }
 
   openModal('modal-onboarding');
 }
@@ -3452,29 +3558,29 @@ function handleSaveOnboarding(e) {
 
   state.settings.ownerName = name || 'Makan Malik';
   state.settings.ownerPhone = phone || '';
-  state.settings.defaultProperty = prop || 'Mera Bhawan';
+  state.settings.defaultProperty = prop || 'Apna Nivas';
   state.settings.ownerUPI = upi || '';
 
-  // Clear demo data to start fresh real khata
-  state.units = [];
-  state.history = [];
-  state.expenses = [];
-  localStorage.setItem('nivas_demo_dismissed', 'true');
+  localStorage.setItem('nivas_setup_completed', 'true');
 
   saveToStorage();
   updateOwnerUI();
   closeModal('modal-onboarding');
-  dismissDemoBanner();
   renderDashboard();
   renderTenantsView();
   renderHistoryTable();
   renderMonthlyReportView();
   populateSettingsScreen();
 
-  showToast('🎉 Mubarak ho! Asli Khata shuru ho gaya. Ab pehla Room add karein.');
+  showToast('🎉 Mubarak ho! Khata setup complete ho gaya.');
   setTimeout(() => {
     openAddTenantModal();
   }, 400);
+}
+
+function skipOnboardingSetup() {
+  localStorage.setItem('nivas_setup_completed', 'true');
+  closeModal('modal-onboarding');
 }
 
 function dismissDemoBanner() {

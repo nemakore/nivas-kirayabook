@@ -47,6 +47,10 @@ html, body {
 
   ]]></b:skin>
 
+  <link href='icon.svg' rel='icon' type='image/svg+xml'/>
+  <link href='icon-192.png' rel='apple-touch-icon'/>
+  <link href='manifest.json' rel='manifest'/>
+
   <!-- Complete Nivas KirayaBook Application Styles -->
   <style type='text/css'>
   /*<![CDATA[*/
@@ -3945,6 +3949,668 @@ input:focus, select:focus, textarea:focus {
   padding: 10px 12px;
 }
 
+/* ===================================================================
+   Welcome App Intro Walkthrough & Guide Styles
+   =================================================================== */
+
+.modal-intro-card {
+  max-width: 680px;
+  background: linear-gradient(180deg, #131d36 0%, #0d1527 100%);
+  border: 1px solid rgba(99, 102, 241, 0.3);
+  box-shadow: 0 25px 60px -12px rgba(0, 0, 0, 0.75), 0 0 45px rgba(99, 102, 241, 0.15);
+  border-radius: var(--radius-xl);
+  padding: 24px;
+}
+
+.intro-modal-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 18px;
+  padding-bottom: 14px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.intro-header-brand {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.intro-logo-glow {
+  width: 46px;
+  height: 46px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, rgba(99, 102, 241, 0.3), rgba(16, 185, 129, 0.25));
+  border: 1px solid rgba(99, 102, 241, 0.45);
+  color: #6EE7B7;
+  box-shadow: 0 0 20px rgba(99, 102, 241, 0.35);
+  flex-shrink: 0;
+}
+
+.intro-tagline-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: #10B981;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 2px;
+}
+
+.intro-badge-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #10B981;
+  box-shadow: 0 0 8px #10B981;
+  animation: pulse-ring 2s infinite;
+}
+
+.intro-main-title {
+  font-family: var(--font-display);
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: #FFFFFF;
+  line-height: 1.25;
+}
+
+/* Segmented 3-Tab Control */
+.intro-tabs-nav {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 6px;
+  background: rgba(11, 18, 32, 0.85);
+  padding: 5px;
+  border-radius: var(--radius-md);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  margin-bottom: 18px;
+}
+
+.intro-tab-btn {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  border-radius: 10px;
+  border: 1px solid transparent;
+  background: transparent;
+  color: var(--text-secondary);
+  cursor: pointer;
+  text-align: left;
+  transition: all 0.22s ease;
+}
+
+.intro-tab-btn:hover {
+  background: rgba(255, 255, 255, 0.04);
+  color: #FFFFFF;
+}
+
+.intro-tab-btn.active {
+  background: linear-gradient(135deg, rgba(79, 70, 229, 0.28), rgba(16, 185, 129, 0.2));
+  border-color: rgba(99, 102, 241, 0.5);
+  color: #FFFFFF;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.35);
+}
+
+.tab-step-num {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.72rem;
+  font-weight: 800;
+  background: rgba(255, 255, 255, 0.1);
+  color: var(--text-secondary);
+  flex-shrink: 0;
+  transition: all 0.2s ease;
+}
+
+.intro-tab-btn.active .tab-step-num {
+  background: var(--accent-gradient);
+  color: #FFFFFF;
+  box-shadow: 0 0 10px rgba(99, 102, 241, 0.6);
+}
+
+.tab-label-wrap {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.tab-title {
+  font-size: 0.82rem;
+  font-weight: 700;
+  line-height: 1.2;
+  white-space: nowrap;
+}
+
+.tab-sub {
+  font-size: 0.66rem;
+  color: var(--text-muted);
+  white-space: nowrap;
+}
+
+.intro-tab-btn.active .tab-sub {
+  color: #CBD5E1;
+}
+
+/* Tab Panes */
+.intro-tab-content {
+  display: none;
+  animation: introFade 0.26s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.intro-tab-content.active {
+  display: block;
+}
+
+@keyframes introFade {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Hero Box */
+.intro-hero-box {
+  background: linear-gradient(135deg, rgba(79, 70, 229, 0.16) 0%, rgba(16, 185, 129, 0.12) 100%);
+  border: 1px solid rgba(99, 102, 241, 0.32);
+  border-radius: var(--radius-md);
+  padding: 16px 18px;
+  margin-bottom: 16px;
+  position: relative;
+  overflow: hidden;
+}
+
+.intro-hero-box::before {
+  content: '';
+  position: absolute;
+  top: -30px;
+  right: -30px;
+  width: 100px;
+  height: 100px;
+  background: radial-gradient(circle, rgba(99, 102, 241, 0.25) 0%, transparent 70%);
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.intro-hero-title {
+  font-family: var(--font-display);
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: #FFFFFF;
+  margin-bottom: 6px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.intro-hero-sub {
+  font-size: 0.82rem;
+  color: #CBD5E1;
+  line-height: 1.5;
+}
+
+/* Feature Grid */
+.intro-feat-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.intro-feat-card {
+  background: rgba(15, 23, 42, 0.65);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: var(--radius-md);
+  padding: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  transition: transform 0.2s, border-color 0.2s;
+}
+
+.intro-feat-card:hover {
+  transform: translateY(-2px);
+  border-color: rgba(99, 102, 241, 0.4);
+}
+
+.intro-feat-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.intro-feat-icon {
+  width: 34px;
+  height: 34px;
+  border-radius: 9px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.15rem;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.09);
+}
+
+.intro-feat-tag {
+  font-size: 0.66rem;
+  font-weight: 700;
+  padding: 2px 7px;
+  border-radius: 999px;
+  background: rgba(16, 185, 129, 0.15);
+  color: #34D399;
+  border: 1px solid rgba(16, 185, 129, 0.3);
+}
+
+.intro-feat-title {
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: #FFFFFF;
+  line-height: 1.25;
+}
+
+.intro-feat-desc {
+  font-size: 0.76rem;
+  color: var(--text-secondary);
+  line-height: 1.45;
+}
+
+/* Comparison Box (Purani Diary vs Nivas KirayaBook) */
+.intro-compare-box {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  background: rgba(11, 18, 32, 0.65);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: var(--radius-md);
+  padding: 14px;
+  margin-bottom: 16px;
+}
+
+.compare-col {
+  padding: 8px;
+  border-radius: var(--radius-sm);
+}
+
+.compare-col.bad {
+  background: rgba(239, 68, 68, 0.08);
+  border: 1px dashed rgba(239, 68, 68, 0.3);
+}
+
+.compare-col.good {
+  background: rgba(16, 185, 129, 0.09);
+  border: 1px dashed rgba(16, 185, 129, 0.35);
+}
+
+.compare-title {
+  font-size: 0.78rem;
+  font-weight: 700;
+  margin-bottom: 6px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.compare-col.bad .compare-title {
+  color: #F87171;
+}
+
+.compare-col.good .compare-title {
+  color: #34D399;
+}
+
+.compare-list {
+  font-size: 0.73rem;
+  color: var(--text-secondary);
+  line-height: 1.5;
+  margin: 0;
+  padding-left: 18px;
+}
+
+/* 3-Step Timeline (Kaise Karti Hai) */
+.intro-steps-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.intro-step-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  background: rgba(15, 23, 42, 0.7);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: var(--radius-md);
+  padding: 14px 16px;
+  position: relative;
+  transition: all 0.2s ease;
+}
+
+.intro-step-item:hover {
+  border-color: rgba(99, 102, 241, 0.4);
+  background: rgba(20, 31, 56, 0.75);
+}
+
+.intro-step-badge {
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.95rem;
+  font-weight: 800;
+  flex-shrink: 0;
+}
+
+.step-badge-1 {
+  background: linear-gradient(135deg, #3B82F6, #1D4ED8);
+  color: #FFFFFF;
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.35);
+}
+
+.step-badge-2 {
+  background: linear-gradient(135deg, #8B5CF6, #6D28D9);
+  color: #FFFFFF;
+  box-shadow: 0 4px 12px rgba(139, 92, 246, 0.35);
+}
+
+.step-badge-3 {
+  background: linear-gradient(135deg, #10B981, #047857);
+  color: #FFFFFF;
+  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.35);
+}
+
+.intro-step-content {
+  flex: 1;
+}
+
+.intro-step-heading {
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: #FFFFFF;
+  margin-bottom: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.intro-step-time {
+  font-size: 0.68rem;
+  font-weight: 600;
+  color: #F59E0B;
+  background: rgba(245, 158, 11, 0.12);
+  padding: 2px 7px;
+  border-radius: 999px;
+  border: 1px solid rgba(245, 158, 11, 0.25);
+}
+
+.intro-step-desc {
+  font-size: 0.77rem;
+  color: var(--text-secondary);
+  line-height: 1.45;
+}
+
+/* Simulation Bubble of WhatsApp Reminder */
+.intro-preview-bubble {
+  background: #0B1E19;
+  border: 1px solid rgba(16, 185, 129, 0.3);
+  border-radius: var(--radius-md);
+  padding: 12px 14px;
+  font-family: monospace;
+  font-size: 0.74rem;
+  color: #A7F3D0;
+  line-height: 1.45;
+  margin-top: 8px;
+}
+
+.intro-preview-bubble strong {
+  color: #34D399;
+}
+
+/* Footer & Action Bar */
+.intro-modal-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding-top: 14px;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  margin-top: 8px;
+}
+
+.intro-step-indicators {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.intro-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.2);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.intro-dot.active {
+  width: 22px;
+  border-radius: 999px;
+  background: #6366F1;
+  box-shadow: 0 0 8px rgba(99, 102, 241, 0.6);
+}
+
+.intro-footer-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.intro-btn-setup {
+  background: linear-gradient(135deg, #10B981 0%, #059669 100%) !important;
+  color: #FFFFFF !important;
+  font-weight: 700 !important;
+  box-shadow: 0 4px 16px rgba(16, 185, 129, 0.4) !important;
+  border: 1px solid rgba(255, 255, 255, 0.2) !important;
+  animation: pulse-border 2.5s infinite;
+}
+
+.intro-btn-setup:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(16, 185, 129, 0.55) !important;
+}
+
+@keyframes pulse-border {
+  0% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.5); }
+  70% { box-shadow: 0 0 0 8px rgba(16, 185, 129, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
+}
+
+/* Header Guide Pill */
+.header-guide-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 5px 10px;
+  border-radius: 999px;
+  background: rgba(99, 102, 241, 0.16);
+  border: 1px solid rgba(99, 102, 241, 0.38);
+  color: #C7D2FE;
+  font-size: 0.74rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.header-guide-pill:hover {
+  background: rgba(99, 102, 241, 0.3);
+  color: #FFFFFF;
+  border-color: rgba(99, 102, 241, 0.6);
+  transform: translateY(-1px);
+}
+
+.header-guide-pill .guide-icon {
+  font-size: 0.85rem;
+}
+
+/* Sidebar Guide Box */
+.sidebar-guide-box {
+  margin: 10px 12px 14px;
+  padding: 12px 14px;
+  background: linear-gradient(135deg, rgba(99, 102, 241, 0.14), rgba(16, 185, 129, 0.1));
+  border: 1px solid rgba(99, 102, 241, 0.28);
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: all 0.22s ease;
+}
+
+.sidebar-guide-box:hover {
+  background: linear-gradient(135deg, rgba(99, 102, 241, 0.24), rgba(16, 185, 129, 0.18));
+  border-color: rgba(99, 102, 241, 0.5);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3);
+}
+
+.sidebar-guide-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 4px;
+}
+
+.sidebar-guide-top .guide-badge {
+  font-size: 0.68rem;
+  font-weight: 800;
+  color: #38BDF8;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+}
+
+.sidebar-guide-top .guide-arrow {
+  color: #94A3B8;
+  font-weight: 700;
+}
+
+.sidebar-guide-title {
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: #FFFFFF;
+  line-height: 1.25;
+}
+
+.sidebar-guide-sub {
+  font-size: 0.68rem;
+  color: var(--text-secondary);
+  margin-top: 2px;
+}
+
+/* Settings View Guide Card */
+.settings-guide-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  background: linear-gradient(135deg, rgba(79, 70, 229, 0.15), rgba(16, 185, 129, 0.12));
+  border: 1px solid rgba(99, 102, 241, 0.32);
+  border-radius: var(--radius-md);
+  padding: 16px 18px;
+  margin-bottom: 18px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.settings-guide-card:hover {
+  border-color: rgba(99, 102, 241, 0.5);
+  transform: translateY(-2px);
+}
+
+.settings-guide-left {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.settings-guide-icon {
+  width: 42px;
+  height: 42px;
+  border-radius: 12px;
+  background: rgba(99, 102, 241, 0.25);
+  border: 1px solid rgba(99, 102, 241, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.3rem;
+  flex-shrink: 0;
+}
+
+.settings-guide-info h4 {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #FFFFFF;
+  margin-bottom: 3px;
+}
+
+.settings-guide-info p {
+  font-size: 0.78rem;
+  color: var(--text-secondary);
+  line-height: 1.4;
+}
+
+/* Responsive Overrides for Small Mobile Devices */
+@media (max-width: 600px) {
+  .intro-tabs-nav {
+    grid-template-columns: 1fr;
+    gap: 4px;
+  }
+  
+  .intro-tab-btn {
+    padding: 8px 10px;
+  }
+
+  .intro-feat-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .intro-compare-box {
+    grid-template-columns: 1fr;
+  }
+
+  .intro-modal-footer {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+  }
+
+  .intro-step-indicators {
+    justify-content: center;
+  }
+
+  .intro-footer-actions {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .intro-footer-actions button {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
 
   /*]]>*/
   </style>
@@ -4057,6 +4723,16 @@ input:focus, select:focus, textarea:focus {
         </button>
       </nav>
 
+      <!-- Sidebar App Guide Box -->
+      <div class="sidebar-guide-box" onclick="openAppIntroModal()" title="यह ऐप क्या है &amp; कैसे काम करती है?">
+        <div class="sidebar-guide-top">
+          <span class="guide-badge">💡 App Guide</span>
+          <span class="guide-arrow">›</span>
+        </div>
+        <div class="sidebar-guide-title">यह ऐप क्या है &amp; कैसे काम करती है?</div>
+        <div class="sidebar-guide-sub">3 आसान स्टेप्स में गाइड देखें</div>
+      </div>
+
       <div class="sidebar-user-card" onclick="switchView('settings')">
         <div class="user-avatar" id="sidebar-avatar">M</div>
         <div class="user-details">
@@ -4092,6 +4768,10 @@ input:focus, select:focus, textarea:focus {
         </div>
 
         <div class="header-right">
+          <button class="header-guide-pill" onclick="openAppIntroModal()" title="App Guide: Yeh app kya hai? (गाइड)">
+            <span class="guide-icon">💡</span>
+            <span class="guide-text">गाइड</span>
+          </button>
           <button class="cloud-sync-pill logged-out" id="header-cloud-btn" onclick="openCloudModal()" title="Firebase Cloud Sync">
             <svg class="cloud-icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
               <path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z"></path>
@@ -4187,6 +4867,9 @@ input:focus, select:focus, textarea:focus {
                 <button type="button" class="btn-demo-primary" onclick="openOnboardingModal()">
                   <span>🚀 Apna Asli Khata Setup Karein</span>
                   <small>(Name, Mobile &amp; UPI jodein • 2 min)</small>
+                </button>
+                <button type="button" class="btn-demo-secondary" onclick="openAppIntroModal()">
+                  <span>💡 Yeh App Kya Hai? Guide Dekhein ›</span>
                 </button>
                 <button type="button" class="btn-demo-secondary" onclick="switchView('calculator')">
                   <span>⚡ Bijli Calculator Test Karein ›</span>
@@ -4799,6 +5482,18 @@ input:focus, select:focus, textarea:focus {
             </div>
           </div>
 
+          <!-- App Guide &amp; Intro Card -->
+          <div class="settings-guide-card" onclick="openAppIntroModal()" title="Yeh App Kya Hai? Guide Dekhein">
+            <div class="settings-guide-left">
+              <div class="settings-guide-icon">💡</div>
+              <div class="settings-guide-info">
+                <h4>यह ऐप क्या है और कैसे काम करती है? (App Guide)</h4>
+                <p>बिजली बिल कैलकुलेटर, 1-क्लिक व्हाट्सएप रिमाइंडर और कानूनी किराया रसीद का पूरा परिचय व गाइड देखें।</p>
+              </div>
+            </div>
+            <button type="button" class="btn btn-secondary btn-sm">गाइड खोलें ›</button>
+          </div>
+
           <div class="settings-app-grid">
             <div class="settings-app-card">
               <h3 class="card-subtitle">Landlord / House Owner Details</h3>
@@ -4924,6 +5619,14 @@ input:focus, select:focus, textarea:focus {
                     Clear All Data (Fresh Start)
                   </button>
                 </div>
+                <div style="border-top: 1px dashed var(--border-subtle); margin: 16px 0 12px 0;"></div>
+                <div style="display: flex; align-items: center; justify-content: space-between; font-size: 0.78rem; color: var(--text-muted); flex-wrap: wrap; gap: 8px;">
+                  <span>🔒 100% Private &amp; Offline-First</span>
+                  <a href="privacy.html" target="_blank" style="color: #818CF8; text-decoration: none; font-weight: 600;">
+                    Privacy Policy (गोपनीयता नीति) ›
+                  </a>
+                </div>
+
               </div>
             </div>
           </div>
@@ -5288,6 +5991,277 @@ input:focus, select:focus, textarea:focus {
     </div>
   </div>
 
+  <!-- ==========================================
+       MODAL: Welcome App Walkthrough &amp; Guide
+       (यह ऐप क्या है, किस काम की है, कैसे करती है?)
+       ========================================== -->
+  <div class="modal-overlay" id="modal-app-intro" onclick="closeModalOnOverlay(event, 'modal-app-intro')">
+    <div class="modal-card modal-intro-card">
+      <div class="modal-sheet-handle"></div>
+
+      <!-- Header -->
+      <div class="modal-header intro-modal-header">
+        <div class="intro-header-brand">
+          <div class="intro-logo-glow">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3">
+              <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+              <polyline points="9 22 9 12 15 12 15 22"></polyline>
+            </svg>
+          </div>
+          <div>
+            <div class="intro-tagline-badge">
+              <span class="intro-badge-dot"></span>
+              <span>निवास किरायाबुक • गाइड &amp; परिचय</span>
+            </div>
+            <h3 class="intro-main-title">Nivas KirayaBook क्या है &amp; कैसे काम करती है?</h3>
+          </div>
+        </div>
+        <button class="modal-close" onclick="closeAppIntroModal()" aria-label="Close">&#215;</button>
+      </div>
+
+      <!-- 3 Segmented Tabs Matching User's Exact 3 Questions -->
+      <div class="intro-tabs-nav" role="tablist">
+        <button type="button" class="intro-tab-btn active" id="tab-btn-what" onclick="switchIntroTab('what')">
+          <span class="tab-step-num">1</span>
+          <div class="tab-label-wrap">
+            <span class="tab-title">1. यह ऐप क्या है?</span>
+            <small class="tab-sub">Smart Kiraya Ledger</small>
+          </div>
+        </button>
+
+        <button type="button" class="intro-tab-btn" id="tab-btn-use" onclick="switchIntroTab('use')">
+          <span class="tab-step-num">2</span>
+          <div class="tab-label-wrap">
+            <span class="tab-title">2. किस काम की है?</span>
+            <small class="tab-sub">Features &amp; Benefits</small>
+          </div>
+        </button>
+
+        <button type="button" class="intro-tab-btn" id="tab-btn-how" onclick="switchIntroTab('how')">
+          <span class="tab-step-num">3</span>
+          <div class="tab-label-wrap">
+            <span class="tab-title">3. कैसे करती है?</span>
+            <small class="tab-sub">3 Simple Steps</small>
+          </div>
+        </button>
+      </div>
+
+      <!-- TAB 1: यह ऐप क्या है? (What is this app?) -->
+      <div class="intro-tab-content active" id="tab-pane-what">
+        <div class="intro-hero-box">
+          <h4 class="intro-hero-title">
+            <span>🇮🇳</span>
+            <span>मकान मालिकों का आधुनिक डिजिटल बही-खाता</span>
+          </h4>
+          <p class="intro-hero-sub">
+            <strong>Nivas KirayaBook</strong> भारत के मकान मालिकों (House Owners), पीजी (PGs), फ्लैट और हॉस्टल संचालकों के लिए बना <strong>100% फ्री और सुरक्षित</strong> वेब ऐप है। अब पुरानी डायरी, बार-बार कैलकुलेटर चलाने और हिसाब गड़बड़ होने की चिंता हमेशा के लिए खत्म!
+          </p>
+        </div>
+
+        <div class="intro-feat-grid">
+          <div class="intro-feat-card">
+            <div class="intro-feat-top">
+              <span class="intro-feat-icon">📖</span>
+              <span class="intro-feat-tag">No Diary</span>
+            </div>
+            <div class="intro-feat-title">डायरी व रफ कॉपी की छुट्टी</div>
+            <div class="intro-feat-desc">पन्ने फटने या खोने का कोई डर नहीं। हर कमरे, किरायेदार और बिल का पूरा रिकॉर्ड हमेशा आपकी उंगलियों पर रहेगा।</div>
+          </div>
+
+          <div class="intro-feat-card">
+            <div class="intro-feat-top">
+              <span class="intro-feat-icon">🛡️</span>
+              <span class="intro-feat-tag">100% Private</span>
+            </div>
+            <div class="intro-feat-title">प्राइवेट &amp; ऑफलाइन काम करे</div>
+            <div class="intro-feat-desc">आपका पूरा डेटा आपके ही डिवाइस में सुरक्षित रहता है। इंटरनेट न होने पर भी यह ऐप बिना रुके बिजली की तेजी से चलती है।</div>
+          </div>
+
+          <div class="intro-feat-card">
+            <div class="intro-feat-top">
+              <span class="intro-feat-icon">☁️</span>
+              <span class="intro-feat-tag">Auto Cloud</span>
+            </div>
+            <div class="intro-feat-title">फ्री गूगल क्लाउड बैकअप</div>
+            <div class="intro-feat-desc">फोन बदलने, खोने या नया मोबाइल लेने पर भी आपका एक रुपया का हिसाब नहीं खोएगा। 1-क्लिक में सब वापस!</div>
+          </div>
+
+          <div class="intro-feat-card">
+            <div class="intro-feat-top">
+              <span class="intro-feat-icon">💸</span>
+              <span class="intro-feat-tag">Zero Fee</span>
+            </div>
+            <div class="intro-feat-title">100% फ्री, कोई चार्ज नहीं</div>
+            <div class="intro-feat-desc">न कोई छुपा हुआ चार्ज, न कोई मंथली सब्सक्रिप्शन। सिर्फ शुद्ध, भरोसेमंद बही-खाता।</div>
+          </div>
+        </div>
+
+        <div class="intro-compare-box">
+          <div class="compare-col bad">
+            <div class="compare-title">❌ पुरानी डायरी व रफ हिसाब</div>
+            <ul class="compare-list">
+              <li>कैलकुलेटर से बार-बार बिजली यूनिट जोड़ना</li>
+              <li>किरायेदार से किराया मांगने में संकोच</li>
+              <li>पन्ने फटना या हिसाब खो जाना</li>
+            </ul>
+          </div>
+          <div class="compare-col good">
+            <div class="compare-title">✅ निवास किरायाबुक</div>
+            <ul class="compare-list">
+              <li>मीटर रीडिंग डालते ही ऑटोमैटिक बिल</li>
+              <li>1-क्लिक में WhatsApp पर UPI लिंक सहित बिल</li>
+              <li>सरकारी HRA मान्य पक्की रसीद PDF</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- TAB 2: किस काम की है? (What is it used for / Features) -->
+      <div class="intro-tab-content" id="tab-pane-use">
+        <div class="intro-hero-box">
+          <h4 class="intro-hero-title">
+            <span>🎯</span>
+            <span>मकान मालिक के रोजमर्रा के सभी झंझटों का एक हल</span>
+          </h4>
+          <p class="intro-hero-sub">
+            यह ऐप किराएदारों को मैनेज करने, बिजली बिल की पाई-पाई जोड़ने, बिना झिझक व्हाट्सएप पर पेमेंट मांगने और कानूनी रसीद बनाने के काम आती है:
+          </p>
+        </div>
+
+        <div class="intro-feat-grid">
+          <div class="intro-feat-card">
+            <div class="intro-feat-top">
+              <span class="intro-feat-icon">⚡</span>
+              <span class="intro-feat-tag">Auto Calc</span>
+            </div>
+            <div class="intro-feat-title">बिजली बिल ऑटो-कैलकुलेटर</div>
+            <div class="intro-feat-desc">पिछली रीडिंग और नई रीडिंग भरें। यूनिट दर (जैसे ₹8/Unit) के हिसाब से बिजली का बिल 1 सेकंड में खुद-ब-खुद निकल जाता है।</div>
+          </div>
+
+          <div class="intro-feat-card">
+            <div class="intro-feat-top">
+              <span class="intro-feat-icon">💬</span>
+              <span class="intro-feat-tag">1-Click</span>
+            </div>
+            <div class="intro-feat-title">1-क्लिक व्हाट्सएप बिल व रिमाइंडर</div>
+            <div class="intro-feat-desc">किरायेदार से किराया मांगते समय कोई झिझक नहीं! 1-क्लिक में रूम नंबर, किराया, बिजली बिल का ब्रेकअप और आपकी UPI ID के साथ सुंदर संदेश जाता है।</div>
+          </div>
+
+          <div class="intro-feat-card">
+            <div class="intro-feat-top">
+              <span class="intro-feat-icon">📲</span>
+              <span class="intro-feat-tag">0% Commission</span>
+            </div>
+            <div class="intro-feat-title">सीधा आपके बैंक में UPI पेमेंट</div>
+            <div class="intro-feat-desc">संदेश में आपकी PhonePe, GPay या Paytm लिंक होती है। किरायेदार क्लिक करके सीधा आपके बैंक खाते में पैसे भेजता है।</div>
+          </div>
+
+          <div class="intro-feat-card">
+            <div class="intro-feat-top">
+              <span class="intro-feat-icon">🧾</span>
+              <span class="intro-feat-tag">HRA Valid</span>
+            </div>
+            <div class="intro-feat-title">ऑफिशियल पक्की किराया रसीद</div>
+            <div class="intro-feat-desc">किराया मिलने पर 1-क्लिक में इनकम टैक्स (HRA) मान्य पक्की रसीद PDF जनरेट करें और किरायेदार को व्हाट्सएप भेजें या प्रिंट निकालें।</div>
+          </div>
+
+          <div class="intro-feat-card" style="grid-column: span 2;">
+            <div class="intro-feat-top">
+              <span class="intro-feat-icon">📊</span>
+              <span class="intro-feat-tag">P&amp;L Report</span>
+            </div>
+            <div class="intro-feat-title">मासिक आय, बकाया और बिल्डिंग खर्चों का पूरा हिसाब</div>
+            <div class="intro-feat-desc">किस महीने कितना किराया आया, कितना बकाया है, और घर की मेंटेनेंस (प्लंबर, पेंट, बिजली रिपेयरिंग) में कितना खर्च हुआ—साफ-सुथरी रिपोर्ट देखें।</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- TAB 3: कैसे करती है? (How it works - 3 Simple Steps) -->
+      <div class="intro-tab-content" id="tab-pane-how">
+        <div class="intro-hero-box">
+          <h4 class="intro-hero-title">
+            <span>🚀</span>
+            <span>सिर्फ 3 आसान स्टेप्स में चालू करें</span>
+          </h4>
+          <p class="intro-hero-sub">
+            किसी तकनीकी ज्ञान की जरूरत नहीं! कोई भी मकान मालिक सिर्फ 2 मिनट में अपना पूरा खाता शुरू कर सकता है:
+          </p>
+        </div>
+
+        <div class="intro-steps-list">
+          <div class="intro-step-item">
+            <div class="intro-step-badge step-badge-1">1</div>
+            <div class="intro-step-content">
+              <div class="intro-step-heading">
+                <span>अपनी प्रोफाइल व UPI जोड़ें</span>
+                <span class="intro-step-time">⏱️ सिर्फ 30 सेकंड</span>
+              </div>
+              <div class="intro-step-desc">
+                अपना नाम, बिल्डिंग का नाम और अपनी UPI ID (जैसे 9876543210@paytm) सेट करें ताकि किरायेदार से पैसा सीधा आपके बैंक खाते में आए।
+              </div>
+            </div>
+          </div>
+
+          <div class="intro-step-item">
+            <div class="intro-step-badge step-badge-2">2</div>
+            <div class="intro-step-content">
+              <div class="intro-step-heading">
+                <span>कमरे और किरायेदार जोड़ें</span>
+                <span class="intro-step-time">🚪 Rooms &amp; Tenants</span>
+              </div>
+              <div class="intro-step-desc">
+                रूम नंबर, किरायेदार का नाम, मोबाइल नंबर, फिक्स किराया और बिजली सब-मीटर की वर्तमान रीडिंग दर्ज करें।
+              </div>
+            </div>
+          </div>
+
+          <div class="intro-step-item">
+            <div class="intro-step-badge step-badge-3">3</div>
+            <div class="intro-step-content">
+              <div class="intro-step-heading">
+                <span>हर महीने 1-क्लिक में बिल व रसीद बनाएं</span>
+                <span class="intro-step-time">⚡ Ready to Go</span>
+              </div>
+              <div class="intro-step-desc">
+                महीने की नई मीटर रीडिंग डालें—बिल अपने आप बन जाएगा। 1-क्लिक में व्हाट्सएप रिमाइंडर भेजें और किराया मिलने पर रसीद काटें!
+              </div>
+
+              <!-- Preview of WhatsApp Message -->
+              <div class="intro-preview-bubble">
+                <div>🏠 <strong>Nivas Bhawan • Room 101</strong></div>
+                <div>👤 किरायेदार: राहुल शर्मा | माह: Oct 2026</div>
+                <div>💵 किराया: ₹6,000 | ⚡ बिजली (45 Unit &#215; ₹8): ₹360</div>
+                <div>📌 <strong>कुल देय राशि: ₹6,360</strong></div>
+                <div>📲 UPI द्वारा भुगतान करें: upi://pay?pa=ramesh@upi</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Footer &amp; Navigation Controls -->
+      <div class="intro-modal-footer">
+        <div class="intro-step-indicators" title="Step navigation">
+          <span class="intro-dot active" id="intro-dot-what" onclick="switchIntroTab('what')"></span>
+          <span class="intro-dot" id="intro-dot-use" onclick="switchIntroTab('use')"></span>
+          <span class="intro-dot" id="intro-dot-how" onclick="switchIntroTab('how')"></span>
+        </div>
+
+        <div class="intro-footer-actions">
+          <button type="button" class="btn btn-secondary" id="intro-btn-prev" onclick="navigateIntroPrev()" style="display: none;">
+            ‹ पिछला
+          </button>
+          <button type="button" class="btn btn-secondary" id="intro-btn-next" onclick="navigateIntroNext()">
+            अगला: किस काम की है ›
+          </button>
+          <button type="button" class="btn btn-primary intro-btn-setup" onclick="startSetupFromIntro()">
+            <span>🚀 अपना खाता सेटअप करें ›</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <!-- MODAL: Welcome Onboarding / Start Fresh Setup -->
   <div class="modal-overlay" id="modal-onboarding" onclick="closeModalOnOverlay(event, 'modal-onboarding')">
     <div class="modal-card">
@@ -5518,6 +6492,20 @@ function initApp() {
   const today = new Date().toISOString().split('T')[0];
   const payDateEl = document.getElementById('pay-date');
   if (payDateEl) payDateEl.value = today;
+
+  // Auto-prompt Welcome Guide or Setup Wizard for first-time user
+  const setupDone = localStorage.getItem('nivas_setup_completed') === 'true';
+  const introSeen = localStorage.getItem('nivas_intro_seen') === 'true';
+  const hasCustomOwner = state.settings.ownerName && state.settings.ownerName !== 'Makan Malik';
+  if (!introSeen && !setupDone && !hasCustomOwner && state.units.length === 0) {
+    setTimeout(() => {
+      openAppIntroModal(true);
+    }, 600);
+  } else if (!setupDone && !hasCustomOwner && state.units.length === 0) {
+    setTimeout(() => {
+      openOnboardingModal();
+    }, 600);
+  }
 
   // Request Persistent Storage for Reliable Offline Landlord Bahi-Khata
   if (typeof navigator !== 'undefined' && navigator.storage && navigator.storage.persist) {
@@ -6979,7 +7967,7 @@ function openAddTenantModal() {
   if (form) form.reset();
 
   const propName = document.getElementById('input-property-name');
-  if (propName) propName.value = state.settings.defaultProperty || 'Gokul Nivas';
+  if (propName) propName.value = state.settings.defaultProperty || 'Apna Nivas';
 
   const todayStr = new Date().toISOString().split('T')[0];
   const todayDay = new Date().getDate();
@@ -8854,21 +9842,113 @@ function resetToSampleData() {
 }
 
 // ==========================================
-// Onboarding & Demo Banner Handlers
+// Welcome Walkthrough & App Guide Handlers
+// (यह ऐप क्या है, किस काम की है, कैसे करती है?)
+// ==========================================
+
+let currentIntroTab = 'what';
+
+function openAppIntroModal(isFirstTime = false) {
+  currentIntroTab = 'what';
+  switchIntroTab('what');
+
+  const setupBtn = document.querySelector('.intro-btn-setup');
+  if (setupBtn) {
+    setupBtn.innerHTML = isFirstTime
+      ? '<span>🚀 अपना खाता सेटअप करें ›</span>'
+      : '<span>🚀 अपना खाता सेटअप / Edit करें ›</span>';
+  }
+
+  openModal('modal-app-intro');
+}
+
+function closeAppIntroModal() {
+  localStorage.setItem('nivas_intro_seen', 'true');
+  closeModal('modal-app-intro');
+}
+
+function startSetupFromIntro() {
+  localStorage.setItem('nivas_intro_seen', 'true');
+  closeModal('modal-app-intro');
+  setTimeout(() => {
+    openOnboardingModal();
+  }, 220);
+}
+
+function switchIntroTab(tabKey) {
+  currentIntroTab = tabKey;
+  const tabs = ['what', 'use', 'how'];
+
+  tabs.forEach(t => {
+    const btn = document.getElementById(`tab-btn-${t}`);
+    const pane = document.getElementById(`tab-pane-${t}`);
+    const dot = document.getElementById(`intro-dot-${t}`);
+
+    if (btn) btn.classList.toggle('active', t === tabKey);
+    if (pane) pane.classList.toggle('active', t === tabKey);
+    if (dot) dot.classList.toggle('active', t === tabKey);
+  });
+
+  const prevBtn = document.getElementById('intro-btn-prev');
+  const nextBtn = document.getElementById('intro-btn-next');
+
+  if (prevBtn) {
+    prevBtn.style.display = (tabKey === 'what') ? 'none' : 'inline-flex';
+  }
+
+  if (nextBtn) {
+    if (tabKey === 'what') {
+      nextBtn.style.display = 'inline-flex';
+      nextBtn.innerHTML = 'अगला: किस काम की है ›';
+    } else if (tabKey === 'use') {
+      nextBtn.style.display = 'inline-flex';
+      nextBtn.innerHTML = 'अगला: कैसे करती है ›';
+    } else {
+      nextBtn.style.display = 'none';
+    }
+  }
+}
+
+function navigateIntroNext() {
+  if (currentIntroTab === 'what') {
+    switchIntroTab('use');
+  } else if (currentIntroTab === 'use') {
+    switchIntroTab('how');
+  }
+}
+
+function navigateIntroPrev() {
+  if (currentIntroTab === 'how') {
+    switchIntroTab('use');
+  } else if (currentIntroTab === 'use') {
+    switchIntroTab('what');
+  }
+}
+
+// ==========================================
+// Onboarding & First-Time Setup Handlers
 // ==========================================
 
 function openOnboardingModal() {
   const nameEl = document.getElementById('onboard-owner-name');
-  if (nameEl) nameEl.value = state.settings.ownerName || '';
+  if (nameEl) {
+    nameEl.value = (state.settings.ownerName && state.settings.ownerName !== 'Makan Malik') ? state.settings.ownerName : '';
+  }
 
   const phoneEl = document.getElementById('onboard-owner-phone');
-  if (phoneEl) phoneEl.value = state.settings.ownerPhone || '';
+  if (phoneEl) {
+    phoneEl.value = state.settings.ownerPhone || '';
+  }
 
   const propEl = document.getElementById('onboard-property-name');
-  if (propEl) propEl.value = state.settings.defaultProperty || '';
+  if (propEl) {
+    propEl.value = (state.settings.defaultProperty && state.settings.defaultProperty !== 'Apna Nivas') ? state.settings.defaultProperty : '';
+  }
 
   const upiEl = document.getElementById('onboard-owner-upi');
-  if (upiEl) upiEl.value = state.settings.ownerUPI || '';
+  if (upiEl) {
+    upiEl.value = state.settings.ownerUPI || '';
+  }
 
   openModal('modal-onboarding');
 }
@@ -8882,29 +9962,29 @@ function handleSaveOnboarding(e) {
 
   state.settings.ownerName = name || 'Makan Malik';
   state.settings.ownerPhone = phone || '';
-  state.settings.defaultProperty = prop || 'Mera Bhawan';
+  state.settings.defaultProperty = prop || 'Apna Nivas';
   state.settings.ownerUPI = upi || '';
 
-  // Clear demo data to start fresh real khata
-  state.units = [];
-  state.history = [];
-  state.expenses = [];
-  localStorage.setItem('nivas_demo_dismissed', 'true');
+  localStorage.setItem('nivas_setup_completed', 'true');
 
   saveToStorage();
   updateOwnerUI();
   closeModal('modal-onboarding');
-  dismissDemoBanner();
   renderDashboard();
   renderTenantsView();
   renderHistoryTable();
   renderMonthlyReportView();
   populateSettingsScreen();
 
-  showToast('🎉 Mubarak ho! Asli Khata shuru ho gaya. Ab pehla Room add karein.');
+  showToast('🎉 Mubarak ho! Khata setup complete ho gaya.');
   setTimeout(() => {
     openAddTenantModal();
   }, 400);
+}
+
+function skipOnboardingSetup() {
+  localStorage.setItem('nivas_setup_completed', 'true');
+  closeModal('modal-onboarding');
 }
 
 function dismissDemoBanner() {
