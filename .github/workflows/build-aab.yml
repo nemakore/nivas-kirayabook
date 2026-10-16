@@ -1,0 +1,43 @@
+name: Generate Play Store AAB
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Setup Java Development Kit (JDK)
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'zulu'
+          java-version: '17'
+
+      - name: Accept Android SDK Licenses
+        run: |
+          yes | ${ANDROID_HOME}/cmdline-tools/latest/bin/sdkmanager --licenses || true
+          yes | ${ANDROID_HOME}/tools/bin/sdkmanager --licenses || true
+
+      - name: Install Cordova and Build AAB
+        run: |
+          sudo npm install -g cordova
+          cordova create myapp com.nisavkirayabook.app "Nivas KirayaBook"
+          cd myapp
+          cordova platform add android
+          
+          # HTML custom configuration for Blogspot redirect
+          # ⚠️ APNI WEBSITE KA LINK Niche 'https://blogspot.com' KI JAGAH DALEIN
+          echo '<!DOCTYPE html><html><head><meta http-equiv="refresh" content="0; url=https://nivaskirayabook.blogspot.com/"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Blog</title></head><body></body></html>' > www/index.html
+          
+          # Build Release Android App Bundle (.aab) direct command se
+          cordova build android --release -- --bundle
+
+      - name: Upload Play Store AAB Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: PlayStore-Release-AAB
+          path: myapp/platforms/android/app/build/outputs/bundle/release/app-release.aab
