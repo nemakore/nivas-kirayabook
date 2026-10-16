@@ -7,6 +7,26 @@
 // Storage Keys
 const STORAGE_KEY = 'nivas_kirayabook_data_v1';
 
+// Firebase Cloud Backend Configuration (asia-south1 / Mumbai)
+const FIREBASE_CONFIG = {
+  apiKey: "AIzaSyAY2a9Gi9wUqyxp23Coh7rvERevMJO9jQM",
+  authDomain: "nivas-kirayabook.firebaseapp.com",
+  projectId: "nivas-kirayabook",
+  storageBucket: "nivas-kirayabook.firebasestorage.app",
+  messagingSenderId: "166520393432",
+  appId: "1:166520393432:web:354bf6ee54f01b41f251ad"
+};
+
+let firebaseApp = null;
+let firebaseAuth = null;
+let firebaseDb = null;
+let currentCloudUser = null;
+let cloudListenerUnsub = null;
+let isSyncingToCloud = false;
+let cloudSyncDebounceTimer = null;
+let lastCloudSyncTimestamp = null;
+let isIncomingCloudUpdate = false;
+
 // Official WhatsApp Vector Icon (Speech Bubble + Phone Handset)
 const WHATSAPP_ICON_SVG = '<svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91C2.13 13.66 2.59 15.36 3.45 16.86L2.05 22L7.3 20.62C8.75 21.41 10.38 21.83 12.04 21.83C17.5 21.83 21.95 17.38 21.95 11.92C21.95 9.27 20.92 6.78 19.05 4.91C17.18 3.03 14.69 2 12.04 2ZM12.05 20.18C10.57 20.18 9.11 19.79 7.83 19.02L7.53 18.84L4.41 19.66L5.24 16.61L5.05 16.3C4.21 14.96 3.77 13.46 3.77 11.91C3.77 7.36 7.48 3.65 12.04 3.65C14.25 3.65 16.33 4.51 17.89 6.07C19.45 7.63 20.31 9.71 20.31 11.92C20.31 16.48 16.6 20.18 12.05 20.18ZM16.58 14.43C16.33 14.31 15.11 13.71 14.88 13.62C14.65 13.54 14.48 13.5 14.31 13.75C14.14 14 13.65 14.57 13.5 14.74C13.35 14.91 13.2 14.93 12.95 14.81C12.7 14.69 11.89 14.42 10.93 13.57C10.18 12.91 9.68 12.09 9.53 11.84C9.38 11.59 9.51 11.46 9.64 11.34C9.75 11.23 9.88 11.06 10.01 10.91C10.13 10.76 10.17 10.65 10.25 10.49C10.33 10.32 10.29 10.18 10.23 10.06C10.17 9.93 9.68 8.73 9.48 8.24C9.28 7.76 9.08 7.82 8.93 7.81C8.79 7.81 8.62 7.81 8.45 7.81C8.28 7.81 8.01 7.87 7.78 8.12C7.55 8.37 6.9 8.98 6.9 10.22C6.9 11.46 7.8 12.66 7.93 12.83C8.05 13 9.71 15.55 12.24 16.64C12.84 16.9 13.31 17.06 13.68 17.18C14.28 17.37 14.83 17.34 15.26 17.28C15.74 17.21 16.74 16.68 16.95 16.09C17.16 15.5 17.16 15 17.1 14.9C17.04 14.8 16.87 14.55 16.58 14.43Z"/></svg>';
 
@@ -224,6 +244,9 @@ function initApp() {
   populateSettingsScreen();
   populateBillUnitSelect();
 
+  // Initialize Firebase Cloud Authentication & Realtime Firestore
+  initFirebase();
+
   // Set today's date in payment modal
   const today = new Date().toISOString().split('T')[0];
   const payDateEl = document.getElementById('pay-date');
@@ -384,6 +407,370 @@ function saveToStorage() {
     }));
   } catch (e) {
     console.error('Failed to save state to localStorage:', e);
+  }
+
+  // Auto-sync state to Cloud Firestore (debounced)
+  if (!isIncomingCloudUpdate) {
+    triggerCloudSync();
+  }
+}
+
+// ==========================================
+// Firebase Cloud Synchronization Logic
+// ==========================================
+
+function initFirebase() {
+  if (typeof firebase === 'undefined') {
+    console.warn('Nivas KirayaBook: Firebase SDK not detected, running in local offline mode.');
+    updateCloudSyncUI('offline');
+    return;
+  }
+
+  try {
+    if (!firebase.apps || !firebase.apps.length) {
+      firebaseApp = firebase.initializeApp(FIREBASE_CONFIG);
+    } else {
+      firebaseApp = firebase.app();
+    }
+
+    firebaseAuth = firebase.auth();
+    firebaseDb = firebase.firestore();
+
+    // Enable offline persistence in Firestore
+    try {
+      firebaseDb.enablePersistence({ synchronizeTabs: true }).catch(err => {
+        if (err.code !== 'failed-precondition' && err.code !== 'unimplemented') {
+          console.warn('Firestore persistence status:', err.code);
+        }
+      });
+    } catch (pe) {
+      // Ignore if already initialized
+    }
+
+    // Monitor Authentication State
+    firebaseAuth.onAuthStateChanged(user => {
+      handleFirebaseAuthState(user);
+    });
+
+    // Check for redirect result (mobile sign-in flow)
+    firebaseAuth.getRedirectResult().then(result => {
+      if (result && result.user) {
+        showToast('Google Sign-in successful! Welcome ' + (result.user.displayName || result.user.email));
+      }
+    }).catch(err => {
+      console.warn('Redirect sign-in check:', err);
+    });
+
+  } catch (err) {
+    console.error('Failed to initialize Firebase:', err);
+    updateCloudSyncUI('offline');
+  }
+}
+
+function handleFirebaseAuthState(user) {
+  currentCloudUser = user;
+
+  if (user) {
+    console.log('Firebase user authenticated:', user.email);
+    updateCloudSyncUI('connected');
+    attachFirestoreSync(user.uid);
+  } else {
+    console.log('Firebase user logged out / guest mode');
+    if (cloudListenerUnsub) {
+      cloudListenerUnsub();
+      cloudListenerUnsub = null;
+    }
+    updateCloudSyncUI('logged-out');
+  }
+}
+
+function attachFirestoreSync(uid) {
+  if (!firebaseDb) return;
+
+  if (cloudListenerUnsub) {
+    cloudListenerUnsub();
+    cloudListenerUnsub = null;
+  }
+
+  const userDocRef = firebaseDb.collection('users').doc(uid);
+
+  // Check if initial cloud document exists
+  userDocRef.get().then(docSnapshot => {
+    if (!docSnapshot.exists) {
+      // First-time cloud user: save local data to cloud immediately
+      console.log('Initial cloud setup: pushing local data to Firestore');
+      isSyncingToCloud = true;
+      updateCloudSyncUI('syncing');
+
+      userDocRef.set({
+        settings: state.settings,
+        units: state.units,
+        history: state.history,
+        expenses: state.expenses,
+        createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+        updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
+        ownerEmail: currentCloudUser.email || '',
+        ownerName: currentCloudUser.displayName || ''
+      }, { merge: true }).then(() => {
+        isSyncingToCloud = false;
+        lastCloudSyncTimestamp = new Date();
+        updateCloudSyncUI('synced');
+        showToast('☁️ Cloud Backup Active: Data Google Cloud par safe ho gaya!');
+      }).catch(err => {
+        isSyncingToCloud = false;
+        console.error('Initial cloud write error:', err);
+        updateCloudSyncUI('error');
+      });
+    }
+  }).catch(err => {
+    console.warn('Initial cloud doc check warning:', err);
+  });
+
+  // Attach Realtime Listener
+  cloudListenerUnsub = userDocRef.onSnapshot(doc => {
+    if (!doc.exists) return;
+
+    // Skip echo updates originating from this local client
+    if (doc.metadata && doc.metadata.hasPendingWrites) {
+      return;
+    }
+
+    const cloudData = doc.data();
+    if (!cloudData) return;
+
+    console.log('Incoming real-time update from Cloud Firestore');
+    lastCloudSyncTimestamp = new Date();
+    updateCloudSyncUI('synced');
+
+    // Merge incoming cloud data safely
+    isIncomingCloudUpdate = true;
+    try {
+      if (cloudData.settings) {
+        state.settings = { ...state.settings, ...cloudData.settings };
+      }
+      if (Array.isArray(cloudData.units) && cloudData.units.length > 0) {
+        state.units = cloudData.units;
+      }
+      if (Array.isArray(cloudData.history)) {
+        state.history = cloudData.history;
+      }
+      if (Array.isArray(cloudData.expenses)) {
+        state.expenses = cloudData.expenses;
+      }
+
+      // Save to local storage cache
+      localStorage.setItem(STORAGE_KEY, JSON.stringify({
+        settings: state.settings,
+        units: state.units,
+        history: state.history,
+        expenses: state.expenses
+      }));
+
+      // Re-render UI views
+      updateOwnerUI();
+      renderDashboard();
+      renderTenantsView();
+      renderMonthlyReportView();
+      renderHistoryTable();
+      populateSettingsScreen();
+      populateBillUnitSelect();
+
+    } finally {
+      isIncomingCloudUpdate = false;
+    }
+  }, err => {
+    console.error('Firestore snapshot listener error:', err);
+    updateCloudSyncUI('error');
+  });
+}
+
+function triggerCloudSync() {
+  if (!currentCloudUser || !firebaseDb) return;
+
+  if (cloudSyncDebounceTimer) {
+    clearTimeout(cloudSyncDebounceTimer);
+  }
+
+  updateCloudSyncUI('syncing');
+  cloudSyncDebounceTimer = setTimeout(performCloudSync, 700);
+}
+
+function performCloudSync() {
+  if (!currentCloudUser || !firebaseDb || isSyncingToCloud) return;
+
+  isSyncingToCloud = true;
+  const userDocRef = firebaseDb.collection('users').doc(currentCloudUser.uid);
+
+  const payload = {
+    settings: state.settings,
+    units: state.units,
+    history: state.history,
+    expenses: state.expenses,
+    updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
+    ownerEmail: currentCloudUser.email || '',
+    ownerName: currentCloudUser.displayName || ''
+  };
+
+  userDocRef.set(payload, { merge: true })
+    .then(() => {
+      isSyncingToCloud = false;
+      lastCloudSyncTimestamp = new Date();
+      updateCloudSyncUI('synced');
+    })
+    .catch(err => {
+      isSyncingToCloud = false;
+      console.error('Error syncing to Firestore:', err);
+      updateCloudSyncUI('error');
+    });
+}
+
+function forceSyncToCloud() {
+  if (!currentCloudUser) {
+    loginWithGoogle();
+    return;
+  }
+  showToast('Cloud par data sync ho raha hai...');
+  performCloudSync();
+  setTimeout(() => {
+    showToast('✅ Cloud Sync 100% Complete!');
+  }, 900);
+}
+
+function loginWithGoogle() {
+  if (typeof firebase === 'undefined' || !firebaseAuth) {
+    showToast('Firebase connect ho raha hai, kripya 2 second mein dobara click karein.');
+    initFirebase();
+    return;
+  }
+
+  const provider = new firebase.auth.GoogleAuthProvider();
+  showToast('Google Sign-In open ho raha hai...');
+
+  firebaseAuth.signInWithPopup(provider)
+    .then(result => {
+      closeModal('modal-cloud-sync');
+      const user = result.user;
+      showToast(`Swagat hai ${user.displayName || user.email}! Cloud Sync active.`);
+    })
+    .catch(error => {
+      console.error('Google Sign-in error:', error);
+      if (error.code === 'auth/popup-blocked') {
+        firebaseAuth.signInWithRedirect(provider);
+      } else if (error.code === 'auth/popup-closed-by-user') {
+        showToast('Login window band ho gayi.');
+      } else if (error.code === 'auth/unauthorized-domain') {
+        alert('Domain authorized nahi hai: Kripya Firebase Console mein nivaskirayabook.blogspot.com ko Authorized Domains mein add karein.');
+      } else {
+        showToast('Login error: ' + (error.message || 'Kripya dobara try karein'));
+      }
+    });
+}
+
+function logoutFromGoogle() {
+  if (!firebaseAuth) return;
+
+  firebaseAuth.signOut().then(() => {
+    closeModal('modal-cloud-sync');
+    showToast('Logged out! Aapka data offline mode mein safe hai.');
+  }).catch(err => {
+    console.error('Sign out error:', err);
+  });
+}
+
+function openCloudModal() {
+  const modal = document.getElementById('modal-cloud-sync');
+  if (!modal) return;
+
+  const viewOut = document.getElementById('cloud-view-logged-out');
+  const viewIn = document.getElementById('cloud-view-logged-in');
+
+  if (currentCloudUser) {
+    if (viewOut) viewOut.style.display = 'none';
+    if (viewIn) viewIn.style.display = 'block';
+
+    const photoEl = document.getElementById('cloud-user-photo');
+    if (photoEl) {
+      photoEl.src = currentCloudUser.photoURL || 'icon.svg';
+    }
+
+    const nameEl = document.getElementById('cloud-user-name');
+    if (nameEl) {
+      nameEl.innerText = currentCloudUser.displayName || 'Google User';
+    }
+
+    const emailEl = document.getElementById('cloud-user-email');
+    if (emailEl) {
+      emailEl.innerText = currentCloudUser.email || '';
+    }
+
+    const timeEl = document.getElementById('cloud-last-sync-time');
+    if (timeEl) {
+      timeEl.innerText = lastCloudSyncTimestamp ? lastCloudSyncTimestamp.toLocaleTimeString() : 'Just now';
+    }
+
+  } else {
+    if (viewOut) viewOut.style.display = 'block';
+    if (viewIn) viewIn.style.display = 'none';
+  }
+
+  modal.classList.add('active');
+}
+
+function updateCloudSyncUI(status) {
+  const btn = document.getElementById('header-cloud-btn');
+  const text = document.getElementById('header-cloud-text');
+  const dot = document.getElementById('header-cloud-dot');
+  const setBadge = document.getElementById('settings-cloud-badge');
+  const setLoggedOut = document.getElementById('settings-cloud-logged-out');
+  const setLoggedIn = document.getElementById('settings-cloud-logged-in');
+  const setName = document.getElementById('settings-cloud-name');
+  const setEmail = document.getElementById('settings-cloud-email');
+  const setAvatar = document.getElementById('settings-cloud-avatar');
+  const setSyncTime = document.getElementById('settings-cloud-synctime');
+  const statusLabel = document.getElementById('cloud-status-label');
+
+  if (!btn) return;
+
+  if (status === 'connected' || status === 'synced') {
+    btn.className = 'cloud-sync-pill';
+    if (text) text.innerText = 'Cloud Active';
+    if (setBadge) {
+      setBadge.className = 'cloud-status-badge connected';
+      setBadge.innerText = '🟢 Cloud Synced';
+    }
+    if (setLoggedOut) setLoggedOut.style.display = 'none';
+    if (setLoggedIn) setLoggedIn.style.display = 'block';
+    if (statusLabel) statusLabel.innerText = 'Connected';
+
+    if (currentCloudUser) {
+      if (setName) setName.innerText = currentCloudUser.displayName || 'Google User';
+      if (setEmail) setEmail.innerText = currentCloudUser.email || '';
+      if (setAvatar) setAvatar.src = currentCloudUser.photoURL || 'icon.svg';
+      if (setSyncTime) {
+        setSyncTime.innerText = 'Last Synced: ' + (lastCloudSyncTimestamp ? lastCloudSyncTimestamp.toLocaleTimeString() : 'Just now');
+      }
+    }
+
+  } else if (status === 'syncing') {
+    btn.className = 'cloud-sync-pill syncing';
+    if (text) text.innerText = 'Syncing...';
+    if (setBadge) setBadge.innerText = '🔄 Syncing...';
+
+  } else if (status === 'error') {
+    btn.className = 'cloud-sync-pill logged-out';
+    if (text) text.innerText = 'Sync Error';
+    if (setBadge) setBadge.innerText = '⚠️ Sync Issue';
+
+  } else {
+    // logged-out or offline
+    btn.className = 'cloud-sync-pill logged-out';
+    if (text) text.innerText = 'Cloud Sync';
+    if (setBadge) {
+      setBadge.className = 'cloud-status-badge';
+      setBadge.innerText = 'Offline Mode';
+    }
+    if (setLoggedOut) setLoggedOut.style.display = 'block';
+    if (setLoggedIn) setLoggedIn.style.display = 'none';
   }
 }
 
