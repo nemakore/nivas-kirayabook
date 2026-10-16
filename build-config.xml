@@ -19,5 +19,4 @@
     <allow-intent href="upi:*" />
     <icon src="res/icon.png" />
     <preference name="Orientation" value="portrait" />
-    <preference name="BackgroundColor" value="0xff0B0F19" />
 </widget>
