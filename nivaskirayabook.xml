@@ -4611,6 +4611,168 @@ input:focus, select:focus, textarea:focus {
   }
 }
 
+/* ===================================================================
+   Standalone Privacy Policy View (for Play Store & /p/ URL routes)
+   =================================================================== */
+html.show-privacy-page,
+html.show-privacy-page body {
+  overflow-y: auto !important;
+  overflow-x: hidden !important;
+  height: auto !important;
+  min-height: 100vh !important;
+}
+
+.show-privacy-page .app-layout,
+.show-privacy-page .bottom-nav,
+.show-privacy-page .demo-banner,
+.show-privacy-page .sidebar-backdrop,
+.show-privacy-page .modal-overlay,
+.show-privacy-page .toast-container {
+  display: none !important;
+}
+
+.show-privacy-page #privacy-policy-view {
+  display: block !important;
+}
+
+#privacy-policy-view {
+  display: none;
+  width: 100%;
+  min-height: 100vh;
+  background-color: var(--bg-app);
+  color: var(--text-primary);
+  padding: 24px 16px 60px;
+}
+
+.privacy-container {
+  max-width: 760px;
+  margin: 0 auto;
+}
+
+.privacy-header-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 28px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.privacy-brand-wrap {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.privacy-btn-back {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 16px;
+  border-radius: var(--radius-sm);
+  background: rgba(255, 255, 255, 0.08);
+  color: var(--text-primary);
+  text-decoration: none;
+  font-size: 0.85rem;
+  font-weight: 600;
+  border: 1px solid var(--border-subtle);
+  transition: all 0.2s ease;
+}
+
+.privacy-btn-back:hover {
+  background: rgba(255, 255, 255, 0.15);
+  transform: translateX(-2px);
+}
+
+.privacy-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-card);
+  border-radius: var(--radius-lg);
+  padding: 32px;
+  box-shadow: var(--shadow-card);
+}
+
+.privacy-tag {
+  display: inline-block;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: #10B981;
+  background: rgba(16, 185, 129, 0.12);
+  padding: 4px 10px;
+  border-radius: 999px;
+  margin-bottom: 12px;
+  border: 1px solid rgba(16, 185, 129, 0.25);
+}
+
+.privacy-card h1 {
+  font-family: var(--font-display);
+  font-size: 1.75rem;
+  font-weight: 800;
+  margin-bottom: 8px;
+  color: #fff;
+}
+
+.privacy-effective-date {
+  font-size: 0.82rem;
+  color: var(--text-muted);
+  margin-bottom: 24px;
+}
+
+.privacy-card h2 {
+  font-family: var(--font-display);
+  font-size: 1.15rem;
+  font-weight: 700;
+  margin: 28px 0 12px;
+  color: #C7D2FE;
+}
+
+.privacy-card p {
+  color: var(--text-secondary);
+  margin-bottom: 14px;
+  font-size: 0.92rem;
+  line-height: 1.65;
+}
+
+.privacy-card ul {
+  margin: 10px 0 18px 20px;
+  color: var(--text-secondary);
+  font-size: 0.92rem;
+  line-height: 1.65;
+}
+
+.privacy-card li {
+  margin-bottom: 6px;
+}
+
+.privacy-card strong {
+  color: #fff;
+}
+
+.privacy-highlight-box {
+  background: rgba(99, 102, 241, 0.1);
+  border-left: 4px solid #6366F1;
+  padding: 14px 16px;
+  border-radius: 0 8px 8px 0;
+  margin: 20px 0;
+  font-size: 0.88rem;
+  color: #E2E8F0;
+}
+
+.privacy-footer-note {
+  text-align: center;
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  margin-top: 32px;
+}
+
+@media (max-width: 600px) {
+  #privacy-policy-view { padding: 16px 12px 40px; }
+  .privacy-card { padding: 20px 16px; }
+  .privacy-card h1 { font-size: 1.4rem; }
+}
+
 
   /*]]>*/
   </style>
@@ -4625,6 +4787,114 @@ input:focus, select:focus, textarea:focus {
   </b:section>
 
   <!-- Nivas KirayaBook Standalone Web Application HTML -->
+
+  <!-- Automatic Route Handler: If URL is /p/privacy-policy.html or contains privacy, show Privacy Policy view -->
+  <script type='text/javascript'>
+    //<![CDATA[
+    (function () {
+      var p = window.location.pathname.toLowerCase();
+      var h = window.location.hash.toLowerCase();
+      if (p.indexOf('privacy') !== -1 || p.indexOf('/p/') !== -1 || h.indexOf('privacy') !== -1) {
+        document.documentElement.classList.add('show-privacy-page');
+      }
+    })();
+    //]]>
+  </script>
+
+  <!-- Standalone Privacy Policy Page (Directly Rendered on /p/ URL routes & Play Store) -->
+  <div id="privacy-policy-view">
+    <div class="privacy-container">
+      <header class="privacy-header-bar">
+        <div class="privacy-brand-wrap">
+          <div class="brand-logo" style="width: 42px; height: 42px; border-radius: 10px; display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, rgba(99, 102, 241, 0.3), rgba(16, 185, 129, 0.25)); border: 1px solid rgba(99, 102, 241, 0.4); color: #6EE7B7;">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3">
+              <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+              <polyline points="9 22 9 12 15 12 15 22"></polyline>
+            </svg>
+          </div>
+          <div style="font-family: var(--font-display); font-size: 1.25rem; font-weight: 800; color: #fff;">
+            Nivas <span style="color: #6366F1;">KirayaBook</span>
+          </div>
+        </div>
+        <a href="/" class="privacy-btn-back">&#8249; Back to App</a>
+      </header>
+
+      <main class="privacy-card">
+        <span class="privacy-tag">Privacy Policy &#8226; गोपनीयता नीति</span>
+        <h1>Privacy Policy for Nivas KirayaBook</h1>
+        <div class="privacy-effective-date">Last Updated &amp; Effective Date: October 16, 2026</div>
+
+        <p>
+          Welcome to <strong>Nivas KirayaBook</strong> (&quot;we&quot;, &quot;our&quot;, or &quot;the App&quot;). We are committed to protecting your privacy and ensuring that your personal and rental ledger data is handled securely and transparently.
+        </p>
+
+        <div class="privacy-highlight-box">
+          &#128274; <strong>Our Core Commitment:</strong> Nivas KirayaBook is designed as a private, local-first digital ledger for property owners and landlords. We do <strong>NOT</strong> sell, broker, or rent your data to advertisers or third parties.
+        </div>
+
+        <h2>1. Information We Collect</h2>
+        <p>Nivas KirayaBook collects and processes only the information necessary to provide rental management, electricity calculation, and reminder services:</p>
+        <ul>
+          <li><strong>Landlord / Owner Information:</strong> Name, contact phone number, property/building name, and owner UPI ID (used solely to generate direct payment links for tenants).</li>
+          <li><strong>Tenant &amp; Room Records:</strong> Room/flat numbers, tenant names, contact phone numbers, fixed monthly rent amounts, move-in dates, and electricity sub-meter readings.</li>
+          <li><strong>Financial Ledger &amp; Expenses:</strong> Payment history, rent receipts generated, and property maintenance expenses recorded by the owner.</li>
+          <li><strong>Authentication Information:</strong> When signing in via Google, we receive basic profile info (display name, email address, and profile photo) from Google Authentication.</li>
+        </ul>
+
+        <h2>2. How We Use Your Information</h2>
+        <p>The information entered in the app is used strictly for the following purposes:</p>
+        <ul>
+          <li>To compute accurate electricity sub-meter bills and monthly grand totals.</li>
+          <li>To generate pre-formatted WhatsApp reminders containing your direct UPI link for hassle-free rent collection.</li>
+          <li>To generate legally compliant, printable HRA rent receipts for tenants upon payment.</li>
+          <li>To calculate monthly income, pending collections, and expense reports.</li>
+          <li>To sync your records securely across multiple devices when Google Cloud Sync is enabled.</li>
+        </ul>
+
+        <h2>3. Data Storage &amp; Cloud Security</h2>
+        <p>
+          <strong>Local-First Storage:</strong> By default, your data is stored directly in your device&#39;s browser memory (<code>localStorage</code> and Persistent Storage API). It remains on your phone or computer even when you are offline.
+        </p>
+        <p>
+          <strong>Google Cloud Firestore:</strong> When you connect your Google Account via Firebase Cloud Sync, your ledger is encrypted in transit and securely stored in Google Cloud Firestore (Mumbai <code>asia-south1</code> region). Access is strictly restricted to your authenticated Google account through Firebase Security Rules.
+        </p>
+
+        <h2>4. Third-Party Services</h2>
+        <p>The App integrates with trusted industry services solely for core functionality:</p>
+        <ul>
+          <li><strong>Google Firebase:</strong> Used for secure user authentication (Google Sign-In) and cloud database synchronization.</li>
+          <li><strong>WhatsApp:</strong> When you trigger a rent reminder, the app opens standard WhatsApp web links (<code>wa.me</code>) on your device. The app does not read your private WhatsApp messages.</li>
+          <li><strong>UPI Apps (Google Pay, PhonePe, Paytm):</strong> Direct deep-links (<code>upi://pay</code>) are created with your UPI ID. All transactions occur directly between the tenant&#39;s bank and your bank. We never hold or process your money.</li>
+        </ul>
+
+        <h2>5. User Rights &amp; Data Deletion</h2>
+        <p>You have full ownership and control over your records:</p>
+        <ul>
+          <li><strong>Export &amp; Backup:</strong> You can download a full JSON backup of all your rooms, tenants, and receipts at any time from the Settings screen.</li>
+          <li><strong>Data Deletion:</strong> You can reset or permanently delete all your stored data directly via the &quot;Reset / Clear All Data&quot; feature in the Settings menu.</li>
+          <li><strong>Account Disconnect:</strong> You can sign out or disconnect your Google Cloud account with one click.</li>
+        </ul>
+
+        <h2>6. Changes to This Privacy Policy</h2>
+        <p>
+          We may update this Privacy Policy from time to time. Any changes will be posted directly on this page with an updated effective date.
+        </p>
+
+        <h2>7. Contact Us</h2>
+        <p>
+          If you have any questions, feedback, or data privacy requests regarding Nivas KirayaBook, please contact us at:
+        </p>
+        <p>
+          &#9993; <strong>Support Email:</strong> <a href="mailto:support@nivaskirayabook.app" style="color: #6366F1;">support@nivaskirayabook.app</a><br/>
+          &#127968; <strong>Application:</strong> Nivas KirayaBook (निवास किरायाबुक)
+        </p>
+      </main>
+
+      <footer class="privacy-footer-note">
+        &#169; 2026 Nivas KirayaBook. 100% Free &amp; Private Landlord Bahi-Khata.
+      </footer>
+    </div>
+  </div>
 
   <!-- Overlay Backdrop for Mobile Drawers -->
   <div class="sidebar-backdrop" id="sidebar-backdrop" onclick="toggleSidebar(false)"></div>
@@ -6492,6 +6762,11 @@ function initApp() {
   const today = new Date().toISOString().split('T')[0];
   const payDateEl = document.getElementById('pay-date');
   if (payDateEl) payDateEl.value = today;
+
+  // If viewing standalone Privacy Policy, do not auto-open onboarding/walkthrough modals
+  if (document.documentElement.classList.contains('show-privacy-page')) {
+    return;
+  }
 
   // Auto-prompt Welcome Guide or Setup Wizard for first-time user
   const setupDone = localStorage.getItem('nivas_setup_completed') === 'true';

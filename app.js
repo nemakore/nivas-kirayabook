@@ -89,6 +89,11 @@ function initApp() {
   const payDateEl = document.getElementById('pay-date');
   if (payDateEl) payDateEl.value = today;
 
+  // If viewing standalone Privacy Policy, do not auto-open onboarding/walkthrough modals
+  if (document.documentElement.classList.contains('show-privacy-page')) {
+    return;
+  }
+
   // Auto-prompt Welcome Guide or Setup Wizard for first-time user
   const setupDone = localStorage.getItem('nivas_setup_completed') === 'true';
   const introSeen = localStorage.getItem('nivas_intro_seen') === 'true';
