@@ -215,6 +215,13 @@ function initFirebase() {
     firebaseAuth = firebase.auth();
     firebaseDb = firebase.firestore();
 
+    // Prevent errors from undefined property values
+    try {
+      firebaseDb.settings({ ignoreUndefinedProperties: true });
+    } catch (se) {
+      // Ignore if settings already frozen
+    }
+
     // Enable offline persistence in Firestore
     try {
       firebaseDb.enablePersistence({ synchronizeTabs: true }).catch(err => {
@@ -273,7 +280,7 @@ function attachFirestoreSync(uid) {
 
   const userDocRef = firebaseDb.collection('users').doc(uid);
 
-  // Check if initial cloud document exists
+  // Check if initial cloud document exists and hydrate immediate state
   userDocRef.get().then(docSnapshot => {
     if (!docSnapshot.exists) {
       // First-time cloud user: save local data to cloud immediately
@@ -281,7 +288,7 @@ function attachFirestoreSync(uid) {
       isSyncingToCloud = true;
       updateCloudSyncUI('syncing');
 
-      userDocRef.set({
+      const initialPayload = {
         settings: state.settings,
         units: state.units,
         history: state.history,
@@ -290,7 +297,9 @@ function attachFirestoreSync(uid) {
         updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
         ownerEmail: currentCloudUser.email || '',
         ownerName: currentCloudUser.displayName || ''
-      }, { merge: true }).then(() => {
+      };
+
+      userDocRef.set(initialPayload, { merge: true }).then(() => {
         isSyncingToCloud = false;
         lastCloudSyncTimestamp = new Date();
         updateCloudSyncUI('synced');
@@ -299,13 +308,59 @@ function attachFirestoreSync(uid) {
         isSyncingToCloud = false;
         console.error('Initial cloud write error:', err);
         updateCloudSyncUI('error');
+        showToast('Sync Error: ' + (err.message || 'Kripya dobara try karein'));
       });
+    } else {
+      // Existing cloud user on this or new device: hydrate data immediately
+      console.log('Existing cloud user: hydrating latest data from Firestore');
+      const cloudData = docSnapshot.data();
+      if (cloudData) {
+        if (cloudData.settings) {
+          state.settings = { ...state.settings, ...cloudData.settings };
+        }
+        if (Array.isArray(cloudData.units)) {
+          state.units = cloudData.units;
+        }
+        if (Array.isArray(cloudData.history)) {
+          state.history = cloudData.history;
+        }
+        if (Array.isArray(cloudData.expenses)) {
+          state.expenses = cloudData.expenses;
+        }
+
+        try {
+          localStorage.setItem(STORAGE_KEY, JSON.stringify({
+            settings: state.settings,
+            units: state.units,
+            history: state.history,
+            expenses: state.expenses
+          }));
+        } catch (e) {
+          console.warn('LocalStorage update warning:', e);
+        }
+
+        updateOwnerUI();
+        renderDashboard();
+        renderTenantsView();
+        renderMonthlyReportView();
+        renderHistoryTable();
+        populateSettingsScreen();
+        populateBillUnitSelect();
+
+        lastCloudSyncTimestamp = new Date();
+        updateCloudSyncUI('synced');
+        showToast('✅ Cloud se aapka latest khata data sync ho gaya!');
+      }
     }
   }).catch(err => {
-    console.warn('Initial cloud doc check warning:', err);
+    console.error('Initial cloud doc check error:', err);
+    updateCloudSyncUI('error');
+    if (err.code === 'permission-denied') {
+      showToast('⚠️ Firestore Permission Issue: Rules update ho gaye hain, refresh karein.');
+    }
   });
 
-  // Attach Realtime Listener
+  // Attach Realtime Listener for instant cross-device updates
   cloudListenerUnsub = userDocRef.onSnapshot(doc => {
     if (!doc.exists) return;
 
@@ -327,7 +382,7 @@ function attachFirestoreSync(uid) {
       if (cloudData.settings) {
         state.settings = { ...state.settings, ...cloudData.settings };
       }
-      if (Array.isArray(cloudData.units) && cloudData.units.length > 0) {
+      if (Array.isArray(cloudData.units)) {
         state.units = cloudData.units;
       }
       if (Array.isArray(cloudData.history)) {
@@ -400,6 +455,7 @@ function performCloudSync() {
       isSyncingToCloud = false;
       console.error('Error syncing to Firestore:', err);
       updateCloudSyncUI('error');
+      showToast('Sync Error: ' + (err.message || 'Kripya internet check karein'));
     });
 }
 
@@ -410,9 +466,6 @@ function forceSyncToCloud() {
   }
   showToast('Cloud par data sync ho raha hai...');
   performCloudSync();
-  setTimeout(() => {
-    showToast('✅ Cloud Sync 100% Complete!');
-  }, 900);
 }
 
 function loginWithGoogle() {
@@ -880,14 +933,14 @@ function renderDashboard() {
       <div style="text-align: center; padding: 48px 20px; background: #111827; border-radius: 14px; border: 1px dashed rgba(255, 255, 255, 0.12); margin-top: 8px;">
         <div style="font-size: 2.2rem; margin-bottom: 10px;">🏠</div>
         <h3 style="font-size: 1.05rem; font-weight: 700; color: #F3F4F6; margin-bottom: 6px;">
-          ${isZeroUnits ? 'Abhi Koi Kamra Add Nahi Hua Hai' : 'Koi Kamra Match Nahi Hua'}
+          ${isZeroUnits ? 'Abhi Koi Room Add Nahi Hua Hai' : 'Koi Room Match Nahi Hua'}
         </h3>
         <p style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: 18px; max-width: 320px; margin-left: auto; margin-right: auto;">
-          ${isZeroUnits ? 'Apna pehla kamra ya flat add karein aur kiraya, bijli bill aur WhatsApp hisab shuru karein.' : 'Aapki khoj ya filter ke anusar koi kamra nahi mila.'}
+          ${isZeroUnits ? 'Apna pehla Room ya flat add karein aur kiraya, bijli bill aur WhatsApp hisab shuru karein.' : 'Aapki khoj ya filter ke anusar koi Room nahi mila.'}
         </p>
         <button class="btn btn-primary" onclick="openAddTenantModal()" style="display: inline-flex; align-items: center; gap: 8px; margin: 0 auto;">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
-          <span>+ Naya Kamra / Flat Add Karein</span>
+          <span>+ Naya Room / Flat Add Karein</span>
         </button>
       </div>
     `;
@@ -3418,7 +3471,7 @@ function handleSaveOnboarding(e) {
   renderMonthlyReportView();
   populateSettingsScreen();
 
-  showToast('🎉 Mubarak ho! Asli Khata shuru ho gaya. Ab pehla kamra add karein.');
+  showToast('🎉 Mubarak ho! Asli Khata shuru ho gaya. Ab pehla Room add karein.');
   setTimeout(() => {
     openAddTenantModal();
   }, 400);
