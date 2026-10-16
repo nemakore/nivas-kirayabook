@@ -129,10 +129,10 @@
       </nav>
 
       <div class="sidebar-user-card" onclick="switchView('settings')">
-        <div class="user-avatar" id="sidebar-avatar">R</div>
+        <div class="user-avatar" id="sidebar-avatar">M</div>
         <div class="user-details">
-          <span class="user-name" id="sidebar-owner-name">Ramesh Sharma</span>
-          <span class="user-sub" id="sidebar-owner-upi">ramesh@okaxis</span>
+          <span class="user-name" id="sidebar-owner-name">Makan Malik</span>
+          <span class="user-sub" id="sidebar-owner-upi">UPI Setup Karein</span>
         </div>
       </div>
     </aside>
@@ -181,7 +181,7 @@
             <span id="current-month-display">Oct 2026</span>
           </div>
           <button class="header-avatar-btn" onclick="switchView('settings')" title="Profile">
-            <span id="mobile-header-avatar">R</span>
+            <span id="mobile-header-avatar">M</span>
           </button>
         </div>
       </header>
@@ -204,8 +204,8 @@
              SCREEN 1: DASHBOARD OVERVIEW (Clean Khatabook Standard)
              ========================================== -->
         <section id="view-dashboard" class="view-screen active">
-          <!-- Welcome & Onboarding Banner (New User Explainer & Setup) -->
-          <div class="demo-strip demo-welcome-card" id="demo-notice-banner">
+          <!-- Welcome & Onboarding Banner (Permanently hidden in Real Mode) -->
+          <div class="demo-strip demo-welcome-card" id="demo-notice-banner" style="display: none;">
             <!-- Top Header Row -->
             <div class="demo-welcome-top">
               <div class="demo-welcome-badge">
@@ -274,16 +274,16 @@
           <div class="ledger-summary-strip">
             <div class="ledger-kpi-col">
               <span class="ledger-label">KUL AAYA (COLLECTED)</span>
-              <div class="ledger-val text-success" id="stat-collected">₹30,340</div>
-              <span class="ledger-sub" id="stat-collected-sub">3 Rooms Clear</span>
+              <div class="ledger-val text-success" id="stat-collected">₹0</div>
+              <span class="ledger-sub" id="stat-collected-sub">0 Rooms Clear</span>
             </div>
 
             <div class="ledger-divider"></div>
 
             <div class="ledger-kpi-col">
               <span class="ledger-label">KUL BAAKI (PENDING)</span>
-              <div class="ledger-val text-danger" id="stat-pending">₹15,420</div>
-              <span class="ledger-sub" id="stat-pending-sub">1 Room Pending</span>
+              <div class="ledger-val text-danger" id="stat-pending">₹0</div>
+              <span class="ledger-sub" id="stat-pending-sub">0 Room Pending</span>
             </div>
 
             <button type="button" class="ledger-report-btn" onclick="switchView('reports')" title="View Monthly Audit">
@@ -310,16 +310,16 @@
             <!-- Segmented Filter Tabs -->
             <div class="ledger-tabs">
               <button type="button" class="ledger-tab active" data-filter="all" onclick="setFilter('all')">
-                Sabhi (<span id="count-all">5</span>)
+                Sabhi (<span id="count-all">0</span>)
               </button>
               <button type="button" class="ledger-tab tab-pending" data-filter="pending" onclick="setFilter('pending')">
-                Baaki (<span id="count-pending">1</span>)
+                Baaki (<span id="count-pending">0</span>)
               </button>
               <button type="button" class="ledger-tab tab-paid" data-filter="paid" onclick="setFilter('paid')">
-                Jama (<span id="count-paid">3</span>)
+                Jama (<span id="count-paid">0</span>)
               </button>
               <button type="button" class="ledger-tab tab-vacant" data-filter="vacant" onclick="setFilter('vacant')">
-                Khali (<span id="count-vacant">1</span>)
+                Khali (<span id="count-vacant">0</span>)
               </button>
             </div>
           </div>
@@ -342,8 +342,8 @@
                 <span class="ts-dot ts-dot-blue"></span>
                 <span class="ts-label">ROOMS</span>
               </div>
-              <strong class="ts-val" id="tenants-summary-total">5</strong>
-              <span class="ts-sub" id="tenants-summary-total-sub">Total Units Listed</span>
+              <strong class="ts-val" id="tenants-summary-total">0</strong>
+              <span class="ts-sub" id="tenants-summary-total-sub">0 Units Listed</span>
             </div>
 
             <div class="ledger-divider"></div>
@@ -354,8 +354,8 @@
                 <span class="ts-dot ts-dot-success"></span>
                 <span class="ts-label">OCCUPIED</span>
               </div>
-              <strong class="ts-val text-success" id="tenants-summary-occupied">4</strong>
-              <span class="ts-sub text-success" id="tenants-summary-occ-sub">80% Occupancy</span>
+              <strong class="ts-val text-success" id="tenants-summary-occupied">0</strong>
+              <span class="ts-sub text-success" id="tenants-summary-occ-sub">0% Occupancy</span>
             </div>
 
             <div class="ledger-divider"></div>
@@ -366,8 +366,8 @@
                 <span class="ts-dot ts-dot-amber"></span>
                 <span class="ts-label">VACANT</span>
               </div>
-              <strong class="ts-val text-muted" id="tenants-summary-vacant">1</strong>
-              <span class="ts-sub" id="tenants-summary-vac-sub">1 Ready to Rent</span>
+              <strong class="ts-val text-muted" id="tenants-summary-vacant">0</strong>
+              <span class="ts-sub" id="tenants-summary-vac-sub">0 Ready to Rent</span>
             </div>
 
             <div class="ledger-divider"></div>
@@ -378,7 +378,7 @@
                 <span class="ts-dot ts-dot-emerald"></span>
                 <span class="ts-label">TOTAL RENT</span>
               </div>
-              <strong class="ts-val text-primary" id="tenants-summary-rent">₹47,500</strong>
+              <strong class="ts-val text-primary" id="tenants-summary-rent">₹0</strong>
               <span class="ts-sub" id="tenants-summary-rent-sub">Monthly Potential</span>
             </div>
           </div>
@@ -396,11 +396,11 @@
             <div class="ledger-tabs">
               <button type="button" class="ledger-tab active" data-tfilter="all"
                 onclick="setTenantsScreenFilter('all')">
-                Sabhi (<span id="tcount-all">1</span>)
+                Sabhi (<span id="tcount-all">0</span>)
               </button>
               <button type="button" class="ledger-tab tab-paid" data-tfilter="occupied"
                 onclick="setTenantsScreenFilter('occupied')">
-                Occupied (<span id="tcount-occupied">1</span>)
+                Occupied (<span id="tcount-occupied">0</span>)
               </button>
               <button type="button" class="ledger-tab tab-vacant" data-tfilter="vacant"
                 onclick="setTenantsScreenFilter('vacant')">
@@ -597,7 +597,7 @@
                 oninput="handleHistorySearch(this.value)">
             </div>
             <div class="history-total-pill">
-              Total Logged: <strong id="history-total-sum" style="color: #10B981;">₹28,280</strong>
+              Total Logged: <strong id="history-total-sum" style="color: #10B981;">₹0</strong>
             </div>
           </div>
 
@@ -685,26 +685,26 @@
                 <span class="kpi-title">Gross Expected • संभावित</span>
                 <span class="kpi-badge">Potential</span>
               </div>
-              <div class="kpi-value" id="kpi-gross-expected">₹43,700</div>
-              <div class="kpi-sub" id="kpi-gross-sub">Rent: ₹39,500 + Bijli: ₹3,200</div>
+              <div class="kpi-value" id="kpi-gross-expected">₹0</div>
+              <div class="kpi-sub" id="kpi-gross-sub">Rent: ₹0 + Bijli: ₹0</div>
             </div>
 
             <div class="kpi-card kpi-green">
               <div class="kpi-header">
                 <span class="kpi-title">Total Collected • कुल जमा</span>
-                <span class="kpi-badge" id="kpi-collection-pct">65% Paid</span>
+                <span class="kpi-badge" id="kpi-collection-pct">0% Paid</span>
               </div>
-              <div class="kpi-value" id="kpi-total-collected" style="color: #10B981;">₹28,280</div>
-              <div class="kpi-sub" id="kpi-collected-sub">Received across 2 units</div>
+              <div class="kpi-value" id="kpi-total-collected" style="color: #10B981;">₹0</div>
+              <div class="kpi-sub" id="kpi-collected-sub">Received across 0 units</div>
             </div>
 
             <div class="kpi-card kpi-amber">
               <div class="kpi-header">
                 <span class="kpi-title">Total Pending • बकाया राशि</span>
-                <span class="kpi-badge kpi-badge-amber" id="kpi-pending-count">1 Room</span>
+                <span class="kpi-badge kpi-badge-amber" id="kpi-pending-count">0 Rooms</span>
               </div>
-              <div class="kpi-value" id="kpi-total-pending" style="color: #F59E0B;">₹15,420</div>
-              <div class="kpi-sub" id="kpi-pending-sub">Awaiting collection</div>
+              <div class="kpi-value" id="kpi-total-pending" style="color: #F59E0B;">₹0</div>
+              <div class="kpi-sub" id="kpi-pending-sub">0 units pending</div>
             </div>
 
             <div class="kpi-card kpi-emerald">
@@ -713,8 +713,8 @@
                 <span class="kpi-badge"
                   style="background:rgba(52,211,153,0.15); color:#34D399; border:1px solid rgba(52,211,153,0.3);">In-Hand</span>
               </div>
-              <div class="kpi-value" id="kpi-net-profit" style="color: #34D399;">₹25,930</div>
-              <div class="kpi-sub" id="kpi-expenses-sub">After ₹2,350 Building Expenses</div>
+              <div class="kpi-value" id="kpi-net-profit" style="color: #34D399;">₹0</div>
+              <div class="kpi-sub" id="kpi-expenses-sub">After ₹0 Building Expenses</div>
             </div>
           </div>
 
@@ -729,36 +729,36 @@
             <div class="stream-card">
               <div class="stream-top">
                 <span class="stream-title">🏠 Base Rent Recovery</span>
-                <strong id="stream-rent-stat">₹25,500 / ₹32,000</strong>
+                <strong id="stream-rent-stat">₹0 / ₹0</strong>
               </div>
               <div class="app-progress-track">
-                <div class="app-progress-fill" id="stream-rent-bar" style="width: 80%;"></div>
+                <div class="app-progress-fill" id="stream-rent-bar" style="width: 0%;"></div>
               </div>
-              <span class="stream-hint" id="stream-rent-hint">80% Kiraya Collect Ho Gaya</span>
+              <span class="stream-hint" id="stream-rent-hint">0% Kiraya Collect Ho Gaya</span>
             </div>
 
             <div class="stream-card">
               <div class="stream-top">
                 <span class="stream-title">⚡ Electricity Meter Recovery</span>
-                <strong id="stream-elec-stat">₹1,980 / ₹2,900</strong>
+                <strong id="stream-elec-stat">₹0 / ₹0</strong>
               </div>
               <div class="app-progress-track">
                 <div class="app-progress-fill" id="stream-elec-bar"
-                  style="width: 68%; background: linear-gradient(90deg, #F59E0B, #10B981);"></div>
+                  style="width: 0%; background: linear-gradient(90deg, #F59E0B, #10B981);"></div>
               </div>
-              <span class="stream-hint" id="stream-elec-hint">Total 225 Units Consumed</span>
+              <span class="stream-hint" id="stream-elec-hint">Total 0 Units Consumed</span>
             </div>
 
             <div class="stream-card">
               <div class="stream-top">
                 <span class="stream-title">💧 Water & Maintenance</span>
-                <strong id="stream-maint-stat">₹800 / ₹1,300</strong>
+                <strong id="stream-maint-stat">₹0 / ₹0</strong>
               </div>
               <div class="app-progress-track">
                 <div class="app-progress-fill" id="stream-maint-bar"
-                  style="width: 61%; background: linear-gradient(90deg, #6366F1, #38BDF8);"></div>
+                  style="width: 0%; background: linear-gradient(90deg, #6366F1, #38BDF8);"></div>
               </div>
-              <span class="stream-hint" id="stream-maint-hint">61% Recovery</span>
+              <span class="stream-hint" id="stream-maint-hint">0% Recovery</span>
             </div>
           </div>
 
@@ -771,7 +771,7 @@
                 <h3 class="report-section-title">🏢 Room-Wise Live Breakdown • कमरा-वार लाइव हिसाब</h3>
                 <span class="report-live-pill">● LIVE</span>
               </div>
-              <div style="font-size:0.8rem; color:var(--text-muted);" id="report-unit-count-text">Showing 4 rooms</div>
+              <div style="font-size:0.8rem; color:var(--text-muted);" id="report-unit-count-text">Showing 0 rooms</div>
             </div>
 
             <!-- Integrated Filter Controls Bar DIRECTLY ABOVE ROOMS -->
@@ -789,19 +789,19 @@
                   <div class="report-status-chips">
                     <button type="button" class="report-chip active" data-status="all"
                       onclick="selectReportStatusChip('all')">
-                      <span>Sabhi</span> <span class="chip-count" id="chip-count-all">4</span>
+                      <span>Sabhi</span> <span class="chip-count" id="chip-count-all">0</span>
                     </button>
                     <button type="button" class="report-chip chip-pending" data-status="pending"
                       onclick="selectReportStatusChip('pending')">
-                      <span>Baaki</span> <span class="chip-count" id="chip-count-pending">1</span>
+                      <span>Baaki</span> <span class="chip-count" id="chip-count-pending">0</span>
                     </button>
                     <button type="button" class="report-chip chip-paid" data-status="paid"
                       onclick="selectReportStatusChip('paid')">
-                      <span>Jama</span> <span class="chip-count" id="chip-count-paid">2</span>
+                      <span>Jama</span> <span class="chip-count" id="chip-count-paid">0</span>
                     </button>
                     <button type="button" class="report-chip chip-vacant" data-status="vacant"
                       onclick="selectReportStatusChip('vacant')">
-                      <span>Khali</span> <span class="chip-count" id="chip-count-vacant">1</span>
+                      <span>Khali</span> <span class="chip-count" id="chip-count-vacant">0</span>
                     </button>
                   </div>
                   <!-- Hidden synced select for full JS backwards compatibility -->
@@ -992,7 +992,7 @@
                   <input type="file" id="import-file-input" style="display:none;" accept=".json"
                     onchange="importDataFromJSON(event)">
                   <button type="button" class="btn btn-outline-danger btn-sm" onclick="resetToSampleData()">
-                    Reload Demo Data
+                    Clear All Data (Fresh Start)
                   </button>
                 </div>
               </div>
@@ -1092,7 +1092,7 @@
           </div>
           <div class="form-group">
             <label for="input-property-name">Building / Property Name</label>
-            <input type="text" id="input-property-name" placeholder="e.g. Gokul Nivas" value="Gokul Nivas">
+            <input type="text" id="input-property-name" placeholder="e.g. Apna Nivas" value="Apna Nivas">
           </div>
           <div class="form-group full-width">
             <label for="input-tenant-status">Occupancy Status</label>
@@ -1243,8 +1243,8 @@
       <form id="payment-form" onsubmit="handleRecordPayment(event)">
         <input type="hidden" id="pay-tenant-id">
         <div class="payment-summary-box">
-          <div class="pay-unit-title" id="pay-display-unit">Room 101 - Rahul Sharma</div>
-          <div class="pay-due-amount">Total Due: <strong id="pay-display-due">₹8,500</strong></div>
+          <div class="pay-unit-title" id="pay-display-unit">Room - Kirayedar</div>
+          <div class="pay-due-amount">Total Due: <strong id="pay-display-due">₹0</strong></div>
         </div>
 
         <div class="form-group">
@@ -1394,8 +1394,7 @@
 
         <div
           style="background: rgba(99, 102, 241, 0.12); border: 1px dashed rgba(99, 102, 241, 0.35); border-radius: var(--radius-sm); padding: 10px 12px; margin: 14px 0; font-size: 0.78rem; color: #C7D2FE;">
-          💡 <strong>Tip:</strong> Iske baad demo data clear ho jayega aur aap apne pehle room aur kirayedar ko add kar
-          sakenge! Aap jab chahein Settings se demo data dubara la sakte hain.
+          💡 <strong>Tip:</strong> Iske baad aapka property setup ho jayega aur aap apne pehle room aur kirayedar ko add kar sakenge!
         </div>
 
         <div class="modal-footer">

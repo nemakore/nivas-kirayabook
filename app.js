@@ -31,197 +31,33 @@ let isIncomingCloudUpdate = false;
 // Official WhatsApp Vector Icon (Speech Bubble + Phone Handset)
 const WHATSAPP_ICON_SVG = '<svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91C2.13 13.66 2.59 15.36 3.45 16.86L2.05 22L7.3 20.62C8.75 21.41 10.38 21.83 12.04 21.83C17.5 21.83 21.95 17.38 21.95 11.92C21.95 9.27 20.92 6.78 19.05 4.91C17.18 3.03 14.69 2 12.04 2ZM12.05 20.18C10.57 20.18 9.11 19.79 7.83 19.02L7.53 18.84L4.41 19.66L5.24 16.61L5.05 16.3C4.21 14.96 3.77 13.46 3.77 11.91C3.77 7.36 7.48 3.65 12.04 3.65C14.25 3.65 16.33 4.51 17.89 6.07C19.45 7.63 20.31 9.71 20.31 11.92C20.31 16.48 16.6 20.18 12.05 20.18ZM16.58 14.43C16.33 14.31 15.11 13.71 14.88 13.62C14.65 13.54 14.48 13.5 14.31 13.75C14.14 14 13.65 14.57 13.5 14.74C13.35 14.91 13.2 14.93 12.95 14.81C12.7 14.69 11.89 14.42 10.93 13.57C10.18 12.91 9.68 12.09 9.53 11.84C9.38 11.59 9.51 11.46 9.64 11.34C9.75 11.23 9.88 11.06 10.01 10.91C10.13 10.76 10.17 10.65 10.25 10.49C10.33 10.32 10.29 10.18 10.23 10.06C10.17 9.93 9.68 8.73 9.48 8.24C9.28 7.76 9.08 7.82 8.93 7.81C8.79 7.81 8.62 7.81 8.45 7.81C8.28 7.81 8.01 7.87 7.78 8.12C7.55 8.37 6.9 8.98 6.9 10.22C6.9 11.46 7.8 12.66 7.93 12.83C8.05 13 9.71 15.55 12.24 16.64C12.84 16.9 13.31 17.06 13.68 17.18C14.28 17.37 14.83 17.34 15.26 17.28C15.74 17.21 16.74 16.68 16.95 16.09C17.16 15.5 17.16 15 17.1 14.9C17.04 14.8 16.87 14.55 16.58 14.43Z"/></svg>';
 
-// Default State Configuration
+function getCurrentBillingMonth() {
+  const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+  const now = new Date();
+  return `${months[now.getMonth()]} ${now.getFullYear()}`;
+}
+
+// Clean Real State Configuration
 const DEFAULT_SETTINGS = {
-  ownerName: 'Ramesh Sharma',
-  ownerPhone: '9876543210',
-  ownerUPI: 'ramesh@okaxis',
-  ownerPAN: 'ABCDE1234F',
-  defaultProperty: 'Gokul Nivas',
+  ownerName: 'Makan Malik',
+  ownerPhone: '',
+  ownerUPI: '',
+  ownerPAN: '',
+  defaultProperty: 'Apna Nivas',
   defaultUnitRate: 8.0,
-  currentCycle: 'October 2026'
+  currentCycle: getCurrentBillingMonth()
 };
 
-const SAMPLE_UNITS = [
-  {
-    id: 'unit-1',
-    unitName: 'Room 101 (1st Floor)',
-    propertyName: 'Gokul Nivas',
-    status: 'paid', // 'paid', 'pending', 'vacant'
-    tenantName: 'Rahul Verma',
-    tenantPhone: '9811223344',
-    rentAmount: 7500,
-    dueDay: 5,
-    moveInDate: '2026-05-05',
-    deposit: 15000,
-    meterNumber: 'MTR-101',
-    prevReading: 1200,
-    currReading: 1245,
-    unitRate: 8,
-    electricityTotal: 360,
-    maintenance: 200,
-    otherCharges: 0,
-    totalDue: 8060,
-    paidAmount: 8060,
-    paidDate: '2026-10-04',
-    billingMonth: 'October 2026'
-  },
-  {
-    id: 'unit-2',
-    unitName: 'Flat 202 (2BHK)',
-    propertyName: 'Gokul Nivas',
-    status: 'pending',
-    tenantName: 'Pooja & Amit Mehta',
-    tenantPhone: '9822334455',
-    rentAmount: 14000,
-    dueDay: 7,
-    moveInDate: '2026-07-07',
-    deposit: 30000,
-    meterNumber: 'MTR-202',
-    prevReading: 3400,
-    currReading: 3515,
-    unitRate: 8,
-    electricityTotal: 920,
-    maintenance: 500,
-    otherCharges: 0,
-    totalDue: 15420,
-    paidAmount: 0,
-    paidDate: null,
-    billingMonth: 'October 2026'
-  },
-  {
-    id: 'unit-3',
-    unitName: 'Shop No. 1 (Front Road)',
-    propertyName: 'Gokul Commercial Plaza',
-    status: 'paid',
-    tenantName: 'Shree Ganesh Sweets (Manoj)',
-    tenantPhone: '9833445566',
-    rentAmount: 18000,
-    dueDay: 1,
-    moveInDate: '2026-01-01',
-    deposit: 50000,
-    meterNumber: 'MTR-SH01',
-    prevReading: 4100,
-    currReading: 4280,
-    unitRate: 9,
-    electricityTotal: 1620,
-    maintenance: 600,
-    otherCharges: 0,
-    totalDue: 20220,
-    paidAmount: 20220,
-    paidDate: '2026-10-02',
-    billingMonth: 'October 2026'
-  },
-  {
-    id: 'unit-4',
-    unitName: 'Room 104 (Backside)',
-    propertyName: 'Gokul Nivas',
-    status: 'vacant',
-    tenantName: '',
-    tenantPhone: '',
-    rentAmount: 6500,
-    dueDay: 5,
-    moveInDate: '',
-    deposit: 13000,
-    meterNumber: 'MTR-104',
-    prevReading: 850,
-    currReading: 850,
-    unitRate: 8,
-    electricityTotal: 0,
-    maintenance: 0,
-    otherCharges: 0,
-    totalDue: 6500,
-    paidAmount: 0,
-    paidDate: null,
-    billingMonth: 'October 2026'
-  },
-  {
-    id: 'unit-5',
-    unitName: 'Room 501 (5th Floor)',
-    propertyName: 'Gokul Nivas',
-    status: 'paid',
-    tenantName: 'Nema Kore',
-    tenantPhone: '8459322607',
-    rentAmount: 1500,
-    dueDay: 5,
-    moveInDate: '2026-08-01',
-    deposit: 3000,
-    meterNumber: 'MTR-501',
-    prevReading: 420,
-    currReading: 465,
-    unitRate: 8,
-    electricityTotal: 360,
-    maintenance: 200,
-    otherCharges: 0,
-    totalDue: 2060,
-    paidAmount: 2060,
-    paidDate: '2026-10-05',
-    billingMonth: 'October 2026'
-  }
-];
-
-const SAMPLE_HISTORY = [
-  {
-    id: 'hist-1',
-    receiptNo: 'NIV-2026-101',
-    date: '2026-10-04',
-    unitId: 'unit-1',
-    unitName: 'Room 101 (1st Floor)',
-    tenantName: 'Rahul Verma',
-    month: 'October 2026',
-    amountPaid: 8060,
-    mode: 'UPI (GPay)',
-    breakdown: 'Rent: ₹7,500 + Bijli: ₹360 (45 units) + Maint: ₹200'
-  },
-  {
-    id: 'hist-2',
-    receiptNo: 'NIV-2026-102',
-    date: '2026-10-02',
-    unitId: 'unit-3',
-    unitName: 'Shop No. 1 (Front Road)',
-    tenantName: 'Shree Ganesh Sweets (Manoj)',
-    month: 'October 2026',
-    amountPaid: 20220,
-    mode: 'Bank Transfer (IMPS)',
-    breakdown: 'Rent: ₹18,000 + Commercial Bijli: ₹1,620 (180 units) + Maint: ₹600'
-  },
-  {
-    id: 'hist-3',
-    receiptNo: 'NIV-2026-501',
-    date: '2026-10-05',
-    unitId: 'unit-5',
-    unitName: 'Room 501 (5th Floor)',
-    tenantName: 'Nema Kore',
-    month: 'October 2026',
-    amountPaid: 2060,
-    mode: 'UPI (PhonePe)',
-    breakdown: 'Rent: ₹1,500 + Bijli: ₹360 (45 units @ ₹8) + Maint: ₹200'
-  }
-];
-
-const SAMPLE_EXPENSES = [
-  {
-    id: 'exp-1',
-    title: 'Water Motor Pump Servicing',
-    category: 'Maintenance',
-    amount: 850,
-    date: '2026-10-06'
-  },
-  {
-    id: 'exp-2',
-    title: 'Building Sweeper & Cleaner Salary',
-    category: 'Cleaning',
-    amount: 1500,
-    date: '2026-10-01'
-  }
-];
+const SAMPLE_UNITS = [];
+const SAMPLE_HISTORY = [];
+const SAMPLE_EXPENSES = [];
 
 // App State
 let state = {
   settings: { ...DEFAULT_SETTINGS },
-  units: [...SAMPLE_UNITS],
-  history: [...SAMPLE_HISTORY],
-  expenses: [...SAMPLE_EXPENSES],
+  units: [],
+  history: [],
+  expenses: [],
   activeFilter: 'all',
   searchQuery: '',
   tenantsFilter: 'all',
@@ -278,85 +114,30 @@ function loadFromStorage() {
     if (parsed) {
       state.settings = { ...DEFAULT_SETTINGS, ...(parsed.settings || {}) };
       
-      let rawUnits = parsed.units || [];
-      if (!Array.isArray(rawUnits) || rawUnits.length === 0) {
-        rawUnits = JSON.parse(JSON.stringify(SAMPLE_UNITS));
-      } else {
-        // Ensure all 5 core building rooms are present in the dataset
-        const existingNames = new Set(rawUnits.map(u => (u.unitName || '').toLowerCase().trim()));
-        SAMPLE_UNITS.forEach(su => {
-          const normName = su.unitName.toLowerCase().trim();
-          if (!existingNames.has(normName)) {
-            rawUnits.push(JSON.parse(JSON.stringify(su)));
-            existingNames.add(normName);
-          }
-        });
-      }
+      // Filter out any legacy mock demo units if present in browser cache
+      const legacyMockNames = ['rahul verma', 'pooja & amit mehta', 'shree ganesh sweets (manoj)'];
+      const rawUnits = (parsed.units || []).filter(u => {
+        const name = (u.tenantName || '').toLowerCase().trim();
+        return !legacyMockNames.includes(name);
+      });
 
       state.units = rawUnits.map(u => {
         const isVacant = u.status === 'vacant';
         const rentAmount = Number(u.rentAmount || 0);
-        let prev = Number(u.prevReading || 0);
-        let curr = Number(u.currReading || 0);
-        let rate = Number(u.unitRate || state.settings.defaultUnitRate || 8);
-        const name = (u.unitName || '').toLowerCase();
-        const tenant = (u.tenantName || '').toLowerCase();
-        
-        // Auto-fix zero or flat readings for occupied units so electricity calculation is ALWAYS active and accurate
-        if (!isVacant) {
-          if (curr <= prev || (prev === 0 && curr === 0)) {
-            if (name.includes('501') || tenant.includes('nema')) {
-              prev = 420;
-              curr = 465;
-            } else if (name.includes('101') || tenant.includes('rahul')) {
-              prev = 1200;
-              curr = 1245;
-            } else if (name.includes('202') || tenant.includes('mehta')) {
-              prev = 3400;
-              curr = 3515;
-            } else if (name.includes('shop') || tenant.includes('ganesh') || tenant.includes('manoj')) {
-              prev = 4100;
-              curr = 4280;
-              rate = 9;
-            } else {
-              prev = 340;
-              curr = 385;
-            }
-          }
-        }
-        
+        const prev = Number(u.prevReading || 0);
+        const curr = Number(u.currReading || 0);
+        const rate = Number(u.unitRate || state.settings.defaultUnitRate || 8);
         const unitsConsumed = isVacant ? 0 : Math.max(0, curr - prev);
         const elecTotal = isVacant ? 0 : (unitsConsumed * rate);
-        
-        let maint = Number(u.maintenance || 0);
-        if (!isVacant && maint <= 0) {
-          maint = name.includes('flat') ? 500 : (name.includes('shop') ? 600 : 200);
-        }
-        
+        const maint = Number(u.maintenance || 0);
         const other = Number(u.otherCharges || 0);
         const totalDue = isVacant ? rentAmount : (rentAmount + elecTotal + maint + other);
-        
-        let status = u.status || 'pending';
-        let paidAmount = Number(u.paidAmount || 0);
-        let paidDate = u.paidDate || null;
-        
-        if (!isVacant) {
-          if (status === 'paid') {
-            paidAmount = totalDue;
-            if (!paidDate) paidDate = '2026-10-05';
-          } else if (status === 'partial') {
-            if (paidAmount <= 0 || paidAmount >= totalDue) {
-              paidAmount = Math.round(totalDue * 0.5);
-            }
-          } else {
-            paidAmount = 0;
-          }
-        }
+        const paidAmount = Number(u.paidAmount || 0);
 
         return {
           ...u,
-          propertyName: u.propertyName || state.settings.defaultProperty || 'Gokul Nivas',
-          meterNumber: u.meterNumber || (isVacant ? 'None' : `MTR-${(u.unitName || '').replace(/\D/g, '') || '101'}`),
+          propertyName: u.propertyName || state.settings.defaultProperty || 'Apna Nivas',
+          meterNumber: u.meterNumber || (isVacant ? 'None' : `MTR-${(u.unitName || '').replace(/\D/g, '') || '01'}`),
           prevReading: prev,
           currReading: curr,
           unitRate: rate,
@@ -365,35 +146,32 @@ function loadFromStorage() {
           otherCharges: other,
           totalDue,
           paidAmount,
-          paidDate,
-          status,
-          billingMonth: u.billingMonth || state.settings.currentCycle || 'October 2026',
-          moveInDate: u.moveInDate !== undefined ? u.moveInDate : (isVacant ? '' : `2026-08-${String(u.dueDay || 5).padStart(2, '0')}`)
+          paidDate: u.paidDate || null,
+          status: u.status || 'pending',
+          billingMonth: u.billingMonth || state.settings.currentCycle || getCurrentBillingMonth(),
+          moveInDate: u.moveInDate || ''
         };
       });
 
-      // Synchronize state.history to ensure all paid rooms have matching official receipts
-      let historyList = (parsed.history && Array.isArray(parsed.history) && parsed.history.length > 0) ? parsed.history : [];
-      const historyUnitIds = new Set(historyList.map(h => h.unitId));
-      SAMPLE_HISTORY.forEach(sh => {
-        if (!historyUnitIds.has(sh.unitId)) {
-          historyList.push({ ...sh });
-          historyUnitIds.add(sh.unitId);
-        }
-      });
-      state.history = historyList;
-      state.expenses = (parsed.expenses && parsed.expenses.length > 0) ? parsed.expenses : [...SAMPLE_EXPENSES];
+      const legacyMockHistReceipts = ['NIV-2026-101', 'NIV-2026-102'];
+      state.history = (parsed.history || []).filter(h => !legacyMockHistReceipts.includes(h.receiptNo));
+
+      const legacyMockExpTitles = ['water motor pump servicing', 'building sweeper & cleaner salary'];
+      state.expenses = (parsed.expenses || []).filter(e => !legacyMockExpTitles.includes((e.title || '').toLowerCase().trim()));
+
     } else {
-      state.units = JSON.parse(JSON.stringify(SAMPLE_UNITS));
-      state.history = JSON.parse(JSON.stringify(SAMPLE_HISTORY));
-      state.expenses = JSON.parse(JSON.stringify(SAMPLE_EXPENSES));
+      state.settings = { ...DEFAULT_SETTINGS };
+      state.units = [];
+      state.history = [];
+      state.expenses = [];
     }
     saveToStorage();
   } catch (e) {
-    console.error('Failed to load from storage, using defaults:', e);
-    state.units = JSON.parse(JSON.stringify(SAMPLE_UNITS));
-    state.history = JSON.parse(JSON.stringify(SAMPLE_HISTORY));
-    state.expenses = JSON.parse(JSON.stringify(SAMPLE_EXPENSES));
+    console.error('Failed to load from storage:', e);
+    state.settings = { ...DEFAULT_SETTINGS };
+    state.units = [];
+    state.history = [];
+    state.expenses = [];
     saveToStorage();
   }
 }
@@ -1089,19 +867,28 @@ function renderDashboard() {
   const badgeTenants = document.getElementById('tenant-count-badge');
   if (badgeTenants) badgeTenants.innerText = state.units.length;
 
-  // Demo Banner Visibility Check
+  // Demo Banner permanently hidden in Real Data Production mode
   const banner = document.getElementById('demo-notice-banner');
   if (banner) {
-    const isDismissed = localStorage.getItem('nivas_demo_dismissed') === 'true';
-    banner.style.display = isDismissed ? 'none' : 'flex';
+    banner.style.display = 'none';
   }
 
   // Render Cards
   if (filtered.length === 0) {
+    const isZeroUnits = state.units.length === 0;
     container.innerHTML = `
-      <div style="text-align: center; padding: 40px 16px; background: #111827; border-radius: 12px; border: 1px dashed #1F2937;">
-        <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 12px;">Koi match nahi mila.</p>
-        <button class="btn btn-primary btn-sm" onclick="openAddTenantModal()">+ Naya Kamra Add Karein</button>
+      <div style="text-align: center; padding: 48px 20px; background: #111827; border-radius: 14px; border: 1px dashed rgba(255, 255, 255, 0.12); margin-top: 8px;">
+        <div style="font-size: 2.2rem; margin-bottom: 10px;">🏠</div>
+        <h3 style="font-size: 1.05rem; font-weight: 700; color: #F3F4F6; margin-bottom: 6px;">
+          ${isZeroUnits ? 'Abhi Koi Kamra Add Nahi Hua Hai' : 'Koi Kamra Match Nahi Hua'}
+        </h3>
+        <p style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: 18px; max-width: 320px; margin-left: auto; margin-right: auto;">
+          ${isZeroUnits ? 'Apna pehla kamra ya flat add karein aur kiraya, bijli bill aur WhatsApp hisab shuru karein.' : 'Aapki khoj ya filter ke anusar koi kamra nahi mila.'}
+        </p>
+        <button class="btn btn-primary" onclick="openAddTenantModal()" style="display: inline-flex; align-items: center; gap: 8px; margin: 0 auto;">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+          <span>+ Naya Kamra / Flat Add Karein</span>
+        </button>
       </div>
     `;
     return;
@@ -1302,10 +1089,20 @@ function renderTenantsView() {
   });
 
   if (filtered.length === 0) {
+    const isZeroUnits = state.units.length === 0;
     container.innerHTML = `
-      <div style="text-align: center; padding: 40px 16px; background: #111827; border-radius: 12px; border: 1px dashed #1F2937;">
-        <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 12px;">Koi match nahi mila.</p>
-        <button class="btn btn-primary btn-sm" onclick="openAddTenantModal()">+ Naya Room Add Karein</button>
+      <div style="text-align: center; padding: 48px 20px; background: #111827; border-radius: 14px; border: 1px dashed rgba(255, 255, 255, 0.12); margin-top: 8px;">
+        <div style="font-size: 2.2rem; margin-bottom: 10px;">🏢</div>
+        <h3 style="font-size: 1.05rem; font-weight: 700; color: #F3F4F6; margin-bottom: 6px;">
+          ${isZeroUnits ? 'Directory Khali Hai' : 'Koi Room Match Nahi Hua'}
+        </h3>
+        <p style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: 18px; max-width: 320px; margin-left: auto; margin-right: auto;">
+          ${isZeroUnits ? 'Apne bhavan ya makaan ke kamre darj karein taaki unki kirayedaari manage ki ja sake.' : 'Aapke search query se koi unit nahi mili.'}
+        </p>
+        <button class="btn btn-primary" onclick="openAddTenantModal()" style="display: inline-flex; align-items: center; gap: 8px; margin: 0 auto;">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+          <span>+ Naya Room / Unit Add Karein</span>
+        </button>
       </div>
     `;
     return;
@@ -1453,7 +1250,18 @@ function initCalculatorScreen() {
 
   const occupiedUnits = state.units.filter(u => u.status !== 'vacant');
   if (occupiedUnits.length === 0) {
-    select.innerHTML = '<option value="">No occupied rooms available</option>';
+    select.innerHTML = '<option value="">-- Pehle Room Add Karein --</option>';
+    const prevEl = document.getElementById('calc-screen-prev-reading');
+    if (prevEl) prevEl.value = '0';
+    const currEl = document.getElementById('calc-screen-curr-reading');
+    if (currEl) currEl.value = '0';
+    const rentEl = document.getElementById('calc-screen-rent');
+    if (rentEl) rentEl.value = '0';
+    const maintEl = document.getElementById('calc-screen-maint');
+    if (maintEl) maintEl.value = '0';
+    const otherEl = document.getElementById('calc-screen-other');
+    if (otherEl) otherEl.value = '0';
+    runScreenCalc();
     return;
   }
 
@@ -3543,14 +3351,12 @@ function importDataFromJSON(event) {
 }
 
 function resetToSampleData() {
-  if (confirm('Kya aap sample demo data reload karna chahte hain?')) {
+  if (confirm('Kya aap saara data clear karke fresh real khata shuru karna chahte hain?')) {
     state.settings = { ...DEFAULT_SETTINGS };
-    state.units = JSON.parse(JSON.stringify(SAMPLE_UNITS));
-    state.history = JSON.parse(JSON.stringify(SAMPLE_HISTORY));
-    state.expenses = JSON.parse(JSON.stringify(SAMPLE_EXPENSES));
-    localStorage.removeItem('nivas_demo_dismissed');
-    const banner = document.getElementById('demo-notice-banner');
-    if (banner) banner.style.display = 'flex';
+    state.units = [];
+    state.history = [];
+    state.expenses = [];
+    localStorage.removeItem(STORAGE_KEY);
     saveToStorage();
     updateOwnerUI();
     renderDashboard();
@@ -3560,7 +3366,7 @@ function resetToSampleData() {
     renderMonthlyReportView();
     populateSettingsScreen();
     populateBillUnitSelect();
-    showToast('Demo data reload ho gaya!');
+    showToast('Khata fresh reset ho gaya! Ab naye rooms add karein.');
   }
 }
 
