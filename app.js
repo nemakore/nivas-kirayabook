@@ -45,7 +45,8 @@ const DEFAULT_SETTINGS = {
   ownerPAN: '',
   defaultProperty: 'Apna Nivas',
   defaultUnitRate: 8.0,
-  currentCycle: getCurrentBillingMonth()
+  currentCycle: getCurrentBillingMonth(),
+  language: 'hi'
 };
 
 const SAMPLE_UNITS = [];
@@ -71,6 +72,10 @@ let state = {
 // ==========================================
 
 function initApp() {
+  if (typeof initI18n === 'function') {
+    initI18n();
+  }
+  initPWA();
   loadFromStorage();
   updateOwnerUI();
   renderDashboard();
@@ -86,6 +91,15 @@ function initApp() {
 
   // Set today's date in payment modal
   const today = new Date().toISOString().split('T')[0];
+  const qFull = document.getElementById('quick-full-val');
+  if (qFull) qFull.innerText = `₹${remaining.toLocaleString('en-IN')}`;
+
+  const qHalf = document.getElementById('quick-half-val');
+  if (qHalf) qHalf.innerText = `₹${Math.round(remaining / 2).toLocaleString('en-IN')}`;
+
+  const payNote = document.getElementById('pay-note');
+  if (payNote) payNote.value = '';
+
   const payDateEl = document.getElementById('pay-date');
   if (payDateEl) payDateEl.value = today;
 
@@ -150,7 +164,8 @@ function loadFromStorage() {
         const elecTotal = isVacant ? 0 : (unitsConsumed * rate);
         const maint = Number(u.maintenance || 0);
         const other = Number(u.otherCharges || 0);
-        const totalDue = isVacant ? rentAmount : (rentAmount + elecTotal + maint + other);
+        const prevDue = Number(u.previousDue || 0);
+        const totalDue = isVacant ? rentAmount : (rentAmount + elecTotal + maint + other + prevDue);
         const paidAmount = Number(u.paidAmount || 0);
 
         return {
@@ -163,6 +178,7 @@ function loadFromStorage() {
           electricityTotal: elecTotal,
           maintenance: maint,
           otherCharges: other,
+          previousDue: prevDue,
           totalDue,
           paidAmount,
           paidDate: u.paidDate || null,
@@ -808,14 +824,32 @@ function getDueStatus(unit) {
     };
   }
   if (unit.status === 'partial') {
-    const total = Number(unit.totalDue || unit.rentAmount || 0);
+    const prevDue = Number(unit.previousDue || 0);
+
+  const elecTotal = unit.electricityTotal || (unitsConsumed * (unit.unitRate || 8));
+  const total = Number(unit.totalDue || (unit.rentAmount || 0) + elecTotal + (unit.maintenance || 0) + (unit.otherCharges || 0) + prevDue);
     const paid = Number(unit.paidAmount || 0);
     const remaining = Math.max(0, total - paid);
     return {
       text: `Partial (₹${remaining.toLocaleString('en-IN')} बाकी)`,
-      class: 'status-due-soon',
+      class: 'status-partial',
       daysDiff: null,
       dueDescription: `₹${paid.toLocaleString('en-IN')} जमा, ₹${remaining.toLocaleString('en-IN')} बाकी`
+    };
+  }
+
+  // If tenant has unpaid dues from previous month (arrears)
+  if (unit.previousDue && Number(unit.previousDue) > 0) {
+    const pDue = Number(unit.previousDue);
+    const lang = typeof getLang === 'function' ? getLang() : 'hi';
+    const label = lang === 'mr' ? `मागील बाकी: ₹${pDue.toLocaleString('en-IN')}` :
+                  lang === 'en' ? `Prev Due: ₹${pDue.toLocaleString('en-IN')}` :
+                  `पिछला बाकी: ₹${pDue.toLocaleString('en-IN')}`;
+    return {
+      text: label,
+      class: 'status-overdue',
+      daysDiff: -1,
+      dueDescription: `Previous unpaid dues: ₹${pDue.toLocaleString('en-IN')}`
     };
   }
 
@@ -862,6 +896,7 @@ function renderDashboard() {
   let filtered = state.units.filter(unit => {
     // Filter condition
     if (state.activeFilter === 'pending' && unit.status !== 'pending' && unit.status !== 'partial') return false;
+    if (state.activeFilter === 'partial' && unit.status !== 'partial') return false;
     if (state.activeFilter === 'paid' && unit.status !== 'paid') return false;
     if (state.activeFilter === 'vacant' && unit.status !== 'vacant') return false;
 
@@ -882,6 +917,7 @@ function renderDashboard() {
   let totalCollected = 0;
   let totalPending = 0;
   let paidCount = 0;
+  let partialCount = 0;
   let pendingCount = 0;
   let occupiedCount = 0;
   let vacantCount = 0;
@@ -900,6 +936,7 @@ function renderDashboard() {
       } else if (u.status === 'partial') {
         totalCollected += paid;
         totalPending += Math.max(0, due - paid);
+        partialCount++;
         pendingCount++;
       } else {
         totalPending += due;
@@ -926,6 +963,9 @@ function renderDashboard() {
   // Badge Counts for Segment Tabs
   const cAll = document.getElementById('count-all');
   if (cAll) cAll.innerText = state.units.length;
+
+  const cPart = document.getElementById('count-partial');
+  if (cPart) cPart.innerText = partialCount;
 
   const cPend = document.getElementById('count-pending');
   if (cPend) cPend.innerText = pendingCount;
@@ -975,9 +1015,10 @@ function renderUnitCardHTML(unit) {
   const isPartial = unit.status === 'partial';
   const dueInfo = getDueStatus(unit);
 
-  const unitsConsumed = Math.max(0, (unit.currReading || 0) - (unit.prevReading || 0));
+
   const elecTotal = unit.electricityTotal || (unitsConsumed * (unit.unitRate || 8));
-  const totalDue = Number(unit.totalDue || unit.rentAmount || 0);
+  const prevDue = Number(unit.previousDue || 0);
+  const totalDue = Number(unit.totalDue || (unit.rentAmount || 0) + elecTotal + (unit.maintenance || 0) + (unit.otherCharges || 0) + prevDue);
   const paidAmount = Number(unit.paidAmount || 0);
   const remainingDue = Math.max(0, totalDue - paidAmount);
 
@@ -1004,6 +1045,7 @@ function renderUnitCardHTML(unit) {
                 📞 ${escapeHTML(unit.tenantPhone)}
               </a>
               <span class="rlc-due-pill ${dueInfo.class}">${dueInfo.text}</span>
+              ${prevDue > 0 ? `<span class="rlc-prev-dues-tag">⏳ ${typeof t === 'function' ? t('breakdown_prev', 'मागील बाकी') : 'Pichhla'}: ₹${prevDue.toLocaleString('en-IN')}</span>` : ''}
             `}
           </div>
         </div>
@@ -1023,6 +1065,8 @@ function renderUnitCardHTML(unit) {
           <span>•</span>
           <span>Bijli: ₹${elecTotal.toLocaleString('en-IN')} (${unitsConsumed}u)</span>
           ${unit.maintenance ? `<span>•</span><span>Maint: ₹${Number(unit.maintenance).toLocaleString('en-IN')}</span>` : ''}
+          ${prevDue > 0 ? `<span>•</span><span style="color:#F87171;">${typeof t === 'function' ? t('breakdown_prev', 'मागील बाकी') : 'Pichhla'}: ₹${prevDue.toLocaleString('en-IN')}</span>` : ''}
+          ${paidAmount > 0 ? `<span>•</span><span style="color:#6EE7B7;">${typeof t === 'function' ? t('breakdown_paid', 'जमा') : 'Jama'}: ₹${paidAmount.toLocaleString('en-IN')}</span>` : ''}
           <span style="margin-left: auto; color: #818CF8; font-weight: 600;">Bill ›</span>
         </div>
       ` : ''}
@@ -1205,6 +1249,7 @@ function renderTenantsView() {
                   📞 ${escapeHTML(unit.tenantPhone)}
                 </a>
                 <span class="rlc-due-pill ${dueInfo.class}">${dueInfo.text}</span>
+              ${prevDue > 0 ? `<span class="rlc-prev-dues-tag">⏳ ${typeof t === 'function' ? t('breakdown_prev', 'मागील बाकी') : 'Pichhla'}: ₹${prevDue.toLocaleString('en-IN')}</span>` : ''}
               `}
             </div>
           </div>
@@ -1366,6 +1411,9 @@ function onCalcScreenUnitSelected(unitId) {
   const otherEl = document.getElementById('calc-screen-other');
   if (otherEl) otherEl.value = unit.otherCharges || 0;
 
+  const prevDuesEl = document.getElementById('calc-screen-prev-dues');
+  if (prevDuesEl) prevDuesEl.value = unit.previousDue || 0;
+
   const monthEl = document.getElementById('calc-screen-month');
   if (monthEl) monthEl.value = unit.billingMonth || state.settings.currentCycle || 'October 2026';
 
@@ -1390,6 +1438,7 @@ function runScreenCalc() {
   const rent = Number(document.getElementById('calc-screen-rent')?.value) || 0;
   const maint = Number(document.getElementById('calc-screen-maint')?.value) || 0;
   const other = Number(document.getElementById('calc-screen-other')?.value) || 0;
+
   const month = document.getElementById('calc-screen-month')?.value.trim() || 'October 2026';
 
   // Sync rate pills highlight
@@ -1397,9 +1446,10 @@ function runScreenCalc() {
     btn.classList.toggle('active', btn.innerText === `₹${rate}`);
   });
 
+  const prevDues = Number(document.getElementById('calc-screen-prev-dues')?.value) || 0;
   const unitsConsumed = Math.max(0, curr - prev);
   const electricityTotal = unitsConsumed * rate;
-  const grandTotal = rent + electricityTotal + maint + other;
+  const grandTotal = rent + electricityTotal + maint + other + prevDues;
 
   // Formula Banner updates
   const uBox = document.getElementById('calc-screen-units-box');
@@ -1427,6 +1477,9 @@ function runScreenCalc() {
   const rowOther = document.getElementById('gt-row-other');
   if (rowOther) rowOther.innerText = `₹${other.toLocaleString('en-IN')}`;
 
+  const rowPrev = document.getElementById('gt-row-prev');
+  if (rowPrev) rowPrev.innerText = `₹${prevDues.toLocaleString('en-IN')}`;
+
   // Update Live WhatsApp Message Preview
   updateWhatsAppPreviewBubble(unitsConsumed, electricityTotal, grandTotal, month);
 }
@@ -1448,6 +1501,7 @@ function updateWhatsAppPreviewBubble(unitsConsumed, electricityTotal, grandTotal
   const rent = Number(document.getElementById('calc-screen-rent')?.value) || 0;
   const maint = Number(document.getElementById('calc-screen-maint')?.value) || 0;
   const other = Number(document.getElementById('calc-screen-other')?.value) || 0;
+
   const ownerName = state.settings.ownerName || 'Owner';
   const ownerUPI = state.settings.ownerUPI || 'owner@upi';
 
@@ -1479,7 +1533,7 @@ ${dueNotice}
 ${moveInNotice}
 💳 *Direct UPI Payment:*
 UPI ID: *${ownerUPI}*
-Direct Link: upi://pay?pa=${ownerUPI}&pn=${encodeURIComponent(ownerName)}&am=${grandTotal}&cu=INR
+Direct Link: upi://pay?pa=${ownerUPI}&pn=${encodeURIComponent(ownerName)}&am=${remaining}&cu=INR
 
 Payment karne ke baad screenshot bhej dein.
 Dhanyawad!
@@ -1523,11 +1577,13 @@ function saveBillFromScreenCalc() {
   const rent = Number(document.getElementById('calc-screen-rent')?.value) || 0;
   const maint = Number(document.getElementById('calc-screen-maint')?.value) || 0;
   const other = Number(document.getElementById('calc-screen-other')?.value) || 0;
+
+  const prevDues = Number(document.getElementById('calc-screen-prev-dues')?.value) || 0;
   const month = document.getElementById('calc-screen-month')?.value.trim() || 'October 2026';
 
   const unitsConsumed = Math.max(0, curr - prev);
   const electricityTotal = unitsConsumed * rate;
-  const totalDue = rent + electricityTotal + maint + other;
+  const totalDue = rent + electricityTotal + maint + other + prevDues;
 
   unit.prevReading = prev;
   unit.currReading = curr;
@@ -1535,10 +1591,19 @@ function saveBillFromScreenCalc() {
   unit.rentAmount = rent;
   unit.maintenance = maint;
   unit.otherCharges = other;
+  unit.previousDue = prevDues;
   unit.electricityTotal = electricityTotal;
   unit.totalDue = totalDue;
   unit.billingMonth = month;
-  unit.status = 'pending';
+  
+  const currentPaid = Number(unit.paidAmount || 0);
+  if (currentPaid >= totalDue) {
+    unit.status = 'paid';
+  } else if (currentPaid > 0) {
+    unit.status = 'partial';
+  } else {
+    unit.status = 'pending';
+  }
 
   saveToStorage();
   renderDashboard();
@@ -1744,6 +1809,8 @@ function onBillUnitSelected(unitId) {
   document.getElementById('bill-rent-fixed').value = unit.rentAmount || 0;
   document.getElementById('bill-maintenance').value = unit.maintenance || 0;
   document.getElementById('bill-other-charges').value = unit.otherCharges || 0;
+  const bPrevDues = document.getElementById('bill-prev-dues');
+  if (bPrevDues) bPrevDues.value = unit.previousDue || 0;
   document.getElementById('bill-month-for').value = unit.billingMonth || state.settings.currentCycle || 'October 2026';
 
   calculateBillTotals();
@@ -1757,9 +1824,10 @@ function calculateBillTotals() {
   const maint = Number(document.getElementById('bill-maintenance').value) || 0;
   const other = Number(document.getElementById('bill-other-charges').value) || 0;
 
+  const prevDues = Number(document.getElementById('bill-prev-dues')?.value) || 0;
   const unitsConsumed = Math.max(0, curr - prev);
   const electricityTotal = unitsConsumed * rate;
-  const grandTotal = rent + electricityTotal + maint + other;
+  const grandTotal = rent + electricityTotal + maint + other + prevDues;
 
   const rateDisp = document.getElementById('calc-display-rate');
   if (rateDisp) rateDisp.innerText = rate;
@@ -1788,11 +1856,12 @@ function saveBillToTenant() {
   const rent = Number(document.getElementById('bill-rent-fixed').value) || 0;
   const maint = Number(document.getElementById('bill-maintenance').value) || 0;
   const other = Number(document.getElementById('bill-other-charges').value) || 0;
+  const prevDues = Number(document.getElementById('bill-prev-dues')?.value) || 0;
   const month = document.getElementById('bill-month-for').value.trim();
 
   const unitsConsumed = Math.max(0, curr - prev);
   const electricityTotal = unitsConsumed * rate;
-  const totalDue = rent + electricityTotal + maint + other;
+  const totalDue = rent + electricityTotal + maint + other + prevDues;
 
   unit.prevReading = prev;
   unit.currReading = curr;
@@ -1800,10 +1869,19 @@ function saveBillToTenant() {
   unit.rentAmount = rent;
   unit.maintenance = maint;
   unit.otherCharges = other;
+  unit.previousDue = prevDues;
   unit.electricityTotal = electricityTotal;
   unit.totalDue = totalDue;
   unit.billingMonth = month;
-  unit.status = 'pending';
+
+  const currentPaid = Number(unit.paidAmount || 0);
+  if (currentPaid >= totalDue) {
+    unit.status = 'paid';
+  } else if (currentPaid > 0) {
+    unit.status = 'partial';
+  } else {
+    unit.status = 'pending';
+  }
 
   saveToStorage();
   closeModal('modal-bill');
@@ -1838,7 +1916,7 @@ function sendWhatsAppReceipt(unitId, receiptNoOverride) {
   const ownerPhone = state.settings.ownerPhone || '';
   const ownerPAN = state.settings.ownerPAN || '';
   const propName = unit.propertyName || state.settings.defaultProperty || 'Nivas Complex';
-  const unitsConsumed = Math.max(0, (unit.currReading || 0) - (unit.prevReading || 0));
+
 
   const message = `🧾 *किराया भुगतान पावती / OFFICIAL RENT RECEIPT*
 ━━━━━━━━━━━━━━━━━━━━
@@ -1910,7 +1988,7 @@ function sendWhatsAppMonthlyStatementDirect(unitId) {
   const ownerPhone = state.settings.ownerPhone || '';
   const prop = unit.propertyName || state.settings.defaultProperty || 'Gokul Nivas';
 
-  const unitsConsumed = Math.max(0, (unit.currReading || 0) - (unit.prevReading || 0));
+
   const elecTotal = Number(unit.electricityTotal || (unitsConsumed * (unit.unitRate || 8)));
   const baseRent = Number(unit.rentAmount || 0);
   const maint = Number(unit.maintenance || 0);
@@ -1968,16 +2046,19 @@ function sendWhatsAppMonthlyStatement(unitId) {
 function sendWhatsAppReminder(unitId) {
   const unit = state.units.find(u => u.id === unitId);
   if (!unit || !unit.tenantPhone) {
-    showToast('Tenant ka phone number missing hai!');
+    showToast(typeof t === 'function' ? t('empty_sub_search', 'Tenant ka phone number missing hai!') : 'Phone number missing!');
     return;
   }
 
   const cleanPhone = unit.tenantPhone.replace(/\D/g, '');
   const phoneWithCountry = cleanPhone.length === 10 ? `91${cleanPhone}` : cleanPhone;
 
-  const unitsConsumed = Math.max(0, (unit.currReading || 0) - (unit.prevReading || 0));
+
   const elecTotal = unit.electricityTotal || (unitsConsumed * (unit.unitRate || 8));
-  const totalDue = Number(unit.totalDue || unit.rentAmount || 0);
+  const prevDue = Number(unit.previousDue || 0);
+  const totalDue = Number(unit.totalDue || (unit.rentAmount || 0) + elecTotal + (unit.maintenance || 0) + (unit.otherCharges || 0) + prevDue);
+  const paid = Number(unit.paidAmount || 0);
+  const remaining = Math.max(0, totalDue - paid);
 
   const month = unit.billingMonth || state.settings.currentCycle || 'October 2026';
   const ownerName = state.settings.ownerName || 'Owner';
@@ -1986,43 +2067,104 @@ function sendWhatsAppReminder(unitId) {
   const today = new Date();
   const currentDay = today.getDate();
   const dueDay = Number(unit.dueDay) || 5;
-  let dueNotice = `📅 *Due Date:* ${dueDay}th ${month}`;
-  if (currentDay === dueDay) {
-    dueNotice += ` ⚠️ *(Aaj Due Date hai!)*`;
-  } else if (currentDay > dueDay) {
-    dueNotice += ` ⚠️ *(${currentDay - dueDay} din Late / Overdue)*`;
+
+  const lang = typeof getLang === 'function' ? getLang() : 'hi';
+
+  let dueNotice = '';
+  let moveInNotice = '';
+
+  if (lang === 'mr') {
+    dueNotice = `📅 *देय तारीख (Due Date):* ${dueDay} ${month}`;
+    if (currentDay === dueDay) {
+      dueNotice += ` ⚠️ *(आजच देय तारीख आहे!)*`;
+    } else if (currentDay > dueDay) {
+      dueNotice += ` ⚠️ *(${currentDay - dueDay} दिवस मुदत संपली/थकबाकी)*`;
+    } else {
+      dueNotice += ` *(${dueDay - currentDay} दिवस बाकी)*`;
+    }
+    moveInNotice = unit.moveInDate ? `🗓️ *मासिक चक्र:* दर महिन्याची ${dueDay} तारीख\n` : '';
+  } else if (lang === 'en') {
+    dueNotice = `📅 *Due Date:* ${dueDay}th ${month}`;
+    if (currentDay === dueDay) {
+      dueNotice += ` ⚠️ *(Due Today!)*`;
+    } else if (currentDay > dueDay) {
+      dueNotice += ` ⚠️ *(${currentDay - dueDay} days Overdue)*`;
+    } else {
+      dueNotice += ` *(${dueDay - currentDay} days remaining)*`;
+    }
+    moveInNotice = unit.moveInDate ? `🗓️ *Monthly Cycle:* ${dueDay}th of every month\n` : '';
   } else {
-    dueNotice += ` *(${dueDay - currentDay} din baaki)*`;
+    dueNotice = `📅 *Due Date:* ${dueDay}th ${month}`;
+    if (currentDay === dueDay) {
+      dueNotice += ` ⚠️ *(आज Due Date है!)*`;
+    } else if (currentDay > dueDay) {
+      dueNotice += ` ⚠️ *(${currentDay - dueDay} दिन Late / Overdue)*`;
+    } else {
+      dueNotice += ` *(${dueDay - currentDay} दिन बाकी)*`;
+    }
+    moveInNotice = unit.moveInDate ? `🗓️ *Monthly Cycle:* हर महीने की ${dueDay} तारीख\n` : '';
   }
-  const moveInNotice = unit.moveInDate ? `🗓️ *Monthly Cycle:* Har mahine ki ${dueDay} tareekh (Move-in: ${formatDisplayDate(unit.moveInDate)})\n` : '';
 
-  const message = `🙏 *Namaste ${unit.tenantName} ji,*
-
-Aapke *${unit.unitName} (${unit.propertyName || 'Nivas'})* ka *${month}* mahine ka rent & bijli hisaab taiyaar hai:
-
-🏠 *Base Rent:* ₹${unit.rentAmount.toLocaleString('en-IN')}
-⚡ *Electricity Bill:* ₹${elecTotal.toLocaleString('en-IN')}
-   • Previous Reading: ${unit.prevReading || 0}
-   • Current Reading: ${unit.currReading || 0}
-   • Units Consumed: ${unitsConsumed} units (@ ₹${unit.unitRate || 8}/unit)
-${unit.maintenance ? `💧 *Water/Maintenance:* ₹${Number(unit.maintenance).toLocaleString('en-IN')}\n` : ''}${unit.otherCharges ? `📌 *Other Charges:* ₹${Number(unit.otherCharges).toLocaleString('en-IN')}\n` : ''}---------------------------------
-👉 *TOTAL AMOUNT DUE: ₹${totalDue.toLocaleString('en-IN')}*
-${dueNotice}
-${moveInNotice}
-💳 *Direct UPI Payment:*
-UPI ID: *${ownerUPI}*
-Direct Link: upi://pay?pa=${ownerUPI}&pn=${encodeURIComponent(ownerName)}&am=${totalDue}&cu=INR
-
-_(GPay, PhonePe ya Paytm se is UPI ID par directly payment kar sakte hain)_
-
-Kripya payment ke baad yahan screenshot bhej dein.
-Dhanyawad!
-- *${ownerName}*
-📞 ${state.settings.ownerPhone || ''}`;
+  let message = '';
+  if (lang === 'mr') {
+    message = `🙏 *नमस्कार ${unit.tenantName} जी,*\n\n` +
+      `तुमच्या *${unit.unitName} (${unit.propertyName || 'Nivas'})* चे *${month}* महिन्याचे घरभाडे व वीज बिल हिशोब:\n\n` +
+      `🏠 *मूळ घरभाडे (Base Rent):* ₹${Number(unit.rentAmount || 0).toLocaleString('en-IN')}\n` +
+      `⚡ *वीज बिल (Electricity Bill):* ₹${elecTotal.toLocaleString('en-IN')}\n` +
+      `   • मागील रीडिंग: ${unit.prevReading || 0}\n` +
+      `   • चालू रीडिंग: ${unit.currReading || 0}\n` +
+      `   • वापरलेले युनिट्स: ${unitsConsumed} units (@ ₹${unit.unitRate || 8}/unit)\n` +
+      (unit.maintenance ? `💧 *पाणी / देखभाल:* ₹${Number(unit.maintenance).toLocaleString('en-IN')}\n` : '') +
+      (unit.otherCharges ? `📌 *इतर आकार:* ₹${Number(unit.otherCharges).toLocaleString('en-IN')}\n` : '') +
+      (prevDue > 0 ? `⏳ *मागील शिल्लक बाकी (Previous Dues):* ₹${prevDue.toLocaleString('en-IN')}\n` : '') +
+      `---------------------------------\n` +
+      `👉 *एकूण बिल रक्कम (Total Due):* ₹${totalDue.toLocaleString('en-IN')}\n` +
+      (paid > 0 ? `💵 *आतापर्यंत जमा केलेले (Already Paid):* ₹${paid.toLocaleString('en-IN')}\n` : '') +
+      `⚠️ *एकूण बाकी देय रक्कम (TOTAL BALANCE DUE): ₹${remaining.toLocaleString('en-IN')}*\n` +
+      `${dueNotice}\n${moveInNotice}` +
+      (ownerUPI && remaining > 0 ? `\n💳 *थेट UPI द्वारे पैसे भरा:*\nUPI ID: *${ownerUPI}*\nDirect Link: upi://pay?pa=${ownerUPI}&pn=${encodeURIComponent(ownerName)}&am=${remaining}&cu=INR\n\n_(Google Pay, PhonePe किंवा Paytm द्वारे पेमेंट करू शकता)_\n` : '') +
+      `\nकृपया पेमेंट केल्यानंतर येथे स्क्रीनशॉट पाठवा.\nधन्यवाद!\n- *${ownerName}*\n📞 ${state.settings.ownerPhone || ''}`;
+  } else if (lang === 'en') {
+    message = `🙏 *Hello ${unit.tenantName},*\n\n` +
+      `Here is your rent & electricity statement for *${unit.unitName} (${unit.propertyName || 'Nivas'})* for *${month}*:\n\n` +
+      `🏠 *Base Rent:* ₹${Number(unit.rentAmount || 0).toLocaleString('en-IN')}\n` +
+      `⚡ *Electricity Bill:* ₹${elecTotal.toLocaleString('en-IN')}\n` +
+      `   • Previous Reading: ${unit.prevReading || 0}\n` +
+      `   • Current Reading: ${unit.currReading || 0}\n` +
+      `   • Units Consumed: ${unitsConsumed} units (@ ₹${unit.unitRate || 8}/unit)\n` +
+      (unit.maintenance ? `💧 *Maintenance/Water:* ₹${Number(unit.maintenance).toLocaleString('en-IN')}\n` : '') +
+      (unit.otherCharges ? `📌 *Other Charges:* ₹${Number(unit.otherCharges).toLocaleString('en-IN')}\n` : '') +
+      (prevDue > 0 ? `⏳ *Previous Dues / Arrears:* ₹${prevDue.toLocaleString('en-IN')}\n` : '') +
+      `---------------------------------\n` +
+      `👉 *Total Bill Amount:* ₹${totalDue.toLocaleString('en-IN')}\n` +
+      (paid > 0 ? `💵 *Amount Already Paid:* ₹${paid.toLocaleString('en-IN')}\n` : '') +
+      `⚠️ *TOTAL BALANCE DUE: ₹${remaining.toLocaleString('en-IN')}*\n` +
+      `${dueNotice}\n${moveInNotice}` +
+      (ownerUPI && remaining > 0 ? `\n💳 *Direct UPI Payment:*\nUPI ID: *${ownerUPI}*\nDirect Link: upi://pay?pa=${ownerUPI}&pn=${encodeURIComponent(ownerName)}&am=${remaining}&cu=INR\n\n_(Pay directly via GPay, PhonePe or Paytm)_\n` : '') +
+      `\nPlease share a screenshot once payment is completed.\nThank you!\n- *${ownerName}*\n📞 ${state.settings.ownerPhone || ''}`;
+  } else {
+    message = `🙏 *Namaste ${unit.tenantName} ji,*\n\n` +
+      `Aapke *${unit.unitName} (${unit.propertyName || 'Nivas'})* ka *${month}* mahine ka rent & bijli hisaab:\n\n` +
+      `🏠 *Base Rent:* ₹${Number(unit.rentAmount || 0).toLocaleString('en-IN')}\n` +
+      `⚡ *Electricity Bill:* ₹${elecTotal.toLocaleString('en-IN')}\n` +
+      `   • Previous Reading: ${unit.prevReading || 0}\n` +
+      `   • Current Reading: ${unit.currReading || 0}\n` +
+      `   • Units Consumed: ${unitsConsumed} units (@ ₹${unit.unitRate || 8}/unit)\n` +
+      (unit.maintenance ? `💧 *Water/Maintenance:* ₹${Number(unit.maintenance).toLocaleString('en-IN')}\n` : '') +
+      (unit.otherCharges ? `📌 *Other Charges:* ₹${Number(unit.otherCharges).toLocaleString('en-IN')}\n` : '') +
+      (prevDue > 0 ? `⏳ *Previous Pending Dues (पिछला बकाया):* ₹${prevDue.toLocaleString('en-IN')}\n` : '') +
+      `---------------------------------\n` +
+      `👉 *Kul Bill Amount: ₹${totalDue.toLocaleString('en-IN')}*\n` +
+      (paid > 0 ? `💵 *Pehle Jama Kiya (Paid):* ₹${paid.toLocaleString('en-IN')}\n` : '') +
+      `⚠️ *KUL BAAKI RASHI (BALANCE DUE): ₹${remaining.toLocaleString('en-IN')}*\n` +
+      `${dueNotice}\n${moveInNotice}` +
+      (ownerUPI && remaining > 0 ? `\n💳 *Direct UPI Payment:*\nUPI ID: *${ownerUPI}*\nDirect Link: upi://pay?pa=${ownerUPI}&pn=${encodeURIComponent(ownerName)}&am=${remaining}&cu=INR\n\n_(GPay, PhonePe ya Paytm se direct payment kar sakte hain)_\n` : '') +
+      `\nKripya payment ke baad yahan screenshot bhej dein.\nDhanyawad!\n- *${ownerName}*\n📞 ${state.settings.ownerPhone || ''}`;
+  }
 
   const encodedUrl = `https://wa.me/${phoneWithCountry}?text=${encodeURIComponent(message)}`;
   window.open(encodedUrl, '_blank');
-  showToast('WhatsApp reminder open ho raha hai...');
+  showToast(typeof t === 'function' ? t('btn_wa_reminder', 'WhatsApp reminder open ho raha hai...') : 'Opening WhatsApp...');
 }
 
 function generateAndSendWhatsApp() {
@@ -2050,7 +2192,10 @@ function openPaymentModal(unitId) {
   const unit = state.units.find(u => u.id === unitId);
   if (!unit) return;
 
-  const total = Number(unit.totalDue || unit.rentAmount || 0);
+  const prevDue = Number(unit.previousDue || 0);
+
+  const elecTotal = unit.electricityTotal || (unitsConsumed * (unit.unitRate || 8));
+  const total = Number(unit.totalDue || (unit.rentAmount || 0) + elecTotal + (unit.maintenance || 0) + (unit.otherCharges || 0) + prevDue);
   const alreadyPaid = Number(unit.paidAmount || 0);
   const remaining = Math.max(0, total - alreadyPaid);
 
@@ -2067,11 +2212,21 @@ function openPaymentModal(unitId) {
     payAmtInput.value = remaining > 0 ? remaining : total;
   }
 
+  const qFull = document.getElementById('quick-full-val');
+  if (qFull) qFull.innerText = `₹${remaining.toLocaleString('en-IN')}`;
+
+  const qHalf = document.getElementById('quick-half-val');
+  if (qHalf) qHalf.innerText = `₹${Math.round(remaining / 2).toLocaleString('en-IN')}`;
+
+  const payNote = document.getElementById('pay-note');
+  if (payNote) payNote.value = '';
+
   const payDateEl = document.getElementById('pay-date');
   if (payDateEl) {
     payDateEl.value = new Date().toISOString().split('T')[0];
   }
 
+  updateLivePayPreview();
   openModal('modal-payment');
 }
 
@@ -2084,7 +2239,11 @@ function handleRecordPayment(e) {
   const amountPaidNow = Number(document.getElementById('pay-amount').value) || 0;
   const mode = document.getElementById('pay-mode').value;
   const payDate = document.getElementById('pay-date').value || new Date().toISOString().split('T')[0];
-  const total = Number(unit.totalDue || unit.rentAmount || 0);
+  const payNote = document.getElementById('pay-note')?.value.trim() || '';
+  const prevDue = Number(unit.previousDue || 0);
+
+  const elecTotal = unit.electricityTotal || (unitsConsumed * (unit.unitRate || 8));
+  const total = Number(unit.totalDue || (unit.rentAmount || 0) + elecTotal + (unit.maintenance || 0) + (unit.otherCharges || 0) + prevDue);
   
   const previouslyPaid = Number(unit.paidAmount || 0);
   const newCumulativePaid = previouslyPaid + amountPaidNow;
@@ -2092,6 +2251,7 @@ function handleRecordPayment(e) {
   unit.paidAmount = newCumulativePaid;
   unit.paidDate = payDate;
   unit.paidMode = mode;
+  unit.paidNote = payNote;
 
   if (newCumulativePaid >= total) {
     unit.status = 'paid';
@@ -2105,7 +2265,7 @@ function handleRecordPayment(e) {
 
   // Add to History Log
   const receiptNo = `NIV-${new Date().getFullYear()}-${Math.floor(100 + Math.random() * 900)}`;
-  const unitsConsumed = Math.max(0, (unit.currReading || 0) - (unit.prevReading || 0));
+
   const logEntry = {
     id: 'hist-' + Date.now(),
     receiptNo,
@@ -2116,7 +2276,8 @@ function handleRecordPayment(e) {
     month: unit.billingMonth || state.settings.currentCycle || 'October 2026',
     amountPaid: amountPaidNow,
     mode,
-    breakdown: `Rent: ₹${unit.rentAmount} + Bijli: ₹${unit.electricityTotal || 0} (${unitsConsumed}u) + Maint: ₹${unit.maintenance || 0}${remaining > 0 ? ` (Baaki: ₹${remaining})` : ' (Full Settled)'}`
+    note: payNote,
+    breakdown: `Rent: ₹${unit.rentAmount} + Bijli: ₹${unit.electricityTotal || 0} (${unitsConsumed}u) + Maint: ₹${unit.maintenance || 0}${prevDue > 0 ? ` + Pichhla: ₹${prevDue}` : ''}${remaining > 0 ? ` (Baaki: ₹${remaining})` : ' (Full Settled)'}${payNote ? ` | Note: ${payNote}` : ''}`
   };
   state.history.unshift(logEntry);
 
@@ -2130,6 +2291,58 @@ function handleRecordPayment(e) {
 
   // Immediately offer to preview/print receipt
   setTimeout(() => generateReceiptModal(unit.id, receiptNo), 300);
+}
+
+function setQuickPaymentAmount(type) {
+  const unitId = document.getElementById('pay-tenant-id')?.value;
+  const unit = state.units.find(u => u.id === unitId);
+  if (!unit) return;
+
+  const prevDue = Number(unit.previousDue || 0);
+
+  const elecTotal = unit.electricityTotal || (unitsConsumed * (unit.unitRate || 8));
+  const total = Number(unit.totalDue || (unit.rentAmount || 0) + elecTotal + (unit.maintenance || 0) + (unit.otherCharges || 0) + prevDue);
+  const alreadyPaid = Number(unit.paidAmount || 0);
+  const remaining = Math.max(0, total - alreadyPaid);
+
+  const payAmtInput = document.getElementById('pay-amount');
+  if (!payAmtInput) return;
+
+  if (type === 'full') {
+    payAmtInput.value = remaining;
+    document.getElementById('btn-quick-full')?.classList.add('active');
+    document.getElementById('btn-quick-half')?.classList.remove('active');
+  } else if (type === 'half') {
+    payAmtInput.value = Math.round(remaining / 2);
+    document.getElementById('btn-quick-half')?.classList.add('active');
+    document.getElementById('btn-quick-full')?.classList.remove('active');
+  }
+  updateLivePayPreview();
+}
+
+function updateLivePayPreview() {
+  const unitId = document.getElementById('pay-tenant-id')?.value;
+  const unit = state.units.find(u => u.id === unitId);
+  if (!unit) return;
+
+  const prevDue = Number(unit.previousDue || 0);
+
+  const elecTotal = unit.electricityTotal || (unitsConsumed * (unit.unitRate || 8));
+  const total = Number(unit.totalDue || (unit.rentAmount || 0) + elecTotal + (unit.maintenance || 0) + (unit.otherCharges || 0) + prevDue);
+  const alreadyPaid = Number(unit.paidAmount || 0);
+  const remainingCurrent = Math.max(0, total - alreadyPaid);
+
+  const amountNow = Number(document.getElementById('pay-amount')?.value) || 0;
+  const remainingAfter = Math.max(0, remainingCurrent - amountNow);
+
+  const previewEl = document.getElementById('pay-live-balance');
+  if (previewEl) {
+    if (remainingAfter === 0) {
+      previewEl.innerHTML = `<span style="color: #10B981;">₹0 (${typeof t === 'function' ? t('pay_status_settled', 'पूरा चुकता / Clear ✅') : 'Clear'})</span>`;
+    } else {
+      previewEl.innerHTML = `<span style="color: #F87171;">₹${remainingAfter.toLocaleString('en-IN')} (${typeof t === 'function' ? t('pay_status_partial_left', 'बाकी रहेगा ⚠️') : 'Baaki'})</span>`;
+    }
+  }
 }
 
 // Receipt & Statement Active Context
@@ -3294,8 +3507,11 @@ function sendWhatsAppMonthlyStatement(unitId) {
 
   const phone = (unit.tenantPhone || '').replace(/\D/g, '');
   const cycle = unit.billingMonth || state.settings.currentCycle || 'October 2026';
-  const unitsConsumed = Math.max(0, (unit.currReading || 0) - (unit.prevReading || 0));
-  const total = Number(unit.totalDue || unit.rentAmount || 0);
+
+  const prevDue = Number(unit.previousDue || 0);
+
+  const elecTotal = unit.electricityTotal || (unitsConsumed * (unit.unitRate || 8));
+  const total = Number(unit.totalDue || (unit.rentAmount || 0) + elecTotal + (unit.maintenance || 0) + (unit.otherCharges || 0) + prevDue);
   const paid = Number(unit.paidAmount || 0);
   const remaining = Math.max(0, total - paid);
 
@@ -3359,6 +3575,9 @@ function populateSettingsScreen() {
   const cycleEl = document.getElementById('set-screen-current-cycle');
   if (cycleEl) cycleEl.value = state.settings.currentCycle || 'October 2026';
 
+  const langEl = document.getElementById('set-screen-language');
+  if (langEl) langEl.value = state.settings.language || (typeof getLang === 'function' ? getLang() : 'hi');
+
   const panEl = document.getElementById('set-screen-owner-pan');
   if (panEl) panEl.value = state.settings.ownerPAN || '';
 
@@ -3375,6 +3594,11 @@ function handleSaveSettingsScreen(e) {
   state.settings.defaultUnitRate = Number(document.getElementById('set-screen-default-rate').value) || 8;
   state.settings.currentCycle = document.getElementById('set-screen-current-cycle').value.trim() || 'October 2026';
   state.settings.ownerPAN = document.getElementById('set-screen-owner-pan').value.trim().toUpperCase();
+  const selLang = document.getElementById('set-screen-language')?.value;
+  if (selLang) {
+    state.settings.language = selLang;
+    if (typeof setLanguage === 'function') setLanguage(selLang);
+  }
 
   saveToStorage();
   updateOwnerUI();
@@ -3666,3 +3890,226 @@ function numberToIndianWords(num) {
 
 // Start application when DOM loads
 document.addEventListener('DOMContentLoaded', initApp);
+
+
+// ==========================================
+// Monthly Billing Cycle Rollover (Carry forward unpaid dues)
+// ==========================================
+
+function openMonthRolloverModal() {
+  const currentCycle = state.settings.currentCycle || getCurrentBillingMonth();
+  const curEl = document.getElementById('rollover-current-month');
+  if (curEl) curEl.innerText = currentCycle;
+
+  // Auto calculate next month
+  const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+  let nextCycle = '';
+  const parts = currentCycle.split(' ');
+  if (parts.length === 2) {
+    const mIdx = months.indexOf(parts[0]);
+    let yr = parseInt(parts[1], 10) || new Date().getFullYear();
+    if (mIdx !== -1) {
+      if (mIdx === 11) {
+        nextCycle = `${months[0]} ${yr + 1}`;
+      } else {
+        nextCycle = `${months[mIdx + 1]} ${yr}`;
+      }
+    }
+  }
+  if (!nextCycle) {
+    const d = new Date();
+    d.setMonth(d.getMonth() + 1);
+    nextCycle = `${months[d.getMonth()]} ${d.getFullYear()}`;
+  }
+
+  const nextInput = document.getElementById('rollover-next-month');
+  if (nextInput) nextInput.value = nextCycle;
+
+  const summaryList = document.getElementById('rollover-summary-list');
+  if (summaryList) {
+    if (state.units.length === 0) {
+      summaryList.innerHTML = `<div style="text-align: center; color: var(--text-muted); padding: 18px;">${typeof t === 'function' ? t('empty_title_zero', 'Abhi koi room add nahi hua hai') : 'No rooms added'}</div>`;
+    } else {
+      summaryList.innerHTML = state.units.map(u => {
+        if (u.status === 'vacant') {
+          return `
+            <div class="rollover-tenant-item">
+              <div>
+                <div class="rti-name">${escapeHTML(u.unitName)}</div>
+                <div class="rti-sub">${typeof t === 'function' ? t('status_vacant', 'Khali Room') : 'Khali Room'}</div>
+              </div>
+              <div class="rti-status">
+                <span class="rti-badge-clear">Vacant (No dues)</span>
+              </div>
+            </div>
+          `;
+        }
+
+        const prevDue = Number(u.previousDue || 0);
+        const unitsConsumed = Math.max(0, (u.currReading || 0) - (u.prevReading || 0));
+        const elecTotal = u.electricityTotal || (unitsConsumed * (u.unitRate || 8));
+        const total = Number(u.totalDue || (u.rentAmount || 0) + elecTotal + (u.maintenance || 0) + (u.otherCharges || 0) + prevDue);
+        const paid = Number(u.paidAmount || 0);
+        const remaining = Math.max(0, total - paid);
+
+        let badgeHTML = '';
+        if (remaining > 0) {
+          if (paid > 0) {
+            badgeHTML = `<span class="rti-badge-partial">₹${remaining.toLocaleString('en-IN')} ${typeof t === 'function' ? t('breakdown_prev', 'मागील बाकी') : 'Pichhla'} बनेगा (आधा जमा था)</span>`;
+          } else {
+            badgeHTML = `<span class="rti-badge-unpaid">₹${remaining.toLocaleString('en-IN')} ${typeof t === 'function' ? t('breakdown_prev', 'मागील बाकी') : 'Pichhla'} बनेगा (Unpaid)</span>`;
+          }
+        } else {
+          badgeHTML = `<span class="rti-badge-clear">${typeof t === 'function' ? t('pay_status_settled', 'पूर्ण जमा (Clear)') : 'Clear'}</span>`;
+        }
+
+        return `
+          <div class="rollover-tenant-item">
+            <div>
+              <div class="rti-name">${escapeHTML(u.unitName)} • ${escapeHTML(u.tenantName || 'Tenant')}</div>
+              <div class="rti-sub">Total Bill: ₹${total.toLocaleString('en-IN')} | Jama: ₹${paid.toLocaleString('en-IN')}</div>
+            </div>
+            <div class="rti-status">
+              <div>${badgeHTML}</div>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+  }
+
+  openModal('modal-rollover');
+}
+
+function confirmMonthRollover() {
+  const nextInput = document.getElementById('rollover-next-month');
+  const newMonth = (nextInput ? nextInput.value.trim() : '') || getCurrentBillingMonth();
+
+  state.units.forEach(u => {
+    if (u.status !== 'vacant') {
+      const prevDue = Number(u.previousDue || 0);
+      const unitsConsumed = Math.max(0, (u.currReading || 0) - (u.prevReading || 0));
+      const elecTotal = u.electricityTotal || (unitsConsumed * (u.unitRate || 8));
+      const total = Number(u.totalDue || (u.rentAmount || 0) + elecTotal + (u.maintenance || 0) + (u.otherCharges || 0) + prevDue);
+      const paid = Number(u.paidAmount || 0);
+      const remaining = Math.max(0, total - paid);
+
+      // Remaining balance rolls over as previousDue
+      u.previousDue = remaining;
+
+      // Current meter reading becomes previous meter reading
+      u.prevReading = Number(u.currReading || u.prevReading || 0);
+
+      // Reset for new cycle
+      u.paidAmount = 0;
+      u.paidDate = null;
+      u.paidMode = null;
+      u.paidNote = '';
+      u.billingMonth = newMonth;
+      u.electricityTotal = 0;
+      u.totalDue = (Number(u.rentAmount) || 0) + (Number(u.maintenance) || 0) + (Number(u.otherCharges) || 0) + u.previousDue;
+      u.status = 'pending';
+    }
+  });
+
+  state.settings.currentCycle = newMonth;
+  saveToStorage();
+  updateOwnerUI();
+  populateSettingsScreen();
+  renderDashboard();
+  renderTenantsView();
+  renderMonthlyReportView();
+  closeModal('modal-rollover');
+
+  const lang = typeof getLang === 'function' ? getLang() : 'hi';
+  const msg = lang === 'mr' ? `नवीन महिना "${newMonth}" सुरू झाला! मागील शिल्लक आपोआप जोडली गेली.` :
+              lang === 'en' ? `New billing cycle "${newMonth}" active! Unpaid dues carried forward.` :
+              `नया महीना "${newMonth}" शुरू! पिछला बकाया सफलतापूर्वक रोलओवर हो गया।`;
+  showToast(msg);
+}
+
+// ==========================================
+// Progressive Web App (PWA) & Localization UI
+// ==========================================
+
+let deferredInstallPrompt = null;
+
+function initPWA() {
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+      navigator.serviceWorker.register('./sw.js')
+        .then((reg) => {
+          console.log('[PWA] Service Worker registered with scope:', reg.scope);
+        })
+        .catch((err) => {
+          console.warn('[PWA] Service Worker registration failed:', err);
+        });
+    });
+  }
+
+  // Handle Android & Chrome beforeinstallprompt event
+  window.addEventListener('beforeinstallprompt', (e) => {
+    e.preventDefault();
+    deferredInstallPrompt = e;
+    console.log('[PWA] beforeinstallprompt captured');
+    const headerBtn = document.getElementById('header-pwa-install-btn');
+    if (headerBtn) headerBtn.style.display = 'inline-flex';
+    const sidebarBanner = document.getElementById('sidebar-pwa-banner');
+    if (sidebarBanner) sidebarBanner.style.display = 'block';
+  });
+
+  // Handle successful installation
+  window.addEventListener('appinstalled', () => {
+    deferredInstallPrompt = null;
+    const headerBtn = document.getElementById('header-pwa-install-btn');
+    if (headerBtn) headerBtn.style.display = 'none';
+    const sidebarBanner = document.getElementById('sidebar-pwa-banner');
+    if (sidebarBanner) sidebarBanner.style.display = 'none';
+    showToast(typeof t === 'function' ? t('pwa_install_toast', 'KirayaBook app installed successfully!') : 'App installed!');
+  });
+}
+
+function triggerPWAInstall() {
+  const ua = (navigator.userAgent || '').toLowerCase();
+  const isIOS = /iphone|ipad|ipod/.test(ua);
+  const isStandalone = window.navigator.standalone === true || window.matchMedia('(display-mode: standalone)').matches;
+
+  if (isIOS && !isStandalone) {
+    openModal('modal-ios-install');
+    return;
+  }
+
+  if (deferredInstallPrompt) {
+    deferredInstallPrompt.prompt();
+    deferredInstallPrompt.userChoice.then((choiceResult) => {
+      if (choiceResult.outcome === 'accepted') {
+        console.log('[PWA] User accepted the install prompt');
+      }
+      deferredInstallPrompt = null;
+    });
+  } else {
+    if (isStandalone) {
+      showToast('App pehle se hi phone mein installed hai!');
+    } else {
+      openModal('modal-ios-install');
+    }
+  }
+}
+
+function toggleLangMenu(forceState) {
+  const menu = document.getElementById('lang-dropdown-menu');
+  if (!menu) return;
+  if (typeof forceState === 'boolean') {
+    menu.classList.toggle('show', forceState);
+  } else {
+    menu.classList.toggle('show');
+  }
+}
+
+// Close language menu on outside click
+document.addEventListener('click', (e) => {
+  const wrap = document.querySelector('.header-lang-wrap');
+  if (wrap && !wrap.contains(e.target)) {
+    toggleLangMenu(false);
+  }
+});
