@@ -168,94 +168,46 @@
 
       <nav class="desktop-nav">
         <button class="nav-btn active" id="nav-dashboard" onclick="switchView('dashboard')">
-          <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <rect x="3" y="3" width="7" height="7"></rect>
-            <rect x="14" y="3" width="7" height="7"></rect>
-            <rect x="14" y="14" width="7" height="7"></rect>
-            <rect x="3" y="14" width="7" height="7"></rect>
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+            <polyline points="9 22 9 12 15 12 15 22"></polyline>
           </svg>
           <div class="nav-text">
-            <span>Dashboard</span>
-            <small>डैशबोर्ड ओवरव्यू</small>
-          </div>
-        </button>
-        <button class="nav-btn" id="nav-tenants" onclick="switchView('tenants')">
-          <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
-            <circle cx="9" cy="7" r="4"></circle>
-            <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
-            <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
-          </svg>
-          <div class="nav-text">
-            <span>Rooms &amp; Tenants</span>
-            <small>कमरे और किरायेदार</small>
+            <span data-i18n="nav_dashboard">Kiraya Dashboard</span>
+            <small>कमरे और किराया खाता</small>
           </div>
           <span class="nav-badge" id="tenant-count-badge">0</span>
         </button>
         <button class="nav-btn" id="nav-calculator" onclick="switchView('calculator')">
-          <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
           </svg>
           <div class="nav-text">
-            <span>Bijli Bill Calculator</span>
-            <small>बिजली बिल कैलकुलेटर</small>
-          </div>
-        </button>
-        <button class="nav-btn" id="nav-reports" onclick="switchView('reports')">
-          <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <path
-              d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z">
-            </path>
-            <polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline>
-            <line x1="12" y1="22.08" x2="12" y2="12"></line>
-          </svg>
-          <div class="nav-text">
-            <span>Monthly Report</span>
-            <small>मासिक आय-व्यय रिपोर्ट</small>
+            <span data-i18n="nav_calculator">Bijli Meter</span>
+            <small>सब-मीटर रीडिंग & बिल</small>
           </div>
         </button>
         <button class="nav-btn" id="nav-history" onclick="switchView('history')">
-          <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <circle cx="12" cy="12" r="10"></circle>
-            <polyline points="12 6 12 12 16 14"></polyline>
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+            <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
           </svg>
           <div class="nav-text">
-            <span>Payment History</span>
-            <small>किराया खाता & रसीदें</small>
+            <span data-i18n="nav_history">Khata &amp; Reports</span>
+            <small>रसीदें और मासिक ऑडिट</small>
           </div>
         </button>
         <button class="nav-btn" id="nav-settings" onclick="switchView('settings')">
-          <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <circle cx="12" cy="12" r="3"></circle>
-            <path
-              d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z">
-            </path>
+            <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
           </svg>
           <div class="nav-text">
-            <span>Owner Settings &amp; UPI</span>
-            <small>मालिक प्रोफाइल & सेटिंग्स</small>
+            <span data-i18n="nav_settings">Settings &amp; UPI</span>
+            <small>मालिक प्रोफाइल & बैकअप</small>
           </div>
         </button>
       </nav>
-
-      <!-- Sidebar PWA Install Banner -->
-      <div class="sidebar-install-banner" id="sidebar-pwa-banner" onclick="triggerPWAInstall()" title="Install Nivas KirayaBook App">
-        <div class="sib-top">
-          <span>📲 PWA APP</span>
-        </div>
-        <div class="sib-title" data-i18n="install_app">ऐप इनस्टॉल करें</div>
-        <div class="sib-sub">Android &amp; iPhone Home Screen</div>
-      </div>
-
-      <!-- Sidebar App Guide Box -->
-      <div class="sidebar-guide-box" onclick="openAppIntroModal()" title="यह ऐप क्या है &amp; कैसे काम करती है?">
-        <div class="sidebar-guide-top">
-          <span class="guide-badge">💡 App Guide</span>
-          <span class="guide-arrow">›</span>
-        </div>
-        <div class="sidebar-guide-title">यह ऐप क्या है &amp; कैसे काम करती है?</div>
-        <div class="sidebar-guide-sub">3 आसान स्टेप्स में गाइड देखें</div>
-      </div>
 
       <div class="sidebar-user-card" onclick="switchView('settings')">
         <div class="user-avatar" id="sidebar-avatar">M</div>
@@ -278,7 +230,7 @@
               <line x1="3" y1="18" x2="21" y2="18"></line>
             </svg>
           </button>
-          <div class="header-brand-wrap">
+          <div class="header-brand-wrap" onclick="switchView('dashboard')">
             <div class="header-app-logo">
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4">
                 <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
@@ -312,147 +264,47 @@
             </div>
           </div>
 
-          <!-- PWA Install Button -->
-          <button type="button" class="header-install-btn" id="header-pwa-install-btn" onclick="triggerPWAInstall()" title="Install App on Phone">
-            <span>📲</span>
-            <span data-i18n="install_app">ऐप इनस्टॉल</span>
-          </button>
-          <button class="header-guide-pill" onclick="openAppIntroModal()" title="App Guide: Yeh app kya hai? (गाइड)">
-            <span class="guide-icon">💡</span>
-            <span class="guide-text">गाइड</span>
-          </button>
-          <button class="cloud-sync-pill logged-out" id="header-cloud-btn" onclick="openCloudModal()" title="Firebase Cloud Sync">
-            <svg class="cloud-icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
-              <path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z"></path>
-            </svg>
-            <span id="header-cloud-text">Cloud Sync</span>
-            <span class="cloud-status-dot" id="header-cloud-dot"></span>
-          </button>
-          <button class="header-icon-btn" onclick="toggleHeaderSearch()" title="Search">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <circle cx="11" cy="11" r="8"></circle>
-              <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-            </svg>
-          </button>
+          <!-- Billing Month & Cycle Pill -->
           <div class="header-cycle-pill" id="header-cycle-pill" onclick="openMonthRolloverModal()" title="Billing Month & New Cycle Rollover">
             <span class="cycle-dot"></span>
             <span id="current-month-display">Oct 2026</span>
           </div>
-          <button class="header-avatar-btn" onclick="switchView('settings')" title="Profile">
+
+          <!-- Owner Avatar with Cloud Sync Status Indicator -->
+          <button class="header-avatar-btn" onclick="switchView('settings')" title="Owner Settings &amp; Cloud Sync">
             <span id="mobile-header-avatar">M</span>
+            <span class="avatar-sync-dot" id="header-cloud-dot" title="Cloud Sync"></span>
           </button>
         </div>
       </header>
-
-      <!-- Expandable Mobile Search Bar -->
-      <div class="header-search-expand" id="header-search-expand">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <circle cx="11" cy="11" r="8"></circle>
-          <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-        </svg>
-        <input type="text" id="global-search" placeholder="Room no, tenant, phone number search karein..."
-          oninput="handleSearch(this.value)">
-        <button class="search-close-btn" onclick="toggleHeaderSearch(false)" aria-label="Close search">&times;</button>
-      </div>
 
       <!-- App Viewport (Scrollable Native Area) -->
       <main class="app-viewport">
 
         <!-- ==========================================
-             SCREEN 1: DASHBOARD OVERVIEW (Clean Khatabook Standard)
+             SCREEN 1: KIRAYA (HOME / DASHBOARD)
              ========================================== -->
         <section id="view-dashboard" class="view-screen active">
-          <!-- Welcome & Onboarding Banner (Permanently hidden in Real Mode) -->
-          <div class="demo-strip demo-welcome-card" id="demo-notice-banner" style="display: none;">
-            <!-- Top Header Row -->
-            <div class="demo-welcome-top">
-              <div class="demo-welcome-badge">
-                <span class="demo-pulse-dot"></span>
-                <span>👋 Welcome to Nivas KirayaBook • मकान मालिक डिजिटल खाता</span>
-              </div>
-              <button type="button" class="btn-demo-dismiss" onclick="dismissDemoBanner()" title="Banner band karein"
-                aria-label="Close">&times;</button>
-            </div>
-
-            <!-- Value Proposition -->
-            <div class="demo-welcome-main">
-              <h2 class="demo-welcome-title">Kiraya Hisaab, Bijli Bill & WhatsApp Reminder — Sab Kuch Ek Jagah</h2>
-              <p class="demo-welcome-sub">
-                Yeh app landlords aur house owners ke liye hai. Abhi aap <strong>Demo Mode (Sample Data)</strong> dekh
-                rahe hain taaki aap sabhi features chala kar test kar sakein:
-              </p>
-            </div>
-
-            <!-- 3 Core Feature Shortcut Cards -->
-            <div class="demo-features-grid">
-              <div class="demo-feat-item" onclick="switchView('calculator')" title="Click: Bijli Calculator Kholein">
-                <span class="demo-feat-icon">⚡</span>
-                <div class="demo-feat-text">
-                  <strong>Bijli Bill Calculator</strong>
-                  <small>Meter reading se automatic bill calculation</small>
-                </div>
-              </div>
-
-              <div class="demo-feat-item" onclick="switchView('tenants')" title="Click: WhatsApp Reminder Dekhein">
-                <span class="demo-feat-icon">💬</span>
-                <div class="demo-feat-text">
-                  <strong>WhatsApp Reminder</strong>
-                  <small>1-Click mein UPI link ke sath message bhejo</small>
-                </div>
-              </div>
-
-              <div class="demo-feat-item" onclick="switchView('history')" title="Click: Rent Receipts Dekhein">
-                <span class="demo-feat-icon">🧾</span>
-                <div class="demo-feat-text">
-                  <strong>Kiraya Raseed</strong>
-                  <small>Payment aane par official HRA tax receipt</small>
-                </div>
-              </div>
-            </div>
-
-            <!-- Bottom Actions: Setup CTA & Information -->
-            <div class="demo-welcome-footer">
-              <div class="demo-cta-group">
-                <button type="button" class="btn-demo-primary" onclick="openOnboardingModal()">
-                  <span>🚀 Apna Asli Khata Setup Karein</span>
-                  <small>(Name, Mobile & UPI jodein • 2 min)</small>
-                </button>
-                <button type="button" class="btn-demo-secondary" onclick="openAppIntroModal()">
-                  <span>💡 Yeh App Kya Hai? Guide Dekhein ›</span>
-                </button>
-                <button type="button" class="btn-demo-secondary" onclick="switchView('calculator')">
-                  <span>⚡ Bijli Calculator Test Karein ›</span>
-                </button>
-              </div>
-
-              <div class="demo-sample-note">
-                <span>💡 <em>Settings se aap jab chahein demo data dubara la sakte hain.</em></span>
-              </div>
-            </div>
-          </div>
-
-          <!-- Unified Single Financial Ledger Strip (Khatabook Style) -->
+          <!-- Executive Financial Ledger Strip (Fintech Native Standard) -->
           <div class="ledger-summary-strip">
             <div class="ledger-main-cols">
               <div class="ledger-kpi-col">
-                <span class="ledger-label">KUL AAYA (COLLECTED)</span>
-                <div class="ledger-val text-success" id="stat-collected">₹0</div>
-                <span class="ledger-sub" id="stat-collected-sub">0 Rooms Clear</span>
+                <span class="ledger-label" data-i18n="stat_pending">KUL BAAKI (PENDING)</span>
+                <div class="ledger-val text-danger" id="stat-pending">₹0</div>
+                <span class="ledger-sub" id="stat-pending-sub">0 Room Pending</span>
               </div>
 
               <div class="ledger-divider"></div>
 
               <div class="ledger-kpi-col">
-                <span class="ledger-label">KUL BAAKI (PENDING)</span>
-                <div class="ledger-val text-danger" id="stat-pending">₹0</div>
-                <span class="ledger-sub" id="stat-pending-sub">0 Room Pending</span>
+                <span class="ledger-label" data-i18n="stat_collected">KUL AAYA (COLLECTED)</span>
+                <div class="ledger-val text-success" id="stat-collected">₹0</div>
+                <span class="ledger-sub" id="stat-collected-sub">0 Rooms Clear</span>
               </div>
 
-              <button type="button" class="ledger-report-btn" onclick="switchView('reports')" title="View Monthly Audit">
-                <span>Report</span>
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-                  <polyline points="9 18 15 12 9 6"></polyline>
-                </svg>
+              <button type="button" class="btn-ledger-add" onclick="openAddTenantModal()" title="+ Naya Room Add Karein">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                <span>+ Room</span>
               </button>
             </div>
 
@@ -466,25 +318,9 @@
                 <span id="dashboard-collection-rooms">0/0 Rooms Clear</span>
               </div>
             </div>
-
-            <!-- Quick Action Shortcuts -->
-            <div class="ledger-quick-actions">
-              <button type="button" class="lqa-btn" onclick="openAddTenantModal()">
-                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
-                <span>+ Room</span>
-              </button>
-              <button type="button" class="lqa-btn" onclick="switchView('calculator')">
-                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
-                <span>Bijli Calc</span>
-              </button>
-              <button type="button" class="lqa-btn" onclick="switchView('tenants')">
-                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle></svg>
-                <span>Rooms List</span>
-              </button>
-            </div>
           </div>
 
-          <!-- Search & Filter Controls (Clean Native App Bar) -->
+          <!-- Single Smooth Native Search & Filter Controls -->
           <div class="ledger-controls-row">
             <div class="ledger-search-box">
               <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -500,111 +336,26 @@
             <!-- Segmented Filter Tabs -->
             <div class="ledger-tabs">
               <button type="button" class="ledger-tab active" data-filter="all" onclick="setFilter('all')">
-                Sabhi (<span id="count-all">0</span>)
+                <span data-i18n="tab_all">Sabhi</span> (<span id="count-all">0</span>)
               </button>
               <button type="button" class="ledger-tab tab-pending" data-filter="pending" onclick="setFilter('pending')">
-                Baaki (<span id="count-pending">0</span>)
+                <span data-i18n="tab_pending">Baaki</span> (<span id="count-pending">0</span>)
               </button>
               <button type="button" class="ledger-tab tab-partial" data-filter="partial" onclick="setFilter('partial')">
-                <span data-i18n="tab_partial">आधा जमा</span> (<span id="count-partial">0</span>)
+                <span data-i18n="tab_partial">Aadha</span> (<span id="count-partial">0</span>)
               </button>
               <button type="button" class="ledger-tab tab-paid" data-filter="paid" onclick="setFilter('paid')">
-                Jama (<span id="count-paid">0</span>)
+                <span data-i18n="tab_paid">Jama</span> (<span id="count-paid">0</span>)
               </button>
               <button type="button" class="ledger-tab tab-vacant" data-filter="vacant" onclick="setFilter('vacant')">
-                Khali (<span id="count-vacant">0</span>)
+                <span data-i18n="tab_vacant">Khali</span> (<span id="count-vacant">0</span>)
               </button>
             </div>
           </div>
 
-          <!-- Rooms / Tenant Cards Grid (Direct Hero of the Page) -->
+          <!-- Rooms / Tenant Cards Grid -->
           <div class="rooms-ledger-list" id="tenants-card-container">
             <!-- Dynamically populated room cards -->
-          </div>
-        </section>
-
-        <!-- ==========================================
-             SCREEN 2: ROOMS & TENANTS (Dedicated Directory)
-             ========================================== -->
-        <section id="view-tenants" class="view-screen">
-          <!-- Professional Tenants & Rooms Summary Strip (Fintech Ledger Standard) -->
-          <div class="tenants-summary-strip">
-            <div class="ts-col ts-col-clickable" onclick="setTenantsScreenFilter('all')"
-              title="Click: Sabhi Rooms Dekhein">
-              <div class="ts-header">
-                <span class="ts-dot ts-dot-blue"></span>
-                <span class="ts-label">ROOMS</span>
-              </div>
-              <strong class="ts-val" id="tenants-summary-total">0</strong>
-              <span class="ts-sub" id="tenants-summary-total-sub">0 Units Listed</span>
-            </div>
-
-            <div class="ledger-divider"></div>
-
-            <div class="ts-col ts-col-clickable" onclick="setTenantsScreenFilter('occupied')"
-              title="Click: Occupied Rooms Filter Karein">
-              <div class="ts-header">
-                <span class="ts-dot ts-dot-success"></span>
-                <span class="ts-label">OCCUPIED</span>
-              </div>
-              <strong class="ts-val text-success" id="tenants-summary-occupied">0</strong>
-              <span class="ts-sub text-success" id="tenants-summary-occ-sub">0% Occupancy</span>
-            </div>
-
-            <div class="ledger-divider"></div>
-
-            <div class="ts-col ts-col-clickable" onclick="setTenantsScreenFilter('vacant')"
-              title="Click: Khali Rooms Filter Karein">
-              <div class="ts-header">
-                <span class="ts-dot ts-dot-amber"></span>
-                <span class="ts-label">VACANT</span>
-              </div>
-              <strong class="ts-val text-muted" id="tenants-summary-vacant">0</strong>
-              <span class="ts-sub" id="tenants-summary-vac-sub">0 Ready to Rent</span>
-            </div>
-
-            <div class="ledger-divider"></div>
-
-            <div class="ts-col ts-col-clickable ts-col-rent" onclick="switchView('reports')"
-              title="Click: Monthly Audit & Income Dekhein">
-              <div class="ts-header">
-                <span class="ts-dot ts-dot-emerald"></span>
-                <span class="ts-label">TOTAL RENT</span>
-              </div>
-              <strong class="ts-val text-primary" id="tenants-summary-rent">₹0</strong>
-              <span class="ts-sub" id="tenants-summary-rent-sub">Monthly Potential</span>
-            </div>
-          </div>
-
-          <!-- Search & Filter Controls -->
-          <div class="ledger-controls-row">
-            <div class="ledger-search-box">
-              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <circle cx="11" cy="11" r="8"></circle>
-                <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-              </svg>
-              <input type="text" id="tenants-screen-search" placeholder="Search room no, tenant, phone..."
-                oninput="handleTenantsSearch(this.value)">
-            </div>
-            <div class="ledger-tabs">
-              <button type="button" class="ledger-tab active" data-tfilter="all"
-                onclick="setTenantsScreenFilter('all')">
-                Sabhi (<span id="tcount-all">0</span>)
-              </button>
-              <button type="button" class="ledger-tab tab-paid" data-tfilter="occupied"
-                onclick="setTenantsScreenFilter('occupied')">
-                Occupied (<span id="tcount-occupied">0</span>)
-              </button>
-              <button type="button" class="ledger-tab tab-vacant" data-tfilter="vacant"
-                onclick="setTenantsScreenFilter('vacant')">
-                Khali (<span id="tcount-vacant">0</span>)
-              </button>
-            </div>
-          </div>
-
-          <!-- Rooms Directory Grid -->
-          <div class="rooms-ledger-list" id="all-tenants-container">
-            <!-- Dynamically populated via renderTenantsView() -->
           </div>
         </section>
 
@@ -617,6 +368,17 @@
               <h2 class="screen-heading">Bijli Bill Calculator</h2>
               <p class="screen-subtext">Meter reading darj karein, automatic bill calculate karein aur WhatsApp notice
                 bhejein</p>
+            </div>
+          </div>
+
+          <!-- Fast Room-by-Room Meter Reading Board -->
+          <div class="quick-meter-board-section">
+            <div class="qmb-header">
+              <span class="qmb-title">⚡ Sabhi Rooms Ki Nayi Meter Reading (Fast Entry)</span>
+              <span class="qmb-badge">Rate: ₹<span id="qmb-rate-val">8</span>/u</span>
+            </div>
+            <div class="quick-meter-grid" id="quick-meter-container">
+              <!-- Dynamically populated via renderQuickMeterBoard() -->
             </div>
           </div>
 
@@ -765,294 +527,202 @@
         <section id="view-history" class="view-screen">
           <div class="screen-title-bar">
             <div>
-              <h2 class="screen-heading">Payment Records & Khata</h2>
-              <p class="screen-subtext">Kiraya receipts aur jama bhugtan ka pura hisab</p>
+              <h2 class="screen-heading" data-i18n="nav_history">किराया खाता &amp; रिपोर्ट</h2>
+              <p class="screen-subtext">Receipts, purana hisab aur monthly audit report</p>
             </div>
-            <button class="btn btn-secondary btn-sm" onclick="exportDataToJSON()">
-              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
-                <polyline points="7 10 12 15 17 10"></polyline>
-                <line x1="12" y1="15" x2="12" y2="3"></line>
-              </svg>
-              <span>Export JSON</span>
-            </button>
-          </div>
-
-          <!-- Khata Sub-Screen Switcher (Receipts vs Monthly Report) -->
-          <div class="khata-subnav-pills">
-            <button class="khata-pill active" onclick="switchView('history')">Payment Receipts (रसीदें)</button>
-            <button class="khata-pill" onclick="switchView('reports')">Monthly Report & Audit (मासिक रिपोर्ट)</button>
-          </div>
-
-          <!-- History Search & Stats Bar -->
-          <div class="history-controls-bar">
-            <div class="search-input-wrap">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <circle cx="11" cy="11" r="8"></circle>
-                <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-              </svg>
-              <input type="text" id="history-search" placeholder="Receipt no, tenant name search karein..."
-                oninput="handleHistorySearch(this.value)">
-            </div>
-            <div class="history-total-pill">
-              Total Logged: <strong id="history-total-sum" style="color: #10B981;">₹0</strong>
-            </div>
-          </div>
-
-          <!-- Desktop Table (visible on desktop) -->
-          <div class="history-desktop-table">
-            <table class="data-table" id="history-table">
-              <thead>
-                <tr>
-                  <th>Date</th>
-                  <th>Receipt No.</th>
-                  <th>Room / Unit</th>
-                  <th>Tenant Name</th>
-                  <th>Billing Month</th>
-                  <th>Amount Paid</th>
-                  <th>Payment Mode</th>
-                  <th>Official Receipt</th>
-                </tr>
-              </thead>
-              <tbody id="history-table-body">
-                <!-- Injected rows -->
-              </tbody>
-            </table>
-          </div>
-
-          <!-- Mobile Native Transaction Cards (visible on mobile) -->
-          <div class="history-mobile-cards" id="history-mobile-cards">
-            <!-- Dynamically populated mobile transaction cards -->
-          </div>
-        </section>
-
-        <!-- ==========================================
-             SCREEN: MONTHLY REPORT & PROPERTY AUDIT
-             ========================================== -->
-        <section id="view-reports" class="view-screen">
-          <div class="screen-title-bar">
-            <div>
-              <h2 class="screen-heading">Monthly Report & Property Audit</h2>
-              <p class="screen-subtext">Kul collection, bijli audit, Room-war live sthiti aur shuddh bachat</p>
-            </div>
-            <div style="display: flex; gap: 8px; flex-wrap: wrap;">
-              <button class="btn btn-secondary btn-sm" onclick="printMonthlyReport()">
+            <div style="display: flex; gap: 8px;">
+              <button class="btn btn-secondary btn-sm" onclick="exportDataToJSON()" title="Export JSON Backup">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                  <polyline points="7 10 12 15 17 10"></polyline>
+                  <line x1="12" y1="15" x2="12" y2="3"></line>
+                </svg>
+                <span>Backup</span>
+              </button>
+              <button class="btn btn-primary btn-sm" onclick="printMonthlyReport()" title="Print / PDF">
                 <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                   <polyline points="6 9 6 2 18 2 18 9"></polyline>
                   <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path>
                   <rect x="6" y="14" width="12" height="8"></rect>
                 </svg>
-                <span>Print / PDF</span>
-              </button>
-              <button class="btn btn-whatsapp btn-sm" onclick="shareWhatsAppMonthlyReport()">
-                <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor">
-                  <path
-                    d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91C2.13 13.66 2.59 15.36 3.45 16.86L2.05 22L7.3 20.62C8.75 21.41 10.38 21.83 12.04 21.83C17.5 21.83 21.95 17.38 21.95 11.92C21.95 9.27 20.92 6.78 19.05 4.91C17.18 3.03 14.69 2 12.04 2ZM12.05 20.18C10.57 20.18 9.11 19.79 7.83 19.02L7.53 18.84L4.41 19.66L5.24 16.61L5.05 16.3C4.21 14.96 3.77 13.46 3.77 11.91C3.77 7.36 7.48 3.65 12.04 3.65C14.25 3.65 16.33 4.51 17.89 6.07C19.45 7.63 20.31 9.71 20.31 11.92C20.31 16.48 16.6 20.18 12.05 20.18ZM16.58 14.43C16.33 14.31 15.11 13.71 14.88 13.62C14.65 13.54 14.48 13.5 14.31 13.75C14.14 14 13.65 14.57 13.5 14.74C13.35 14.91 13.2 14.93 12.95 14.81C12.7 14.69 11.89 14.42 10.93 13.57C10.18 12.91 9.68 12.09 9.53 11.84C9.38 11.59 9.51 11.46 9.64 11.34C9.75 11.23 9.88 11.06 10.01 10.91C10.13 10.76 10.17 10.65 10.25 10.49C10.33 10.32 10.29 10.18 10.23 10.06C10.17 9.93 9.68 8.73 9.48 8.24C9.28 7.76 9.08 7.82 8.93 7.81C8.79 7.81 8.62 7.81 8.45 7.81C8.28 7.81 8.01 7.87 7.78 8.12C7.55 8.37 6.9 8.98 6.9 10.22C6.9 11.46 7.8 12.66 7.93 12.83C8.05 13 9.71 15.55 12.24 16.64C12.84 16.9 13.31 17.06 13.68 17.18C14.28 17.37 14.83 17.34 15.26 17.28C15.74 17.21 16.74 16.68 16.95 16.09C17.16 15.5 17.16 15 17.1 14.9C17.04 14.8 16.87 14.55 16.58 14.43Z" />
-                </svg>
-                <span>WhatsApp Summary</span>
+                <span>Print PDF</span>
               </button>
             </div>
           </div>
 
-          <!-- Khata Sub-Screen Switcher -->
+          <!-- Khata Sub-Screen Segmented Switcher (Receipts vs Monthly Report) -->
           <div class="khata-subnav-pills">
-            <button class="khata-pill" onclick="switchView('history')">Payment Receipts (रसीदें)</button>
-            <button class="khata-pill active" onclick="switchView('reports')">Monthly Report & Audit (मासिक
-              रिपोर्ट)</button>
+            <button type="button" class="khata-pill active" id="btn-khata-tab-receipts" onclick="switchKhataSubTab('receipts')">🧾 Payment Receipts (रसीदें)</button>
+            <button type="button" class="khata-pill" id="btn-khata-tab-report" onclick="switchKhataSubTab('report')">📊 Monthly Audit &amp; Reports (मासिक रिपोर्ट)</button>
           </div>
 
-          <!-- Billing Period & Cycle Selector Bar -->
-          <div class="report-cycle-bar">
-            <div class="cycle-input-wrapper">
-              <span class="cycle-icon">📅</span>
-              <select id="report-select-month" class="select-app select-cycle" onchange="onReportFilterChanged()">
-                <option value="October 2026">October 2026 (चालू माह)</option>
-                <option value="September 2026">September 2026</option>
-                <option value="August 2026">August 2026</option>
-              </select>
-            </div>
-            <div class="cycle-tag-badge">
-              Active Billing Cycle
-            </div>
-          </div>
-
-          <!-- Executive Financial KPI Cards -->
-          <div class="report-kpi-grid">
-            <div class="kpi-card kpi-indigo">
-              <div class="kpi-header">
-                <span class="kpi-title">Gross Expected • संभावित</span>
-                <span class="kpi-badge">Potential</span>
+          <!-- SUB-VIEW 1: Payment Receipts Ledger -->
+          <div id="khata-subview-receipts" class="khata-subview-panel">
+            <!-- History Search & Stats Bar -->
+            <div class="history-controls-bar">
+              <div class="search-input-wrap">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <circle cx="11" cy="11" r="8"></circle>
+                  <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                </svg>
+                <input type="text" id="history-search" placeholder="Receipt no, tenant name search karein..."
+                  oninput="handleHistorySearch(this.value)">
               </div>
-              <div class="kpi-value" id="kpi-gross-expected">₹0</div>
-              <div class="kpi-sub" id="kpi-gross-sub">Rent: ₹0 + Bijli: ₹0</div>
-            </div>
-
-            <div class="kpi-card kpi-green">
-              <div class="kpi-header">
-                <span class="kpi-title">Total Collected • कुल जमा</span>
-                <span class="kpi-badge" id="kpi-collection-pct">0% Paid</span>
-              </div>
-              <div class="kpi-value" id="kpi-total-collected" style="color: #10B981;">₹0</div>
-              <div class="kpi-sub" id="kpi-collected-sub">Received across 0 units</div>
-            </div>
-
-            <div class="kpi-card kpi-amber">
-              <div class="kpi-header">
-                <span class="kpi-title">Total Pending • बकाया राशि</span>
-                <span class="kpi-badge kpi-badge-amber" id="kpi-pending-count">0 Rooms</span>
-              </div>
-              <div class="kpi-value" id="kpi-total-pending" style="color: #F59E0B;">₹0</div>
-              <div class="kpi-sub" id="kpi-pending-sub">0 units pending</div>
-            </div>
-
-            <div class="kpi-card kpi-emerald">
-              <div class="kpi-header">
-                <span class="kpi-title">Net Profit • शुद्ध बचत</span>
-                <span class="kpi-badge"
-                  style="background:rgba(52,211,153,0.15); color:#34D399; border:1px solid rgba(52,211,153,0.3);">In-Hand</span>
-              </div>
-              <div class="kpi-value" id="kpi-net-profit" style="color: #34D399;">₹0</div>
-              <div class="kpi-sub" id="kpi-expenses-sub">After ₹0 Building Expenses</div>
-            </div>
-          </div>
-
-          <!-- Mobile Accordion Toggle for Meter & Utility Streams -->
-          <button class="streams-accordion-toggle" id="btn-toggle-streams" onclick="toggleRevenueStreams()">
-            <span>⚡ View Electricity & Water Meter Audit (बिजली व पानी रिकवरी)</span>
-            <span class="streams-toggle-chevron">▾</span>
-          </button>
-
-          <!-- Revenue Stream Progress Cards (Rent vs Bijli vs Maint) -->
-          <div class="report-streams-grid" id="report-streams-container">
-            <div class="stream-card">
-              <div class="stream-top">
-                <span class="stream-title">🏠 Base Rent Recovery</span>
-                <strong id="stream-rent-stat">₹0 / ₹0</strong>
-              </div>
-              <div class="app-progress-track">
-                <div class="app-progress-fill" id="stream-rent-bar" style="width: 0%;"></div>
-              </div>
-              <span class="stream-hint" id="stream-rent-hint">0% Kiraya Collect Ho Gaya</span>
-            </div>
-
-            <div class="stream-card">
-              <div class="stream-top">
-                <span class="stream-title">⚡ Electricity Meter Recovery</span>
-                <strong id="stream-elec-stat">₹0 / ₹0</strong>
-              </div>
-              <div class="app-progress-track">
-                <div class="app-progress-fill" id="stream-elec-bar"
-                  style="width: 0%; background: linear-gradient(90deg, #F59E0B, #10B981);"></div>
-              </div>
-              <span class="stream-hint" id="stream-elec-hint">Total 0 Units Consumed</span>
-            </div>
-
-            <div class="stream-card">
-              <div class="stream-top">
-                <span class="stream-title">💧 Water & Maintenance</span>
-                <strong id="stream-maint-stat">₹0 / ₹0</strong>
-              </div>
-              <div class="app-progress-track">
-                <div class="app-progress-fill" id="stream-maint-bar"
-                  style="width: 0%; background: linear-gradient(90deg, #6366F1, #38BDF8);"></div>
-              </div>
-              <span class="stream-hint" id="stream-maint-hint">0% Recovery</span>
-            </div>
-          </div>
-
-          <!-- ==========================================
-               ROOM-WISE LIVE BREAKDOWN (WITH FILTER BAR DIRECTLY ON TOP!)
-               ========================================== -->
-          <div class="report-breakdown-wrapper">
-            <div class="report-section-header">
-              <div style="display:flex; align-items:center; gap:8px;">
-                <h3 class="report-section-title">🏢 Room-Wise Live Breakdown • कमरा-वार लाइव हिसाब</h3>
-                <span class="report-live-pill">● LIVE</span>
-              </div>
-              <div style="font-size:0.8rem; color:var(--text-muted);" id="report-unit-count-text">Showing 0 rooms</div>
-            </div>
-
-            <!-- Integrated Filter Controls Bar DIRECTLY ABOVE ROOMS -->
-            <div class="report-controls-card">
-              <div class="report-filters-flex">
-                <div class="filter-prop-box">
-                  <label for="report-select-property" class="filter-label">Property (इमारत)</label>
-                  <select id="report-select-property" class="select-app" onchange="onReportFilterChanged()">
-                    <option value="all">All Properties (सभी भवन)</option>
-                  </select>
-                </div>
-                <!-- Native App Filter Chips for Status -->
-                <div class="filter-status-box">
-                  <label class="filter-label">Status Filter (कमरे की स्थिति)</label>
-                  <div class="report-status-chips">
-                    <button type="button" class="report-chip active" data-status="all"
-                      onclick="selectReportStatusChip('all')">
-                      <span>Sabhi</span> <span class="chip-count" id="chip-count-all">0</span>
-                    </button>
-                    <button type="button" class="report-chip chip-pending" data-status="pending"
-                      onclick="selectReportStatusChip('pending')">
-                      <span>Baaki</span> <span class="chip-count" id="chip-count-pending">0</span>
-                    </button>
-                    <button type="button" class="report-chip chip-paid" data-status="paid"
-                      onclick="selectReportStatusChip('paid')">
-                      <span>Jama</span> <span class="chip-count" id="chip-count-paid">0</span>
-                    </button>
-                    <button type="button" class="report-chip chip-vacant" data-status="vacant"
-                      onclick="selectReportStatusChip('vacant')">
-                      <span>Khali</span> <span class="chip-count" id="chip-count-vacant">0</span>
-                    </button>
-                  </div>
-                  <!-- Hidden synced select for full JS backwards compatibility -->
-                  <select id="report-select-status" style="display: none;" onchange="onReportFilterChanged()">
-                    <option value="all">All Units (सभी कमरा)</option>
-                    <option value="pending">Pending / Defaulters Only (बाकी वाले)</option>
-                    <option value="paid">Paid Only (जमा वाले)</option>
-                    <option value="vacant">Vacant Rooms (खाली कमरा)</option>
-                  </select>
-                </div>
+              <div class="history-total-pill">
+                Total Logged: <strong id="history-total-sum" style="color: #10B981;">₹0</strong>
               </div>
             </div>
 
-            <!-- Desktop Table View (Right Below Filters!) -->
-            <div class="report-desktop-table-wrap">
-              <table class="report-table">
+            <!-- Desktop Table (visible on desktop) -->
+            <div class="history-desktop-table">
+              <table class="data-table" id="history-table">
                 <thead>
                   <tr>
-                    <th>Room & Property</th>
-                    <th>Tenant & Move-in</th>
-                    <th>Meter (Prev ➔ Curr)</th>
-                    <th>Rent + Bijli + Maint</th>
-                    <th>Total Due</th>
-                    <th>Paid / Balance</th>
-                    <th>Status</th>
-                    <th>Actions</th>
+                    <th>Date</th>
+                    <th>Receipt No.</th>
+                    <th>Room / Unit</th>
+                    <th>Tenant Name</th>
+                    <th>Billing Month</th>
+                    <th>Amount Paid</th>
+                    <th>Payment Mode</th>
+                    <th>Official Receipt</th>
                   </tr>
                 </thead>
-                <tbody id="report-table-body">
-                  <!-- Injected via renderMonthlyReportView() -->
+                <tbody id="history-table-body">
+                  <!-- Injected rows -->
                 </tbody>
               </table>
             </div>
 
-            <!-- Mobile Cards View (Right Below Filters!) -->
-            <div class="report-mobile-cards" id="report-mobile-cards">
-              <!-- Injected via renderMonthlyReportView() -->
+            <!-- Mobile Native Transaction Cards (visible on mobile) -->
+            <div class="history-mobile-cards" id="history-mobile-cards">
+              <!-- Dynamically populated mobile transaction cards -->
             </div>
           </div>
 
-          <!-- Building Expenses & Maintenance Section -->
-          <div class="report-expenses-box">
-            <div class="expenses-header">
-              <div>
-                <h4 class="expenses-title">Building Expenses & Maintenance</h4>
-                <p style="font-size:0.75rem; color:var(--text-muted); margin:0;">Safai, motor pump, electrician ya
-                  repair kharche jisse shuddh bachat pata chale</p>
-              </div>
-              <button class="btn btn-secondary btn-sm" onclick="openAddExpenseModal()">+ Add Expense</button>
+          <!-- SUB-VIEW 2: Monthly Audit & Property Report -->
+          <div id="khata-subview-report" class="khata-subview-panel" style="display: none;">
+            <div style="display: flex; gap: 8px; justify-content: flex-end; margin-bottom: 12px; flex-wrap: wrap;">
+              <button class="btn btn-whatsapp btn-sm" onclick="shareWhatsAppMonthlyReport()">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91C2.13 13.66 2.59 15.36 3.45 16.86L2.05 22L7.3 20.62C8.75 21.41 10.38 21.83 12.04 21.83C17.5 21.83 21.95 17.38 21.95 11.92C21.95 9.27 20.92 6.78 19.05 4.91C17.18 3.03 14.69 2 12.04 2ZM12.05 20.18C10.57 20.18 9.11 19.79 7.83 19.02L7.53 18.84L4.41 19.66L5.24 16.61L5.05 16.3C4.21 14.96 3.77 13.46 3.77 11.91C3.77 7.36 7.48 3.65 12.04 3.65C14.25 3.65 16.33 4.51 17.89 6.07C19.45 7.63 20.31 9.71 20.31 11.92C20.31 16.48 16.6 20.18 12.05 20.18Z" />
+                </svg>
+                <span>WhatsApp Summary Report</span>
+              </button>
             </div>
 
-            <div class="expenses-list" id="report-expenses-list">
-              <!-- Injected expenses list -->
+            <!-- Billing Period & Cycle Selector Bar -->
+            <div class="report-cycle-bar">
+              <div class="cycle-input-wrapper">
+                <span class="cycle-icon">📅</span>
+                <select id="report-select-month" class="select-app select-cycle" onchange="onReportFilterChanged()">
+                  <option value="October 2026">October 2026 (चालू माह)</option>
+                  <option value="September 2026">September 2026</option>
+                  <option value="August 2026">August 2026</option>
+                </select>
+              </div>
+              <div class="cycle-tag-badge">
+                Active Billing Cycle
+              </div>
+            </div>
+
+            <!-- Executive Financial KPI Cards -->
+            <div class="report-kpi-grid">
+              <div class="kpi-card kpi-indigo">
+                <div class="kpi-header">
+                  <span class="kpi-title">Gross Expected • संभावित</span>
+                  <span class="kpi-badge">Potential</span>
+                </div>
+                <div class="kpi-value" id="kpi-gross-expected">₹0</div>
+                <div class="kpi-sub" id="kpi-gross-sub">Rent: ₹0 + Bijli: ₹0</div>
+              </div>
+
+              <div class="kpi-card kpi-green">
+                <div class="kpi-header">
+                  <span class="kpi-title">Total Collected • कुल जमा</span>
+                  <span class="kpi-badge" id="kpi-collection-pct">0% Paid</span>
+                </div>
+                <div class="kpi-value" id="kpi-total-collected" style="color: #10B981;">₹0</div>
+                <div class="kpi-sub" id="kpi-collected-sub">Received across 0 units</div>
+              </div>
+
+              <div class="kpi-card kpi-amber">
+                <div class="kpi-header">
+                  <span class="kpi-title">Net Pending • कुल बाकी</span>
+                  <span class="kpi-badge" style="background: rgba(239, 68, 68, 0.2); color: #F87171;">Outstanding</span>
+                </div>
+                <div class="kpi-value" id="kpi-net-pending" style="color: #F87171;">₹0</div>
+                <div class="kpi-sub" id="kpi-pending-sub">0 units with balance</div>
+              </div>
+
+              <div class="kpi-card kpi-blue">
+                <div class="kpi-header">
+                  <span class="kpi-title">Units Consumed • कुल बिजली</span>
+                  <span class="kpi-badge">Meter</span>
+                </div>
+                <div class="kpi-value" id="kpi-total-units">0 u</div>
+                <div class="kpi-sub" id="kpi-elec-bill">Total: ₹0</div>
+              </div>
+            </div>
+
+            <!-- Filter Strip & Room-wise Audit Table -->
+            <div class="report-table-box">
+              <div class="report-filters-row">
+                <div style="display: flex; align-items: center; gap: 8px;">
+                  <label for="report-select-property" style="font-size: 0.8rem; color: var(--text-muted);">Property:</label>
+                  <select id="report-select-property" class="select-app select-sm" onchange="onReportFilterChanged()">
+                    <option value="all">All Properties (सभी)</option>
+                  </select>
+                </div>
+
+                <div class="report-status-chips">
+                  <button type="button" class="report-chip active" data-status="all" onclick="setReportStatusFilter('all')">Sabhi</button>
+                  <button type="button" class="report-chip" data-status="pending" onclick="setReportStatusFilter('pending')">Pending</button>
+                  <button type="button" class="report-chip" data-status="paid" onclick="setReportStatusFilter('paid')">Clear</button>
+                </div>
+              </div>
+
+              <!-- Desktop Table -->
+              <div class="report-desktop-table">
+                <table class="data-table" id="report-table">
+                  <thead>
+                    <tr>
+                      <th>Room</th>
+                      <th>Kirayedar</th>
+                      <th>Base Rent</th>
+                      <th>Meter (Old → New)</th>
+                      <th>Units</th>
+                      <th>Bijli Bill</th>
+                      <th>Extra / Maint</th>
+                      <th>Total Due</th>
+                      <th>Status</th>
+                    </tr>
+                  </thead>
+                  <tbody id="report-table-body">
+                    <!-- Injected via renderMonthlyReportView() -->
+                  </tbody>
+                </table>
+              </div>
+
+              <!-- Mobile Card Stack -->
+              <div class="report-mobile-cards" id="report-mobile-cards">
+                <!-- Injected via renderMonthlyReportView() -->
+              </div>
+            </div>
+
+            <!-- Building Expenses & Maintenance Section -->
+            <div class="report-expenses-box">
+              <div class="expenses-header">
+                <div>
+                  <h4 class="expenses-title">Building Expenses &amp; Maintenance</h4>
+                  <p style="font-size:0.75rem; color:var(--text-muted); margin:0;">Safai, motor pump, electrician ya repair kharche</p>
+                </div>
+                <button class="btn btn-secondary btn-sm" onclick="openAddExpenseModal()">+ Add Expense</button>
+              </div>
+
+              <div class="expenses-list" id="report-expenses-list">
+                <!-- Injected expenses list -->
+              </div>
             </div>
           </div>
         </section>
@@ -1249,51 +919,38 @@
   <nav class="app-bottom-nav" id="app-bottom-nav">
     <button class="bnav-tab active" id="bnav-dashboard" onclick="switchView('dashboard')">
       <div class="bnav-icon-wrap">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
           <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
           <polyline points="9 22 9 12 15 12 15 22"></polyline>
         </svg>
       </div>
-      <span class="bnav-title">Home</span>
-    </button>
-    <button class="bnav-tab" id="bnav-tenants" onclick="switchView('tenants')">
-      <div class="bnav-icon-wrap">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
-          <circle cx="9" cy="7" r="4"></circle>
-          <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
-          <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
-        </svg>
-      </div>
-      <span class="bnav-title">Rooms</span>
+      <span class="bnav-title" data-i18n="nav_dashboard">किराया</span>
     </button>
     <button class="bnav-tab" id="bnav-calculator" onclick="switchView('calculator')">
       <div class="bnav-icon-wrap">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
           <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
         </svg>
       </div>
-      <span class="bnav-title">Bijli</span>
+      <span class="bnav-title" data-i18n="nav_calculator">बिजली मीटर</span>
     </button>
     <button class="bnav-tab" id="bnav-history" onclick="switchView('history')">
       <div class="bnav-icon-wrap">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <circle cx="12" cy="12" r="10"></circle>
-          <polyline points="12 6 12 12 16 14"></polyline>
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+          <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+          <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
         </svg>
       </div>
-      <span class="bnav-title">Khata</span>
+      <span class="bnav-title" data-i18n="nav_history">खाता</span>
     </button>
     <button class="bnav-tab" id="bnav-settings" onclick="switchView('settings')">
       <div class="bnav-icon-wrap">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
           <circle cx="12" cy="12" r="3"></circle>
-          <path
-            d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z">
-          </path>
+          <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
         </svg>
       </div>
-      <span class="bnav-title">Settings</span>
+      <span class="bnav-title" data-i18n="nav_settings">सेटिंग्स</span>
     </button>
   </nav>
 

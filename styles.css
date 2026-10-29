@@ -2307,7 +2307,7 @@ input:focus, select:focus, textarea:focus {
   -webkit-backdrop-filter: blur(20px);
   border-top: 1px solid rgba(255, 255, 255, 0.08);
   z-index: 800;
-  grid-template-columns: repeat(5, 1fr);
+  grid-template-columns: repeat(4, 1fr);
   align-items: center;
   justify-items: center;
   padding: 0 4px;
@@ -5671,4 +5671,343 @@ button:active, .btn:active, .btn-rlc:active, .bnav-tab:active, .app-fab:active, 
   background: rgba(99, 102, 241, 0.18);
   border-color: rgba(99, 102, 241, 0.35);
   color: #A5B4FC;
+}
+
+/* ==========================================================================
+   PRODUCTION READY NATIVE APP ENHANCEMENTS (4-TAB SYSTEM)
+   ========================================================================== */
+
+/* Header Avatar Sync Dot */
+.header-avatar-btn {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.avatar-sync-dot {
+  position: absolute;
+  top: -2px;
+  right: -2px;
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  border: 1.5px solid #090D16;
+  background: #64748B;
+  transition: all 0.25s ease;
+}
+
+.avatar-sync-dot.connected,
+.avatar-sync-dot.synced {
+  background: #10B981;
+  box-shadow: 0 0 6px rgba(16, 185, 129, 0.6);
+}
+
+.avatar-sync-dot.syncing {
+  background: #F59E0B;
+  animation: pulse-sync 1s infinite alternate;
+}
+
+.avatar-sync-dot.error {
+  background: #EF4444;
+}
+
+@keyframes pulse-sync {
+  from { opacity: 0.4; transform: scale(0.9); }
+  to { opacity: 1; transform: scale(1.15); }
+}
+
+/* Ledger Summary Add Room Button */
+.btn-ledger-add {
+  height: 38px;
+  padding: 0 14px;
+  background: linear-gradient(135deg, #6366F1 0%, #4F46E5 100%);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 10px;
+  color: white;
+  font-size: 0.82rem;
+  font-weight: 700;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(99, 102, 241, 0.35);
+  transition: all 0.18s cubic-bezier(0.16, 1, 0.3, 1);
+  white-space: nowrap;
+}
+
+.btn-ledger-add:active {
+  transform: scale(0.96);
+}
+
+/* Room Ledger Card - Streamlined 2-Action Ergonomics */
+.room-ledger-card .rlc-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.room-ledger-card .rlc-actions button {
+  height: 38px;
+  font-size: 0.82rem;
+  font-weight: 700;
+  border-radius: 10px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.btn-rlc-whatsapp {
+  flex: 1.2;
+  background: #128C7E !important;
+  color: #FFFFFF !important;
+  border: 1px solid rgba(37, 211, 102, 0.3) !important;
+  box-shadow: 0 2px 8px rgba(18, 140, 126, 0.25) !important;
+}
+
+.btn-rlc-whatsapp:active {
+  background: #075E54 !important;
+  transform: scale(0.97);
+}
+
+.btn-rlc-pay {
+  flex: 1;
+  background: linear-gradient(135deg, #4F46E5 0%, #4338CA 100%) !important;
+  color: #FFFFFF !important;
+  border: 1px solid rgba(99, 102, 241, 0.4) !important;
+  box-shadow: 0 2px 8px rgba(79, 70, 229, 0.3) !important;
+}
+
+.btn-rlc-pay:active {
+  transform: scale(0.97);
+}
+
+.btn-rlc-receipt {
+  flex: 1;
+  background: rgba(255, 255, 255, 0.08) !important;
+  color: #E2E8F0 !important;
+  border: 1px solid rgba(255, 255, 255, 0.14) !important;
+}
+
+.btn-rlc-icon {
+  width: 38px !important;
+  height: 38px !important;
+  flex: 0 0 38px !important;
+  background: rgba(255, 255, 255, 0.05) !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  color: #94A3B8 !important;
+  border-radius: 10px !important;
+  padding: 0 !important;
+}
+
+.btn-rlc-icon:active {
+  background: rgba(255, 255, 255, 0.12) !important;
+  color: #FFFFFF !important;
+}
+
+/* Fast Meter Reading Board on Bijli Tab */
+.quick-meter-board-section {
+  margin-bottom: 20px;
+  background: linear-gradient(135deg, #131B2E 0%, #0F172A 100%);
+  border: 1px solid rgba(99, 102, 241, 0.2);
+  border-radius: 14px;
+  padding: 14px;
+}
+
+.qmb-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.qmb-title {
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: #F8FAFC;
+}
+
+.qmb-badge {
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: #FBBF24;
+  background: rgba(245, 158, 11, 0.15);
+  border: 1px solid rgba(245, 158, 11, 0.3);
+  padding: 2px 8px;
+  border-radius: 6px;
+}
+
+.quick-meter-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 10px;
+}
+
+.qmb-card {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 10px;
+  padding: 10px 12px;
+  transition: all 0.15s ease;
+}
+
+.qmb-card:hover {
+  border-color: rgba(99, 102, 241, 0.35);
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.qmb-card-top {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.qmb-room-badge {
+  font-size: 0.76rem;
+  font-weight: 800;
+  color: #818CF8;
+  background: rgba(99, 102, 241, 0.15);
+  padding: 2px 7px;
+  border-radius: 5px;
+}
+
+.qmb-tenant-name {
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: #E2E8F0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.qmb-readings-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.qmb-col {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.qmb-lbl {
+  font-size: 0.72rem;
+  color: #94A3B8;
+  font-weight: 600;
+}
+
+.qmb-old-val {
+  font-size: 0.85rem;
+  color: #CBD5E1;
+  font-family: var(--font-display);
+}
+
+.qmb-arrow {
+  color: #64748B;
+  font-size: 0.8rem;
+}
+
+.qmb-curr-input {
+  width: 100%;
+  height: 32px;
+  background: #0B0F19;
+  border: 1px solid rgba(99, 102, 241, 0.35);
+  border-radius: 6px;
+  padding: 0 8px;
+  font-size: 0.86rem;
+  color: #F8FAFC;
+  font-weight: 700;
+  font-family: var(--font-display);
+}
+
+.qmb-curr-input:focus {
+  border-color: #6366F1;
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.25);
+}
+
+.qmb-card-bottom {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.qmb-calc-preview {
+  font-size: 0.76rem;
+  font-weight: 700;
+  color: #34D399;
+}
+
+.btn-qmb-save {
+  height: 28px;
+  padding: 0 10px;
+  background: #4F46E5;
+  border: none;
+  border-radius: 6px;
+  color: white;
+  font-size: 0.74rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.btn-qmb-save:active {
+  transform: scale(0.95);
+  background: #4338CA;
+}
+
+/* Khata Segmented Control Pills */
+.khata-subnav-pills {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 16px;
+  background: rgba(15, 23, 42, 0.6);
+  padding: 4px;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.khata-pill {
+  flex: 1;
+  height: 36px;
+  background: transparent;
+  border: none;
+  border-radius: 8px;
+  color: #94A3B8;
+  font-size: 0.8rem;
+  font-weight: 700;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  transition: all 0.18s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.khata-pill.active {
+  background: linear-gradient(135deg, #6366F1 0%, #4F46E5 100%);
+  color: #FFFFFF;
+  box-shadow: 0 2px 8px rgba(99, 102, 241, 0.35);
+}
+
+/* 4-Tab Bottom Nav Layout Fix */
+@media (max-width: 992px) {
+  .app-bottom-nav {
+    display: grid !important;
+    grid-template-columns: repeat(4, 1fr) !important;
+  }
 }

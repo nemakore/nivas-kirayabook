@@ -18,12 +18,10 @@ const TRANSLATIONS = {
     search_placeholder: "खोली क्र., भाडेकरू, फोन नंबर शोधा...",
 
     // Navigation
-    nav_dashboard: "डॅशबोर्ड",
-    nav_tenants: "खोल्या व भाडेकरू",
-    nav_calculator: "वीज बिल कॅल्क्युलेटर",
-    nav_reports: "मासिक अहवाल",
-    nav_history: "खतावणी / व्यवहार",
-    nav_settings: "मालक सेटिंग्ज",
+    nav_dashboard: "घरभाडे",
+    nav_calculator: "वीज मीटर",
+    nav_history: "खतावणी",
+    nav_settings: "सेटिंग्ज",
 
     // Dashboard KPIs & Tabs
     stat_collected: "एकूण जमा भाडे",
@@ -201,12 +199,10 @@ const TRANSLATIONS = {
     search_placeholder: "कमरा नं., किरायेदार, फोन नंबर सर्च करें...",
 
     // Navigation
-    nav_dashboard: "डैशबोर्ड",
-    nav_tenants: "कमरे व किरायेदार",
-    nav_calculator: "बिजली बिल कैलकुलेटर",
-    nav_reports: "मासिक रिपोर्ट",
-    nav_history: "खाता-बही / रिकॉर्ड",
-    nav_settings: "मालिक सेटिंग्स",
+    nav_dashboard: "किराया",
+    nav_calculator: "बिजली मीटर",
+    nav_history: "खाता",
+    nav_settings: "सेटिंग्स",
 
     // Dashboard KPIs & Tabs
     stat_collected: "कुल जमा किराया",
@@ -384,12 +380,10 @@ const TRANSLATIONS = {
     search_placeholder: "Search room no, tenant, phone...",
 
     // Navigation
-    nav_dashboard: "Dashboard",
-    nav_tenants: "Rooms & Tenants",
-    nav_calculator: "Electricity Calculator",
-    nav_reports: "Monthly Reports",
-    nav_history: "Payment Ledger",
-    nav_settings: "Owner Settings",
+    nav_dashboard: "Rent",
+    nav_calculator: "Electricity",
+    nav_history: "Ledger",
+    nav_settings: "Settings",
 
     // Dashboard KPIs & Tabs
     stat_collected: "Total Collected",
