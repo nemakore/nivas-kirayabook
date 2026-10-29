@@ -363,7 +363,7 @@
           <!-- Fast Room-by-Room Meter Reading Board -->
           <div class="quick-meter-board-section">
             <div class="qmb-header">
-              <span class="qmb-title">⚡ Sabhi Rooms Ki Nayi Meter Reading (Fast Entry)</span>
+              <span class="qmb-title" data-i18n="qmb_title">⚡ Sabhi Rooms Ki Nayi Meter Reading (Fast Entry)</span>
               <span class="qmb-badge">Rate: ₹<span id="qmb-rate-val">8</span>/u</span>
             </div>
             <div class="quick-meter-grid" id="quick-meter-container">
@@ -495,7 +495,7 @@
                     <path
                       d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91C2.13 13.66 2.59 15.36 3.45 16.86L2.05 22L7.3 20.62C8.75 21.41 10.38 21.83 12.04 21.83C17.5 21.83 21.95 17.38 21.95 11.92C21.95 9.27 20.92 6.78 19.05 4.91C17.18 3.03 14.69 2 12.04 2ZM12.05 20.18C10.57 20.18 9.11 19.79 7.83 19.02L7.53 18.84L4.41 19.66L5.24 16.61L5.05 16.3C4.21 14.96 3.77 13.46 3.77 11.91C3.77 7.36 7.48 3.65 12.04 3.65C14.25 3.65 16.33 4.51 17.89 6.07C19.45 7.63 20.31 9.71 20.31 11.92C20.31 16.48 16.6 20.18 12.05 20.18ZM16.58 14.43C16.33 14.31 15.11 13.71 14.88 13.62C14.65 13.54 14.48 13.5 14.31 13.75C14.14 14 13.65 14.57 13.5 14.74C13.35 14.91 13.2 14.93 12.95 14.81C12.7 14.69 11.89 14.42 10.93 13.57C10.18 12.91 9.68 12.09 9.53 11.84C9.38 11.59 9.51 11.46 9.64 11.34C9.75 11.23 9.88 11.06 10.01 10.91C10.13 10.76 10.17 10.65 10.25 10.49C10.33 10.32 10.29 10.18 10.23 10.06C10.17 9.93 9.68 8.73 9.48 8.24C9.28 7.76 9.08 7.82 8.93 7.81C8.79 7.81 8.62 7.81 8.45 7.81C8.28 7.81 8.01 7.87 7.78 8.12C7.55 8.37 6.9 8.98 6.9 10.22C6.9 11.46 7.8 12.66 7.93 12.83C8.05 13 9.71 15.55 12.24 16.64C12.84 16.9 13.31 17.06 13.68 17.18C14.28 17.37 14.83 17.34 15.26 17.28C15.74 17.21 16.74 16.68 16.95 16.09C17.16 15.5 17.16 15 17.1 14.9C17.04 14.8 16.87 14.55 16.58 14.43Z" />
                   </svg>
-                  <span>Send Bill on WhatsApp</span>
+                  <span data-i18n="calc_send_wa_btn">Send Bill on WhatsApp</span>
                 </button>
                 <button class="btn btn-primary btn-block" onclick="saveBillFromScreenCalc()">
                   <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
@@ -503,7 +503,7 @@
                     <polyline points="17 21 17 13 7 13 7 21"></polyline>
                     <polyline points="7 3 7 8 15 8"></polyline>
                   </svg>
-                  <span>Save Bill to Room Record</span>
+                  <span data-i18n="calc_save_bill_btn">Save Bill to Room Record</span>
                 </button>
               </div>
             </div>
@@ -517,7 +517,7 @@
           <div class="screen-title-bar">
             <div>
               <h2 class="screen-heading" data-i18n="nav_history">किराया खाता &amp; रिपोर्ट</h2>
-              <p class="screen-subtext">Receipts, purana hisab aur monthly audit report</p>
+              <p class="screen-subtext" data-i18n="khata_screen_sub">Receipts, purana hisab aur monthly audit report</p>
             </div>
             <div style="display: flex; gap: 8px;">
               <button class="btn btn-secondary btn-sm" onclick="exportDataToJSON()" title="Export JSON Backup">
@@ -541,8 +541,8 @@
 
           <!-- Khata Sub-Screen Segmented Switcher (Receipts vs Monthly Report) -->
           <div class="khata-subnav-pills">
-            <button type="button" class="khata-pill active" id="btn-khata-tab-receipts" onclick="switchKhataSubTab('receipts')">🧾 Payment Receipts (रसीदें)</button>
-            <button type="button" class="khata-pill" id="btn-khata-tab-report" onclick="switchKhataSubTab('report')">📊 Monthly Audit &amp; Reports (मासिक रिपोर्ट)</button>
+            <button type="button" class="khata-pill active" id="btn-khata-tab-receipts" onclick="switchKhataSubTab('receipts')" data-i18n="khata_tab_receipts">🧾 Payment Receipts</button>
+            <button type="button" class="khata-pill" id="btn-khata-tab-report" onclick="switchKhataSubTab('report')" data-i18n="khata_tab_report">📊 Monthly Audit &amp; Reports</button>
           </div>
 
           <!-- SUB-VIEW 1: Payment Receipts Ledger -->
@@ -554,11 +554,11 @@
                   <circle cx="11" cy="11" r="8"></circle>
                   <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
                 </svg>
-                <input type="text" id="history-search" placeholder="Receipt no, tenant name search karein..."
+                <input type="text" id="history-search" data-i18n-ph="khata_search_ph" placeholder="Receipt no, tenant name search karein..."
                   oninput="handleHistorySearch(this.value)">
               </div>
               <div class="history-total-pill">
-                Total Logged: <strong id="history-total-sum" style="color: #10B981;">₹0</strong>
+                <span data-i18n="khata_total_logged">Total Logged:</span> <strong id="history-total-sum" style="color: #10B981;">₹0</strong>
               </div>
             </div>
 
@@ -722,8 +722,8 @@
         <section id="view-settings" class="view-screen">
           <div class="screen-title-bar">
             <div>
-              <h2 class="screen-heading">Owner Profile & App Settings</h2>
-              <p class="screen-subtext">Malik ki profile, UPI ID (Direct Payment Link) aur offline data backup</p>
+              <h2 class="screen-heading" data-i18n="nav_settings">Owner Profile & App Settings</h2>
+              <p class="screen-subtext" data-i18n="settings_screen_sub">Malik ki profile, UPI ID (Direct Payment Link) aur offline data backup</p>
             </div>
           </div>
 
@@ -732,43 +732,42 @@
             <div class="settings-guide-left">
               <div class="settings-guide-icon">💡</div>
               <div class="settings-guide-info">
-                <h4>यह ऐप क्या है और कैसे काम करती है? (App Guide)</h4>
-                <p>बिजली बिल कैलकुलेटर, 1-क्लिक व्हाट्सएप रिमाइंडर और कानूनी किराया रसीद का पूरा परिचय व गाइड देखें।</p>
+                <h4 data-i18n="settings_guide_title">यह ऐप क्या है और कैसे काम करती है? (App Guide)</h4>
+                <p data-i18n="settings_guide_desc">बिजली बिल कैलकुलेटर, 1-क्लिक व्हाट्सएप रिमाइंडर और कानूनी किराया रसीद का पूरा परिचय व गाइड देखें।</p>
               </div>
             </div>
-            <button type="button" class="btn btn-secondary btn-sm">गाइड खोलें ›</button>
+            <button type="button" class="btn btn-secondary btn-sm" data-i18n="settings_guide_btn">गाइड खोलें ›</button>
           </div>
 
           <div class="settings-app-grid">
             <div class="settings-app-card">
-              <h3 class="card-subtitle">Landlord / House Owner Details</h3>
+              <h3 class="card-subtitle" data-i18n="settings_owner_card_title">Landlord / House Owner Details</h3>
               <form id="settings-screen-form" onsubmit="handleSaveSettingsScreen(event)">
                 <div class="form-grid">
                   <div class="form-group">
-                    <label for="set-screen-owner-name">Owner / Landlord Name *</label>
+                    <label for="set-screen-owner-name" data-i18n="owner_name_label">Owner / Landlord Name *</label>
                     <input type="text" id="set-screen-owner-name" placeholder="e.g. Ramesh Kumar" required>
                   </div>
                   <div class="form-group">
-                    <label for="set-screen-owner-phone">Owner Phone Number *</label>
+                    <label for="set-screen-owner-phone" data-i18n="owner_phone_label">Owner Phone Number *</label>
                     <input type="tel" id="set-screen-owner-phone" placeholder="e.g. 9876543210" required>
                   </div>
                   <div class="form-group full-width">
-                    <label for="set-screen-owner-upi">Owner UPI ID (For Direct Payments) *</label>
+                    <label for="set-screen-owner-upi" data-i18n="owner_upi_label">Owner UPI ID (For Direct Payments) *</label>
                     <input type="text" id="set-screen-owner-upi" placeholder="e.g. ramesh@okaxis or 9876543210@paytm"
                       required>
-                    <small class="form-help">Yeh UPI ID tenant ko WhatsApp reminder mein direct link ban kar
-                      jayegi.</small>
+                    <small class="form-help" data-i18n="owner_upi_help">Yeh UPI ID tenant ko WhatsApp reminder mein direct link ban kar jayegi.</small>
                   </div>
                   <div class="form-group">
-                    <label for="set-screen-property-default">Default Property Name</label>
+                    <label for="set-screen-property-default" data-i18n="owner_property_label">Default Property Name</label>
                     <input type="text" id="set-screen-property-default" placeholder="e.g. Gokul Nivas">
                   </div>
                   <div class="form-group">
-                    <label for="set-screen-default-rate">Default Bijli Rate (₹ per unit)</label>
+                    <label for="set-screen-default-rate" data-i18n="owner_default_rate_label">Default Bijli Rate (₹ per unit)</label>
                     <input type="number" id="set-screen-default-rate" value="8" step="0.5">
                   </div>
                   <div class="form-group">
-                    <label for="set-screen-current-cycle">Current Billing Cycle</label>
+                    <label for="set-screen-current-cycle" data-i18n="owner_cycle_label">Current Billing Cycle</label>
                     <input type="text" id="set-screen-current-cycle" placeholder="e.g. October 2026">
                   </div>
                   <div class="form-group">
@@ -780,7 +779,7 @@
                     </select>
                   </div>
                   <div class="form-group">
-                    <label for="set-screen-owner-pan">Owner PAN Card (For HRA Tax Exemption)</label>
+                    <label for="set-screen-owner-pan" data-i18n="owner_pan_label">Owner PAN Card (For HRA Tax Exemption)</label>
                     <input type="text" id="set-screen-owner-pan" placeholder="e.g. ABCDE1234F">
                   </div>
                 </div>
@@ -801,25 +800,20 @@
 
             <!-- UPI Payment & Data Card -->
             <div class="settings-app-card">
-              <h3 class="card-subtitle">Active UPI Payment Info</h3>
-              <p style="color: var(--text-secondary); font-size: 0.84rem; margin-bottom: 14px;">
-                WhatsApp reminder mein tenant direct is UPI ID par Google Pay, PhonePe ya Paytm se payment bhej sakta
-                hai.
-              </p>
+              <h3 class="card-subtitle" data-i18n="active_upi_card_title">Active UPI Payment Info</h3>
+              <p style="color: var(--text-secondary); font-size: 0.84rem; margin-bottom: 14px;" data-i18n="active_upi_help">WhatsApp reminder mein tenant direct is UPI ID par Google Pay, PhonePe ya Paytm se payment bhej sakta hai.</p>
 
               <div class="active-upi-banner">
-                <span class="upi-label">Active UPI Address:</span>
+                <span class="upi-label" data-i18n="active_upi_label">Active UPI Address:</span>
                 <span class="upi-val" id="settings-display-upi">ramesh@okaxis</span>
               </div>
 
               <div class="settings-backup-section">
                 <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px;">
-                  <h4 class="backup-heading" style="margin-bottom: 0;">☁️ Firebase Cloud Sync (मल्टी-डिवाइस सिंक)</h4>
+                  <h4 class="backup-heading" style="margin-bottom: 0;" data-i18n="cloud_sync_heading">☁️ Firebase Cloud Sync</h4>
                   <span class="cloud-status-badge" id="settings-cloud-badge">Offline Mode</span>
                 </div>
-                <p style="color: var(--text-muted); font-size: 0.8rem; margin-bottom: 12px;">
-                  Google Account se jodkar mobile aur laptop dono par same time par live sync aur safe cloud backup chalayein.
-                </p>
+                <p style="color: var(--text-muted); font-size: 0.8rem; margin-bottom: 12px;" data-i18n="cloud_sync_desc">Google Account se jodkar mobile aur laptop dono par same time par live sync aur safe cloud backup chalayein.</p>
 
                 <!-- Cloud Not Connected -->
                 <div id="settings-cloud-logged-out" style="margin-bottom: 14px;">
@@ -830,7 +824,7 @@
                       <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z"/>
                       <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"/>
                     </svg>
-                    <span>Google Account Se Connect Karein</span>
+                    <span data-i18n="google_connect_btn">Google Account Se Connect Karein</span>
                   </button>
                 </div>
 
@@ -854,31 +848,20 @@
 
                 <div style="border-top: 1px dashed var(--border-subtle); margin: 14px 0 12px 0;"></div>
 
-                <h4 class="backup-heading">Data Backup & Recovery (लोकल बैकअप)</h4>
-                <p style="color: var(--text-muted); font-size: 0.8rem; margin-bottom: 12px;">
-                  Aapka saara data aapke device browser mein 100% private rehta hai.
-                </p>
+                <h4 class="backup-heading" data-i18n="backup_heading">Data Backup & Recovery</h4>
+                <p style="color: var(--text-muted); font-size: 0.8rem; margin-bottom: 12px;" data-i18n="backup_desc">Aapka saara data aapke device browser mein 100% private rehta hai.</p>
                 <div class="backup-btn-grid">
-                  <button type="button" class="btn btn-secondary btn-sm" onclick="exportDataToJSON()">
-                    Download Backup (JSON)
-                  </button>
-                  <button type="button" class="btn btn-secondary btn-sm"
-                    onclick="document.getElementById('import-file-input').click()">
-                    Restore Backup
-                  </button>
+                  <button type="button" class="btn btn-secondary btn-sm" onclick="exportDataToJSON()" data-i18n="btn_download_backup">Download Backup (JSON)</button>
+                  <button type="button" class="btn btn-secondary btn-sm" onclick="document.getElementById('import-file-input').click()" data-i18n="btn_restore_backup">Restore Backup</button>
                   <input type="file" id="import-file-input" style="display:none;" accept=".json"
                     onchange="importDataFromJSON(event)">
-                  <button type="button" class="btn btn-outline-danger btn-sm" onclick="resetToSampleData()">
-                    Clear All Data (Fresh Start)
-                  </button>
+                  <button type="button" class="btn btn-outline-danger btn-sm" onclick="resetToSampleData()" data-i18n="btn_clear_data">Clear All Data (Fresh Start)</button>
                 </div>
 
                 <div style="border-top: 1px dashed var(--border-subtle); margin: 16px 0 12px 0;"></div>
                 <div style="display: flex; align-items: center; justify-content: space-between; font-size: 0.78rem; color: var(--text-muted); flex-wrap: wrap; gap: 8px;">
-                  <span>🔒 100% Private &amp; Offline-First</span>
-                  <a href="privacy.html" target="_blank" style="color: #818CF8; text-decoration: none; font-weight: 600;">
-                    Privacy Policy (गोपनीयता नीति) ›
-                  </a>
+                  <span data-i18n="offline_private_label">🔒 100% Private &amp; Offline-First</span>
+                  <a href="privacy.html" target="_blank" style="color: #818CF8; text-decoration: none; font-weight: 600;" data-i18n="privacy_policy_link">Privacy Policy ›</a>
                 </div>
               </div>
             </div>
@@ -1113,7 +1096,7 @@
     <div class="modal-card modal-sm">
       <div class="modal-sheet-handle"></div>
       <div class="modal-header">
-        <h3 class="modal-title">Record Payment (किराया जमा)</h3>
+        <h3 class="modal-title" data-i18n="modal_pay_title">Record Payment</h3>
         <button class="modal-close" onclick="closeModal('modal-payment')" aria-label="Close">&times;</button>
       </div>
       <form id="payment-form" onsubmit="handleRecordPayment(event)">
