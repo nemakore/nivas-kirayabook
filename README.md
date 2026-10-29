@@ -36,6 +36,20 @@
    - Export backup to JSON anytime or restore previous data.
    - 0% CPU lag, extremely lightweight (runs on any low-end laptop or mobile browser).
 
+6. **📱 Progressive Web App (PWA) Support**
+   - Installable on Android & iOS devices directly from the browser.
+   - Works fully offline with service worker caching.
+   - Native app-like experience with standalone display mode.
+
+7. **🌐 Multi-Language Localization (मराठी / हिंदी / English)**
+   - Instant language switching with zero reload.
+   - Complete UI translation for English, Hindi (हिंदी), and Marathi (मराठी).
+
+8. **💰 Partial Payment & Arrears (बकाया) Rollover**
+   - Support for split/partial payments with quick-pay buttons (50% / 100%).
+   - Live remaining balance calculation.
+   - Automatic rollover of previous month's unpaid dues to the current bill.
+
 ---
 
 ## 🚀 How to Run Locally
