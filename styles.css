@@ -5611,37 +5611,7 @@ button:active, .btn:active, .btn-rlc:active, .bnav-tab:active, .app-fab:active, 
   width: 100%;
 }
 
-.ledger-progress-wrap {
-  width: 100%;
-  margin-top: 10px;
-  padding-top: 10px;
-  border-top: 1px solid rgba(255, 255, 255, 0.06);
-}
 
-.ledger-progress-bar {
-  width: 100%;
-  height: 6px;
-  background: rgba(255, 255, 255, 0.08);
-  border-radius: 99px;
-  overflow: hidden;
-}
-
-.ledger-progress-fill {
-  height: 100%;
-  background: linear-gradient(90deg, #6366F1 0%, #10B981 100%);
-  border-radius: 99px;
-  transition: width 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-.ledger-progress-meta {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-top: 6px;
-  font-size: 0.72rem;
-  font-weight: 600;
-  color: #94A3B8;
-}
 
 .ledger-quick-actions {
   display: flex;

@@ -956,15 +956,6 @@ function renderDashboard() {
   const pendSubEl = document.getElementById('stat-pending-sub');
   if (pendSubEl) pendSubEl.innerText = pendingCount > 0 ? `${pendingCount} Room Pending` : 'Sabhi Kiraya Clear';
 
-  const progBar = document.getElementById('dashboard-collection-bar');
-  if (progBar) progBar.style.width = `${percentCollected}%`;
-
-  const progPct = document.getElementById('dashboard-collection-pct');
-  if (progPct) progPct.innerText = `${percentCollected}% Vasool Hua`;
-
-  const progRooms = document.getElementById('dashboard-collection-rooms');
-  if (progRooms) progRooms.innerText = `${paidCount}/${occupiedCount} Rooms Clear`;
-
   // Badge Counts for Segment Tabs
   const cAll = document.getElementById('count-all');
   if (cAll) cAll.innerText = state.units.length;
