@@ -24,6 +24,9 @@
 | [`sw.js`](file:///c:/Users/Nema%20Kore/OneDrive/Desktop/Nivas%20KirayaBook/sw.js) | Service Worker for offline asset caching and PWA app installation lifecycle. |
 | [`manifest.json`](file:///c:/Users/Nema%20Kore/OneDrive/Desktop/Nivas%20KirayaBook/manifest.json) | Web app manifest with standalone display mode, theme colors, and icons. |
 | [`privacy.html`](file:///c:/Users/Nema%20Kore/OneDrive/Desktop/Nivas%20KirayaBook/privacy.html) | Standalone legal privacy policy for Play Store and web distribution. |
+| [`nivaskirayabook.xml`](file:///c:/Users/Nema%20Kore/OneDrive/Desktop/Nivas%20KirayaBook/nivaskirayabook.xml) | **Blogger Master Production XML Template** (contains embedded styles, 4 clean tabs DOM, i18n, and app logic for `nivaskirayabook.blogspot.com` and Cordova APK). |
+| [`build_blogger_xml.js`](file:///c:/Users/Nema%20Kore/OneDrive/Desktop/Nivas%20KirayaBook/build_blogger_xml.js) | Automated compiler script: compiles `styles.css` + `index.html` + `i18n.js` + `app.js` into `nivaskirayabook.xml`. |
+| [`check.js`](file:///c:/Users/Nema%20Kore/OneDrive/Desktop/Nivas%20KirayaBook/check.js) | Automated 1-second integrity check verifying JS syntax, tag balance, i18n dictionaries, and XML template. |
 
 ---
 

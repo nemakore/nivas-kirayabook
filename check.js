@@ -57,6 +57,47 @@ if (missingAny) {
   process.exit(1);
 }
 
+console.log('\n--- 4. Checking Blogger XML Template (nivaskirayabook.xml) ---');
+if (fs.existsSync('nivaskirayabook.xml')) {
+  const xml = fs.readFileSync('nivaskirayabook.xml', 'utf8');
+  const requiredXmlTokens = [
+    'id="view-dashboard"',
+    'id="view-calculator"',
+    'id="view-history"',
+    'id="view-settings"',
+    'quick-meter-container',
+    'khata-subnav-pills',
+    'b:skin',
+    'b:section',
+    'TRANSLATIONS'
+  ];
+  const forbiddenXmlTokens = [
+    'id="view-tenants"',
+    'id="view-reports"',
+    'ledger-progress-wrap'
+  ];
+  let xmlErr = false;
+  for (const token of requiredXmlTokens) {
+    if (!xml.includes(token)) {
+      console.error(`FAIL: Missing ${token} in nivaskirayabook.xml`);
+      xmlErr = true;
+    }
+  }
+  for (const token of forbiddenXmlTokens) {
+    if (xml.includes(token)) {
+      console.error(`FAIL: Forbidden deprecated ${token} still present in nivaskirayabook.xml`);
+      xmlErr = true;
+    }
+  }
+  if (!xmlErr) {
+    console.log('PASS: nivaskirayabook.xml contains all 4 tabs and no bloated screens.');
+  } else {
+    process.exit(1);
+  }
+} else {
+  console.warn('WARN: nivaskirayabook.xml does not exist.');
+}
+
 console.log('\n=======================================');
 console.log('ALL HEALTH CHECKS PASSED SUCCESSFULLY! 🚀');
 console.log('=======================================');
