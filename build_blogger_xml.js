@@ -37,6 +37,9 @@ bodyHtml = bodyHtml.replace(/<img(?![^>]*\/>)([^>]*)>/g, '<img$1 />');
 bodyHtml = bodyHtml.replace(/&copy;/g, '&#169;');
 bodyHtml = bodyHtml.replace(/&times;/g, '&#215;');
 
+// 6. Ensure all raw ampersands outside valid XML entities are properly escaped to &amp;
+bodyHtml = bodyHtml.replace(/&(?!(amp|lt|gt|quot|apos|#\d+|#[xX][0-9a-fA-F]+);)/g, '&amp;');
+
 const xmlContent = `<?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE html>
 <html b:css='false' b:defaultwidgetversion='2' b:layoutsVersion='3' b:responsive='true' expr:dir='data:blog.languageDirection' xmlns='http://www.w3.org/1999/xhtml' xmlns:b='http://www.google.com/2005/gml/b' xmlns:data='http://www.google.com/2005/gml/data' xmlns:expr='http://www.google.com/2005/gml/expr'>

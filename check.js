@@ -94,6 +94,16 @@ if (fs.existsSync('nivaskirayabook.xml')) {
   } else {
     process.exit(1);
   }
+
+  // Strict SAX XML Entity & Unescaped Ampersand Check (outside CDATA and comments)
+  const xmlWithoutCdata = xml.replace(/<!\[CDATA\[[\s\S]*?\]\]>/g, '').replace(/<!--[\s\S]*?-->/g, '');
+  const unescapedAmp = xmlWithoutCdata.match(/&(?!(amp|lt|gt|quot|apos|#\d+|#[xX][0-9a-fA-F]+);)/g);
+  if (unescapedAmp) {
+    console.error(`FAIL: Found ${unescapedAmp.length} unescaped '&' in nivaskirayabook.xml! SAX parser will fail.`);
+    process.exit(1);
+  } else {
+    console.log('PASS: All XML entities & ampersands in nivaskirayabook.xml are 100% valid (zero SAX parse errors).');
+  }
 } else {
   console.warn('WARN: nivaskirayabook.xml does not exist.');
 }

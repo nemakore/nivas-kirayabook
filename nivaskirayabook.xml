@@ -6152,7 +6152,7 @@ button:active, .btn:active, .btn-rlc:active, .bnav-tab:active, .app-fab:active, 
       </main>
 
       <footer class="privacy-footer-note">
-        &#169; 2026 Nivas KirayaBook. 100% Free &amp; Private Landlord Bahi-Khata.
+        &amp;copy; 2026 Nivas KirayaBook. 100% Free &amp; Private Landlord Bahi-Khata.
       </footer>
     </div>
   </div>
@@ -6200,7 +6200,7 @@ button:active, .btn:active, .btn-rlc:active, .bnav-tab:active, .app-fab:active, 
           </svg>
           <div class="nav-text">
             <span data-i18n="nav_calculator">Bijli Meter</span>
-            <small>सब-मीटर रीडिंग & बिल</small>
+            <small>सब-मीटर रीडिंग &amp; बिल</small>
           </div>
         </button>
         <button class="nav-btn" id="nav-history" onclick="switchView('history')">
@@ -6220,7 +6220,7 @@ button:active, .btn:active, .btn-rlc:active, .bnav-tab:active, .app-fab:active, 
           </svg>
           <div class="nav-text">
             <span data-i18n="nav_settings">Settings &amp; UPI</span>
-            <small>मालिक प्रोफाइल & बैकअप</small>
+            <small>मालिक प्रोफाइल &amp; बैकअप</small>
           </div>
         </button>
       </nav>
@@ -6280,8 +6280,8 @@ button:active, .btn:active, .btn-rlc:active, .bnav-tab:active, .app-fab:active, 
             </div>
           </div>
 
-          <!-- Billing Month & Cycle Pill -->
-          <div class="header-cycle-pill" id="header-cycle-pill" onclick="openMonthRolloverModal()" title="Billing Month & New Cycle Rollover">
+          <!-- Billing Month &amp; Cycle Pill -->
+          <div class="header-cycle-pill" id="header-cycle-pill" onclick="openMonthRolloverModal()" title="Billing Month &amp; New Cycle Rollover">
             <span class="cycle-dot"></span>
             <span id="current-month-display">Oct 2026</span>
           </div>
@@ -6325,7 +6325,7 @@ button:active, .btn:active, .btn-rlc:active, .bnav-tab:active, .app-fab:active, 
             </div>
           </div>
 
-          <!-- Single Smooth Native Search & Filter Controls -->
+          <!-- Single Smooth Native Search &amp; Filter Controls -->
           <div class="ledger-controls-row">
             <div class="ledger-search-box">
               <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -6335,7 +6335,7 @@ button:active, .btn:active, .btn-rlc:active, .bnav-tab:active, .app-fab:active, 
               <input type="text" id="dashboard-search-input" placeholder="Room no, kirayedar, phone search karein..."
                 oninput="handleSearch(this.value)" />
               <button type="button" class="search-clear-btn" id="search-clear-btn" onclick="clearSearch()"
-                style="display:none;">&#215;</button>
+                style="display:none;">&amp;times;</button>
             </div>
 
             <!-- Segmented Filter Tabs -->
@@ -6388,7 +6388,7 @@ button:active, .btn:active, .btn-rlc:active, .bnav-tab:active, .app-fab:active, 
           </div>
 
           <div class="calc-screen-grid">
-            <!-- Left Card: Inputs & Meter Calculator -->
+            <!-- Left Card: Inputs &amp; Meter Calculator -->
             <div class="calc-input-card">
               <div class="form-section-head">
                 <span class="fsh-title">1. Room Chunein (Select Room)</span>
@@ -6400,7 +6400,7 @@ button:active, .btn:active, .btn-rlc:active, .bnav-tab:active, .app-fab:active, 
               </div>
 
               <div class="form-section-head" style="margin-top: 18px;">
-                <span class="fsh-title">2. Meter Reading & Rate</span>
+                <span class="fsh-title">2. Meter Reading &amp; Rate</span>
               </div>
               <div class="meter-inputs-row">
                 <div class="form-group">
@@ -6444,7 +6444,7 @@ button:active, .btn:active, .btn-rlc:active, .bnav-tab:active, .app-fab:active, 
               </div>
 
               <div class="form-section-head" style="margin-top: 18px;">
-                <span class="fsh-title">3. Kiraya & Extra Charges</span>
+                <span class="fsh-title">3. Kiraya &amp; Extra Charges</span>
               </div>
               <div class="utilities-row">
                 <div class="form-group">
@@ -6470,7 +6470,7 @@ button:active, .btn:active, .btn-rlc:active, .bnav-tab:active, .app-fab:active, 
               </div>
             </div>
 
-            <!-- Right Card: Grand Total & Live WhatsApp Preview -->
+            <!-- Right Card: Grand Total &amp; Live WhatsApp Preview -->
             <div class="calc-output-card">
               <!-- Grand Total Banner -->
               <div class="calc-total-banner">
@@ -6527,7 +6527,7 @@ button:active, .btn:active, .btn-rlc:active, .bnav-tab:active, .app-fab:active, 
         </section>
 
         <!-- ==========================================
-             SCREEN 4: PAYMENT RECORDS & KHATA LEDGER
+             SCREEN 4: PAYMENT RECORDS &amp; KHATA LEDGER
              ========================================== -->
         <section id="view-history" class="view-screen">
           <div class="screen-title-bar">
@@ -6563,7 +6563,7 @@ button:active, .btn:active, .btn-rlc:active, .bnav-tab:active, .app-fab:active, 
 
           <!-- SUB-VIEW 1: Payment Receipts Ledger -->
           <div id="khata-subview-receipts" class="khata-subview-panel">
-            <!-- History Search & Stats Bar -->
+            <!-- History Search &amp; Stats Bar -->
             <div class="history-controls-bar">
               <div class="search-input-wrap">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -6605,7 +6605,7 @@ button:active, .btn:active, .btn-rlc:active, .bnav-tab:active, .app-fab:active, 
             </div>
           </div>
 
-          <!-- SUB-VIEW 2: Monthly Audit & Property Report -->
+          <!-- SUB-VIEW 2: Monthly Audit &amp; Property Report -->
           <div id="khata-subview-report" class="khata-subview-panel" style="display: none;">
             <div style="display: flex; gap: 8px; justify-content: flex-end; margin-bottom: 12px; flex-wrap: wrap;">
               <button class="btn btn-whatsapp btn-sm" onclick="shareWhatsAppMonthlyReport()">
@@ -6616,7 +6616,7 @@ button:active, .btn:active, .btn-rlc:active, .bnav-tab:active, .app-fab:active, 
               </button>
             </div>
 
-            <!-- Billing Period & Cycle Selector Bar -->
+            <!-- Billing Period &amp; Cycle Selector Bar -->
             <div class="report-cycle-bar">
               <div class="cycle-input-wrapper">
                 <span class="cycle-icon">📅</span>
@@ -6670,7 +6670,7 @@ button:active, .btn:active, .btn-rlc:active, .bnav-tab:active, .app-fab:active, 
               </div>
             </div>
 
-            <!-- Filter Strip & Room-wise Audit Table -->
+            <!-- Filter Strip &amp; Room-wise Audit Table -->
             <div class="report-table-box">
               <div class="report-filters-row">
                 <div style="display: flex; align-items: center; gap: 8px;">
@@ -6715,7 +6715,7 @@ button:active, .btn:active, .btn-rlc:active, .bnav-tab:active, .app-fab:active, 
               </div>
             </div>
 
-            <!-- Building Expenses & Maintenance Section -->
+            <!-- Building Expenses &amp; Maintenance Section -->
             <div class="report-expenses-box">
               <div class="expenses-header">
                 <div>
@@ -6733,17 +6733,17 @@ button:active, .btn:active, .btn-rlc:active, .bnav-tab:active, .app-fab:active, 
         </section>
 
         <!-- ==========================================
-             SCREEN 5: OWNER PROFILE & SETTINGS
+             SCREEN 5: OWNER PROFILE &amp; SETTINGS
              ========================================== -->
         <section id="view-settings" class="view-screen">
           <div class="screen-title-bar">
             <div>
-              <h2 class="screen-heading" data-i18n="nav_settings">Owner Profile & App Settings</h2>
+              <h2 class="screen-heading" data-i18n="nav_settings">Owner Profile &amp; App Settings</h2>
               <p class="screen-subtext" data-i18n="settings_screen_sub">Malik ki profile, UPI ID (Direct Payment Link) aur offline data backup</p>
             </div>
           </div>
 
-          <!-- App Guide & Intro Card -->
+          <!-- App Guide &amp; Intro Card -->
           <div class="settings-guide-card" onclick="openAppIntroModal()" title="Yeh App Kya Hai? Guide Dekhein">
             <div class="settings-guide-left">
               <div class="settings-guide-icon">💡</div>
@@ -6814,7 +6814,7 @@ button:active, .btn:active, .btn-rlc:active, .bnav-tab:active, .app-fab:active, 
               </form>
             </div>
 
-            <!-- UPI Payment & Data Card -->
+            <!-- UPI Payment &amp; Data Card -->
             <div class="settings-app-card">
               <h3 class="card-subtitle" data-i18n="active_upi_card_title">Active UPI Payment Info</h3>
               <p style="color: var(--text-secondary); font-size: 0.84rem; margin-bottom: 14px;" data-i18n="active_upi_help">WhatsApp reminder mein tenant direct is UPI ID par Google Pay, PhonePe ya Paytm se payment bhej sakta hai.</p>
@@ -6864,7 +6864,7 @@ button:active, .btn:active, .btn-rlc:active, .bnav-tab:active, .app-fab:active, 
 
                 <div style="border-top: 1px dashed var(--border-subtle); margin: 14px 0 12px 0;"></div>
 
-                <h4 class="backup-heading" data-i18n="backup_heading">Data Backup & Recovery</h4>
+                <h4 class="backup-heading" data-i18n="backup_heading">Data Backup &amp; Recovery</h4>
                 <p style="color: var(--text-muted); font-size: 0.8rem; margin-bottom: 12px;" data-i18n="backup_desc">Aapka saara data aapke device browser mein 100% private rehta hai.</p>
                 <div class="backup-btn-grid">
                   <button type="button" class="btn btn-secondary btn-sm" onclick="exportDataToJSON()" data-i18n="btn_download_backup">Download Backup (JSON)</button>
@@ -6946,13 +6946,13 @@ button:active, .btn:active, .btn-rlc:active, .bnav-tab:active, .app-fab:active, 
        MODALS (Native Bottom Sheet on Mobile)
        ========================================== -->
 
-  <!-- MODAL: Add / Edit Unit & Tenant -->
+  <!-- MODAL: Add / Edit Unit &amp; Tenant -->
   <div class="modal-overlay" id="modal-tenant" onclick="closeModalOnOverlay(event, 'modal-tenant')">
     <div class="modal-card">
       <div class="modal-sheet-handle"></div>
       <div class="modal-header">
         <h3 class="modal-title" id="tenant-modal-title">Add Room / Tenant</h3>
-        <button class="modal-close" onclick="closeModal('modal-tenant')" aria-label="Close">&#215;</button>
+        <button class="modal-close" onclick="closeModal('modal-tenant')" aria-label="Close">&amp;times;</button>
       </div>
       <form id="tenant-form" onsubmit="handleSaveTenant(event)">
         <input type="hidden" id="edit-tenant-id" />
@@ -7022,10 +7022,10 @@ button:active, .btn:active, .btn-rlc:active, .bnav-tab:active, .app-fab:active, 
       <div class="modal-sheet-handle"></div>
       <div class="modal-header">
         <div>
-          <h3 class="modal-title">Bijli & Rent Calculation</h3>
+          <h3 class="modal-title">Bijli &amp; Rent Calculation</h3>
           <p class="modal-subtitle">Auto calculate electricity units + rent breakdown</p>
         </div>
-        <button class="modal-close" onclick="closeModal('modal-bill')" aria-label="Close">&#215;</button>
+        <button class="modal-close" onclick="closeModal('modal-bill')" aria-label="Close">&amp;times;</button>
       </div>
 
       <div class="bill-modal-body">
@@ -7113,7 +7113,7 @@ button:active, .btn:active, .btn-rlc:active, .bnav-tab:active, .app-fab:active, 
       <div class="modal-sheet-handle"></div>
       <div class="modal-header">
         <h3 class="modal-title" data-i18n="modal_pay_title">Record Payment</h3>
-        <button class="modal-close" onclick="closeModal('modal-payment')" aria-label="Close">&#215;</button>
+        <button class="modal-close" onclick="closeModal('modal-payment')" aria-label="Close">&amp;times;</button>
       </div>
       <form id="payment-form" onsubmit="handleRecordPayment(event)">
         <input type="hidden" id="pay-tenant-id" />
@@ -7165,7 +7165,7 @@ button:active, .btn:active, .btn-rlc:active, .bnav-tab:active, .app-fab:active, 
 
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" onclick="closeModal('modal-payment')">Cancel</button>
-          <button type="submit" class="btn btn-success">Confirm & Issue Receipt</button>
+          <button type="submit" class="btn btn-success">Confirm &amp; Issue Receipt</button>
         </div>
       </form>
     </div>
@@ -7206,7 +7206,7 @@ button:active, .btn:active, .btn-rlc:active, .bnav-tab:active, .app-fab:active, 
             </svg>
             <span>Print / Save PDF</span>
           </button>
-          <button class="modal-close" onclick="closeModal('modal-receipt')" aria-label="Close">&#215;</button>
+          <button class="modal-close" onclick="closeModal('modal-receipt')" aria-label="Close">&amp;times;</button>
         </div>
       </div>
 
@@ -7222,7 +7222,7 @@ button:active, .btn:active, .btn-rlc:active, .bnav-tab:active, .app-fab:active, 
       <div class="modal-sheet-handle"></div>
       <div class="modal-header">
         <h3 class="modal-title">Add Building Expense (खर्चा जोड़ें)</h3>
-        <button class="modal-close" onclick="closeModal('modal-expense')" aria-label="Close">&#215;</button>
+        <button class="modal-close" onclick="closeModal('modal-expense')" aria-label="Close">&amp;times;</button>
       </div>
       <form id="expense-form" onsubmit="handleSaveExpense(event)">
         <div class="form-group">
@@ -7232,8 +7232,8 @@ button:active, .btn:active, .btn-rlc:active, .bnav-tab:active, .app-fab:active, 
         <div class="form-group">
           <label for="exp-category">Expense Category (श्रेणी)</label>
           <select id="exp-category" class="select-app">
-            <option value="Maintenance">Maintenance & Repairs (मरम्मत)</option>
-            <option value="Cleaning">Cleaning & Sweeper (सफाई)</option>
+            <option value="Maintenance">Maintenance &amp; Repairs (मरम्मत)</option>
+            <option value="Cleaning">Cleaning &amp; Sweeper (सफाई)</option>
             <option value="Electricity">Electricity / Water Board Bill (सरकारी बिल)</option>
             <option value="Taxes">Nagar Nigam / House Tax (टैक्स)</option>
             <option value="Other">Other Miscellaneous (अन्य)</option>
@@ -7256,7 +7256,7 @@ button:active, .btn:active, .btn-rlc:active, .bnav-tab:active, .app-fab:active, 
   </div>
 
   <!-- ==========================================
-       MODAL: Welcome App Walkthrough & Guide
+       MODAL: Welcome App Walkthrough &amp; Guide
        (यह ऐप क्या है, किस काम की है, कैसे करती है?)
        ========================================== -->
   <div class="modal-overlay" id="modal-app-intro" onclick="closeModalOnOverlay(event, 'modal-app-intro')">
@@ -7280,7 +7280,7 @@ button:active, .btn:active, .btn-rlc:active, .bnav-tab:active, .app-fab:active, 
             <h3 class="intro-main-title">Nivas KirayaBook क्या है &amp; कैसे काम करती है?</h3>
           </div>
         </div>
-        <button class="modal-close" onclick="closeAppIntroModal()" aria-label="Close">&#215;</button>
+        <button class="modal-close" onclick="closeAppIntroModal()" aria-label="Close">&amp;times;</button>
       </div>
 
       <!-- 3 Segmented Tabs Matching User's Exact 3 Questions -->
@@ -7503,7 +7503,7 @@ button:active, .btn:active, .btn-rlc:active, .bnav-tab:active, .app-fab:active, 
         </div>
       </div>
 
-      <!-- Footer & Navigation Controls -->
+      <!-- Footer &amp; Navigation Controls -->
       <div class="intro-modal-footer">
         <div class="intro-step-indicators" title="Step navigation">
           <span class="intro-dot active" id="intro-dot-what" onclick="switchIntroTab('what')"></span>
@@ -7535,7 +7535,7 @@ button:active, .btn:active, .btn-rlc:active, .bnav-tab:active, .app-fab:active, 
           <h3 class="modal-title">👋 Swagat Hai Nivas KirayaBook Mein!</h3>
           <p class="modal-subtitle">Apni building aur UPI setup karein (Sirf 1 minute)</p>
         </div>
-        <button class="modal-close" onclick="skipOnboardingSetup()" aria-label="Close">&#215;</button>
+        <button class="modal-close" onclick="skipOnboardingSetup()" aria-label="Close">&amp;times;</button>
       </div>
 
       <form id="onboarding-form" onsubmit="handleSaveOnboarding(event)">
@@ -7574,7 +7574,7 @@ button:active, .btn:active, .btn-rlc:active, .bnav-tab:active, .app-fab:active, 
     </div>
   </div>
 
-  <!-- MODAL: Firebase Cloud Sync & Google Account -->
+  <!-- MODAL: Firebase Cloud Sync &amp; Google Account -->
   <div class="modal-overlay" id="modal-cloud-sync" onclick="closeModalOnOverlay(event, 'modal-cloud-sync')">
     <div class="modal-card" style="max-width: 440px;">
       <div class="modal-sheet-handle"></div>
@@ -7583,7 +7583,7 @@ button:active, .btn:active, .btn-rlc:active, .bnav-tab:active, .app-fab:active, 
           <h3 class="modal-title" id="cloud-modal-title">☁️ Firebase Cloud Sync</h3>
           <p class="modal-subtitle">Apna kiraya khata Google Cloud par safe aur multi-device sync rakhein</p>
         </div>
-        <button class="modal-close" onclick="closeModal('modal-cloud-sync')" aria-label="Close">&#215;</button>
+        <button class="modal-close" onclick="closeModal('modal-cloud-sync')" aria-label="Close">&amp;times;</button>
       </div>
 
       <!-- State A: When NOT Logged In -->
@@ -7669,7 +7669,7 @@ button:active, .btn:active, .btn-rlc:active, .bnav-tab:active, .app-fab:active, 
           <h3 class="modal-title" data-i18n="rollover_title">Start New Month Billing Cycle</h3>
           <p class="modal-subtitle" data-i18n="rollover_sub">Previous unpaid dues will carry over automatically.</p>
         </div>
-        <button class="modal-close" onclick="closeModal('modal-rollover')" aria-label="Close">&#215;</button>
+        <button class="modal-close" onclick="closeModal('modal-rollover')" aria-label="Close">&amp;times;</button>
       </div>
 
       <div class="bill-modal-body">
@@ -7714,7 +7714,7 @@ button:active, .btn:active, .btn-rlc:active, .bnav-tab:active, .app-fab:active, 
           <h3 class="modal-title" data-i18n="ios_install_title">Install on iPhone / iPad</h3>
           <p class="modal-subtitle">Add to Home Screen in 3 steps</p>
         </div>
-        <button class="modal-close" onclick="closeModal('modal-ios-install')" aria-label="Close">&#215;</button>
+        <button class="modal-close" onclick="closeModal('modal-ios-install')" aria-label="Close">&amp;times;</button>
       </div>
 
       <div class="ios-instruction-card">
