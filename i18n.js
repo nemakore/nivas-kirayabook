@@ -18,12 +18,10 @@ const TRANSLATIONS = {
     search_placeholder: "खोली क्र., भाडेकरू, फोन नंबर शोधा...",
 
     // Navigation
-    nav_dashboard: "डॅशबोर्ड",
-    nav_tenants: "खोल्या व भाडेकरू",
-    nav_calculator: "वीज बिल कॅल्क्युलेटर",
-    nav_reports: "मासिक अहवाल",
-    nav_history: "खतावणी / व्यवहार",
-    nav_settings: "मालक सेटिंग्ज",
+    nav_dashboard: "घरभाडे",
+    nav_calculator: "वीज मीटर",
+    nav_history: "खतावणी",
+    nav_settings: "सेटिंग्ज",
 
     // Dashboard KPIs & Tabs
     stat_collected: "एकूण जमा भाडे",
@@ -184,7 +182,50 @@ const TRANSLATIONS = {
     wa_due_date: "देय तारीख (Due Date):",
     wa_pay_direct: "थेट UPI द्वारे पेमेंट करा:",
     wa_screenshot_request: "कृपया पेमेंट केल्यानंतर येथे स्क्रीनशॉट पाठवा.",
-    wa_thank_you: "धन्यवाद!"
+    wa_thank_you: "धन्यवाद!",
+    // App Guide Card in Settings
+    settings_guide_title: "हे ॲप काय आहे आणि कसे वापरावे? (App Guide)",
+    settings_guide_desc: "वीज बिल कॅल्क्युलेटर, १-क्लिक व्हॉट्सॲप रिमाइंडर आणि कायदेशीर घरभाडे पावतीचे संपूर्ण मार्गदर्शन पहा.",
+    settings_guide_btn: "मार्गदर्शन उघडा ›",
+
+    // Khata & Reports Subtabs
+    khata_tab_receipts: "🧾 जमा पावत्या (Receipts)",
+    khata_tab_report: "📊 मासिक ऑडिट व अहवाल (Reports)",
+    khata_screen_sub: "पावत्या, जुना हिशोब आणि मासिक ऑडिट अहवाल",
+    khata_search_ph: "पावती क्र., भाडेकरू नाव शोधा...",
+    khata_total_logged: "एकूण नोंदणीकृत:",
+
+    // Quick Meter Board & Calculator Subtexts
+    qmb_title: "⚡ सर्व खोल्यांचे नवीन मीटर रीडिंग (झटपट नोंद)",
+    calc_screen_sub: "मीटर रीडिंग नोंदवा, आपोआप बिल तयार करा आणि व्हॉट्सॲपवर पाठवा",
+    calc_send_wa_btn: "व्हॉट्सॲपवर बिल पाठवा",
+    calc_save_bill_btn: "खोलीच्या खात्यात बिल जतन करा",
+
+    // Settings Profile & Sync
+    settings_screen_sub: "मालिक प्रोफाईल, UPI आयडी (थेट पेमेंट लिंक) आणि ऑफलाइन डेटा बॅकअप",
+    settings_owner_card_title: "घरमालकाची माहिती (Landlord Profile)",
+    active_upi_card_title: "सक्रिय UPI पेमेंट माहिती",
+    active_upi_help: "व्हॉट्सॲप रिमाइंडरमध्ये भाडेकरू थेट या UPI पत्त्यावर Google Pay, PhonePe किंवा Paytm द्वारे भाडे पाठवू शकतो.",
+    active_upi_label: "सक्रिय UPI पत्ता:",
+    cloud_sync_heading: "☁️ फायरबेस क्लाउड सिंक (मल्टी-डिव्हाइस)",
+    cloud_sync_desc: "गुगल खात्याशी जोडून मोबाईल आणि लॅपटॉप दोन्हीवर सुरक्षित बॅकअप व थेट सिंक ठेवा.",
+    google_connect_btn: "गुगल खात्याशी कनेक्ट करा",
+    backup_heading: "डेटा बॅकअप व पुनर्प्राप्ती (स्थानिक बॅकअप)",
+    backup_desc: "तुमचा सर्व डेटा तुमच्या फोन/ब्राउझरमध्ये १००% सुरक्षित व खाजगी राहतो.",
+    btn_download_backup: "बॅकअप डाऊनलोड करा (JSON)",
+    btn_restore_backup: "बॅकअप रिस्टोअर करा",
+    btn_clear_data: "सर्व डेटा हटवा (नवीन सुरुवात)",
+    privacy_policy_link: "गोपनीयता धोरण (Privacy Policy) ›",
+    offline_private_label: "🔒 १००% खाजगी आणि ऑफलाइन",
+    owner_name_label: "घरमालकाचे नाव *",
+    owner_phone_label: "घरमालकाचा मोबाईल नंबर *",
+    owner_upi_label: "UPI आयडी (थेट पेमेंट लिंकसाठी) *",
+    owner_upi_help: "हा UPI पत्ता भाडेकरूंना व्हॉट्सॲप रिमाइंडरमध्ये थेट लिंक म्हणून पाठवला जाईल.",
+    owner_property_label: "मुख्य इमारतीचे नाव",
+    owner_default_rate_label: "मूळ वीज दर (₹ प्रति युनिट)",
+    owner_cycle_label: "चालू बिलिंग महिना",
+    owner_pan_label: "घरमालक पॅन कार्ड (HRA टॅक्स सवलतीसाठी)",
+
   },
 
   hi: {
@@ -201,12 +242,10 @@ const TRANSLATIONS = {
     search_placeholder: "कमरा नं., किरायेदार, फोन नंबर सर्च करें...",
 
     // Navigation
-    nav_dashboard: "डैशबोर्ड",
-    nav_tenants: "कमरे व किरायेदार",
-    nav_calculator: "बिजली बिल कैलकुलेटर",
-    nav_reports: "मासिक रिपोर्ट",
-    nav_history: "खाता-बही / रिकॉर्ड",
-    nav_settings: "मालिक सेटिंग्स",
+    nav_dashboard: "किराया",
+    nav_calculator: "बिजली मीटर",
+    nav_history: "खाता",
+    nav_settings: "सेटिंग्स",
 
     // Dashboard KPIs & Tabs
     stat_collected: "कुल जमा किराया",
@@ -367,7 +406,50 @@ const TRANSLATIONS = {
     wa_due_date: "ड्यू डेट (Due Date):",
     wa_pay_direct: "सीधे UPI से भुगतान करें:",
     wa_screenshot_request: "कृपया पेमेंट के बाद यहां स्क्रीनशॉट भेज दें।",
-    wa_thank_you: "धन्यवाद!"
+    wa_thank_you: "धन्यवाद!",
+    // App Guide Card in Settings
+    settings_guide_title: "यह ऐप क्या है और कैसे काम करती है? (App Guide)",
+    settings_guide_desc: "बिजली बिल कैलकुलेटर, 1-क्लिक व्हाट्सएप रिमाइंडर और कानूनी किराया रसीद का पूरा परिचय व गाइड देखें।",
+    settings_guide_btn: "गाइड खोलें ›",
+
+    // Khata & Reports Subtabs
+    khata_tab_receipts: "🧾 पेमेंट रसीदें (Receipts)",
+    khata_tab_report: "📊 मासिक ऑडिट व रिपोर्ट (Reports)",
+    khata_screen_sub: "रसीदें, पुराना हिसाब और मासिक ऑडिट रिपोर्ट",
+    khata_search_ph: "रसीद नंबर, किरायेदार नाम खोजें...",
+    khata_total_logged: "कुल दर्ज भुगतान:",
+
+    // Quick Meter Board & Calculator Subtexts
+    qmb_title: "⚡ सभी कमरों की नई मीटर रीडिंग (फास्ट एंट्री)",
+    calc_screen_sub: "मीटर रीडिंग दर्ज करें, स्वचालित बिल बनाएं और व्हाट्सएप पर भेजें",
+    calc_send_wa_btn: "व्हाट्सएप पर बिल भेजें",
+    calc_save_bill_btn: "कमरे के रिकॉर्ड में बिल सेव करें",
+
+    // Settings Profile & Sync
+    settings_screen_sub: "मालिक की प्रोफाइल, UPI ID (डायरेक्ट पेमेंट लिंक) और ऑफलाइन डेटा बैकअप",
+    settings_owner_card_title: "मकान मालिक का विवरण (Landlord Profile)",
+    active_upi_card_title: "सक्रिय UPI पेमेंट जानकारी",
+    active_upi_help: "व्हाट्सएप रिमाइंडर में किरायेदार डायरेक्ट इस UPI ID पर Google Pay, PhonePe या Paytm से पेमेंट भेज सकता है।",
+    active_upi_label: "सक्रिय UPI पता:",
+    cloud_sync_heading: "☁️ Firebase Cloud Sync (मल्टी-डिवाइस सिंक)",
+    cloud_sync_desc: "Google Account से जोड़कर मोबाइल और लैपटॉप दोनों पर लाइव सिंक और सुरक्षित क्लाउड बैकअप रखें।",
+    google_connect_btn: "Google Account से कनेक्ट करें",
+    backup_heading: "डेटा बैकअप & रिकवरी (लोकल बैकअप)",
+    backup_desc: "आपका सारा डेटा आपके डिवाइस ब्राउज़र में 100% प्राइवेट और सुरक्षित रहता है।",
+    btn_download_backup: "बैकअप डाउनलोड करें (JSON)",
+    btn_restore_backup: "बैकअप रीस्टोर करें",
+    btn_clear_data: "सारा डेटा साफ करें (Fresh Start)",
+    privacy_policy_link: "गोपनीयता नीति (Privacy Policy) ›",
+    offline_private_label: "🔒 100% प्राइवेट & ऑफलाइन",
+    owner_name_label: "मालिक / लैंडलॉर्ड का नाम *",
+    owner_phone_label: "मालिक का मोबाइल नंबर *",
+    owner_upi_label: "मालिक UPI ID (डायरेक्ट पेमेंट लिंक के लिए) *",
+    owner_upi_help: "यह UPI ID किरायेदार को व्हाट्सएप रिमाइंडर में डायरेक्ट लिंक बनकर जाएगी।",
+    owner_property_label: "डिफ़ॉल्ट प्रॉपर्टी / बिल्डिंग का नाम",
+    owner_default_rate_label: "डिफ़ॉल्ट बिजली दर (₹ प्रति यूनिट)",
+    owner_cycle_label: "वर्तमान बिलिंग चक्र",
+    owner_pan_label: "मालिक पैन कार्ड (HRA टैक्स छूट के लिए)",
+
   },
 
   en: {
@@ -384,12 +466,10 @@ const TRANSLATIONS = {
     search_placeholder: "Search room no, tenant, phone...",
 
     // Navigation
-    nav_dashboard: "Dashboard",
-    nav_tenants: "Rooms & Tenants",
-    nav_calculator: "Electricity Calculator",
-    nav_reports: "Monthly Reports",
-    nav_history: "Payment Ledger",
-    nav_settings: "Owner Settings",
+    nav_dashboard: "Rent",
+    nav_calculator: "Electricity",
+    nav_history: "Ledger",
+    nav_settings: "Settings",
 
     // Dashboard KPIs & Tabs
     stat_collected: "Total Collected",
@@ -550,7 +630,50 @@ const TRANSLATIONS = {
     wa_due_date: "Due Date:",
     wa_pay_direct: "Direct UPI Payment:",
     wa_screenshot_request: "Please share a screenshot once payment is completed.",
-    wa_thank_you: "Thank you!"
+    wa_thank_you: "Thank you!",
+    // App Guide Card in Settings
+    settings_guide_title: "What is this app and how does it work? (App Guide)",
+    settings_guide_desc: "Explore the electricity bill calculator, 1-click WhatsApp reminders, and legal rent receipts walkthrough.",
+    settings_guide_btn: "Open Guide ›",
+
+    // Khata & Reports Subtabs
+    khata_tab_receipts: "🧾 Payment Receipts",
+    khata_tab_report: "📊 Monthly Audit & Reports",
+    khata_screen_sub: "Receipts, payment ledger, and monthly audit reports",
+    khata_search_ph: "Search receipt no, tenant name...",
+    khata_total_logged: "Total Logged:",
+
+    // Quick Meter Board & Calculator Subtexts
+    qmb_title: "⚡ All Rooms New Meter Reading (Fast Entry)",
+    calc_screen_sub: "Enter meter readings, calculate bills automatically, and send WhatsApp notices",
+    calc_send_wa_btn: "Send Bill on WhatsApp",
+    calc_save_bill_btn: "Save Bill to Room Record",
+
+    // Settings Profile & Sync
+    settings_screen_sub: "Landlord profile, UPI ID (direct payment links), and offline data backup",
+    settings_owner_card_title: "Landlord / House Owner Details",
+    active_upi_card_title: "Active UPI Payment Info",
+    active_upi_help: "Tenants can tap the direct link in WhatsApp to pay directly to this UPI address via Google Pay, PhonePe, or Paytm.",
+    active_upi_label: "Active UPI Address:",
+    cloud_sync_heading: "☁️ Firebase Cloud Sync (Multi-Device)",
+    cloud_sync_desc: "Connect Google Account for real-time sync and safe cloud backup across mobile and laptop.",
+    google_connect_btn: "Connect with Google Account",
+    backup_heading: "Data Backup & Recovery (Local Backup)",
+    backup_desc: "All your ledger data remains 100% private and stored on your device.",
+    btn_download_backup: "Download Backup (JSON)",
+    btn_restore_backup: "Restore Backup",
+    btn_clear_data: "Clear All Data (Fresh Start)",
+    privacy_policy_link: "Privacy Policy ›",
+    offline_private_label: "🔒 100% Private & Offline-First",
+    owner_name_label: "Owner / Landlord Name *",
+    owner_phone_label: "Owner Phone Number *",
+    owner_upi_label: "Owner UPI ID (For Direct Payments) *",
+    owner_upi_help: "This UPI ID creates a 1-click payment link in tenant WhatsApp reminders.",
+    owner_property_label: "Default Property Name",
+    owner_default_rate_label: "Default Electricity Rate (₹ per unit)",
+    owner_cycle_label: "Current Billing Cycle",
+    owner_pan_label: "Owner PAN Card (For HRA Tax Exemption)"
+
   }
 };
 
@@ -602,6 +725,7 @@ function setLanguage(lang) {
   if (typeof renderMonthlyReportView === 'function') renderMonthlyReportView();
   if (typeof updateOwnerUI === 'function') updateOwnerUI();
   if (typeof runScreenCalc === 'function') runScreenCalc();
+  if (typeof renderQuickMeterBoard === 'function') renderQuickMeterBoard();
 
   const langNames = { mr: 'मराठी', hi: 'हिंदी', en: 'English' };
   if (typeof showToast === 'function') {

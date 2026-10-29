@@ -97,19 +97,13 @@ function initApp() {
   // Initialize Firebase Cloud Authentication & Realtime Firestore
   initFirebase();
 
-  // Set today's date in payment modal
-  const today = new Date().toISOString().split('T')[0];
-  const qFull = document.getElementById('quick-full-val');
-  if (qFull) qFull.innerText = `₹${remaining.toLocaleString('en-IN')}`;
-
-  const qHalf = document.getElementById('quick-half-val');
-  if (qHalf) qHalf.innerText = `₹${Math.round(remaining / 2).toLocaleString('en-IN')}`;
-
+  // Set today's date in payment modal if present
+  const payDateEl = document.getElementById('pay-date');
+  if (payDateEl) {
+    payDateEl.value = new Date().toISOString().split('T')[0];
+  }
   const payNote = document.getElementById('pay-note');
   if (payNote) payNote.value = '';
-
-  const payDateEl = document.getElementById('pay-date');
-  if (payDateEl) payDateEl.value = today;
 
   // If viewing standalone Privacy Policy, do not auto-open onboarding/walkthrough modals
   if (document.documentElement.classList.contains('show-privacy-page')) {
@@ -604,10 +598,12 @@ function updateCloudSyncUI(status) {
   const setSyncTime = document.getElementById('settings-cloud-synctime');
   const statusLabel = document.getElementById('cloud-status-label');
 
-  if (!btn) return;
+  if (dot) {
+    dot.className = `avatar-sync-dot ${status || 'offline'}`;
+  }
 
   if (status === 'connected' || status === 'synced') {
-    btn.className = 'cloud-sync-pill';
+    if (btn) btn.className = 'cloud-sync-pill';
     if (text) text.innerText = 'Cloud Active';
     if (setBadge) {
       setBadge.className = 'cloud-status-badge connected';
@@ -627,18 +623,18 @@ function updateCloudSyncUI(status) {
     }
 
   } else if (status === 'syncing') {
-    btn.className = 'cloud-sync-pill syncing';
+    if (btn) btn.className = 'cloud-sync-pill syncing';
     if (text) text.innerText = 'Syncing...';
     if (setBadge) setBadge.innerText = '🔄 Syncing...';
 
   } else if (status === 'error') {
-    btn.className = 'cloud-sync-pill logged-out';
+    if (btn) btn.className = 'cloud-sync-pill logged-out';
     if (text) text.innerText = 'Sync Error';
     if (setBadge) setBadge.innerText = '⚠️ Sync Issue';
 
   } else {
     // logged-out or offline
-    btn.className = 'cloud-sync-pill logged-out';
+    if (btn) btn.className = 'cloud-sync-pill logged-out';
     if (text) text.innerText = 'Cloud Sync';
     if (setBadge) {
       setBadge.className = 'cloud-status-badge';
@@ -680,6 +676,15 @@ function updateOwnerUI() {
 
 function switchView(viewName) {
   triggerHaptic(10);
+
+  // Map legacy views to 4 primary tabs
+  if (viewName === 'tenants') viewName = 'dashboard';
+  if (viewName === 'reports') {
+    switchView('history');
+    switchKhataSubTab('report');
+    return;
+  }
+
   state.currentView = viewName;
 
   // Hide all screens
@@ -706,45 +711,26 @@ function switchView(viewName) {
   const bottomNav = document.getElementById(`bnav-${viewName}`);
   if (bottomNav) bottomNav.classList.add('active');
 
-  // Update Page Subtitle Badge in Mobile App Header
-  const titleEl = document.getElementById('header-screen-title');
-  if (titleEl) {
-    switch (viewName) {
-      case 'dashboard':
-        titleEl.innerText = 'डैशबोर्ड';
-        renderDashboard();
-        break;
-      case 'tenants':
-        titleEl.innerText = 'कमरे & किरायेदार';
-        renderTenantsView();
-        break;
-      case 'calculator':
-        titleEl.innerText = 'बिजली कैलकुलेटर';
-        initCalculatorScreen();
-        break;
-      case 'history':
-        titleEl.innerText = 'किराया खाता';
-        renderHistoryTable();
-        break;
-      case 'reports':
-        titleEl.innerText = 'मासिक रिपोर्ट';
-        renderMonthlyReportView();
-        // Also highlight khata tab on bottom bar if on reports
-        const bKhata = document.getElementById('bnav-history');
-        if (bKhata) bKhata.classList.add('active');
-        break;
-      case 'settings':
-        titleEl.innerText = 'मालिक सेटिंग्स';
-        populateSettingsScreen();
-        break;
-      default:
-        titleEl.innerText = 'Nivas KirayaBook';
-    }
+  // Trigger screen-specific rendering
+  switch (viewName) {
+    case 'dashboard':
+      renderDashboard();
+      break;
+    case 'calculator':
+      initCalculatorScreen();
+      renderQuickMeterBoard();
+      break;
+    case 'history':
+      renderHistoryTable();
+      renderMonthlyReportView();
+      break;
+    case 'settings':
+      populateSettingsScreen();
+      break;
   }
 
-  // Close mobile drawer and search bar if open
+  // Close mobile drawer if open
   toggleSidebar(false);
-  toggleHeaderSearch(false);
 
   // Scroll viewport to top smoothly
   const viewport = document.querySelector('.app-viewport');
@@ -970,15 +956,6 @@ function renderDashboard() {
   const pendSubEl = document.getElementById('stat-pending-sub');
   if (pendSubEl) pendSubEl.innerText = pendingCount > 0 ? `${pendingCount} Room Pending` : 'Sabhi Kiraya Clear';
 
-  const progBar = document.getElementById('dashboard-collection-bar');
-  if (progBar) progBar.style.width = `${percentCollected}%`;
-
-  const progPct = document.getElementById('dashboard-collection-pct');
-  if (progPct) progPct.innerText = `${percentCollected}% Vasool Hua`;
-
-  const progRooms = document.getElementById('dashboard-collection-rooms');
-  if (progRooms) progRooms.innerText = `${paidCount}/${occupiedCount} Rooms Clear`;
-
   // Badge Counts for Segment Tabs
   const cAll = document.getElementById('count-all');
   if (cAll) cAll.innerText = state.units.length;
@@ -1034,8 +1011,8 @@ function renderUnitCardHTML(unit) {
   const isPartial = unit.status === 'partial';
   const dueInfo = getDueStatus(unit);
 
-
-  const elecTotal = unit.electricityTotal || (unitsConsumed * (unit.unitRate || 8));
+  const unitsConsumed = Math.max(0, (Number(unit.currentReading) || 0) - (Number(unit.previousReading) || 0));
+  const elecTotal = unit.electricityTotal !== undefined ? Number(unit.electricityTotal) : (unitsConsumed * (unit.unitRate || 8));
   const prevDue = Number(unit.previousDue || 0);
   const totalDue = Number(unit.totalDue || (unit.rentAmount || 0) + elecTotal + (unit.maintenance || 0) + (unit.otherCharges || 0) + prevDue);
   const paidAmount = Number(unit.paidAmount || 0);
@@ -1049,7 +1026,7 @@ function renderUnitCardHTML(unit) {
 
   return `
     <div class="room-ledger-card ${cardStatusClass}" id="card-${unit.id}">
-      <!-- Top Row: Unit, Tenant & Bold Amount -->
+      <!-- Top Row: Unit Badge, Status Pill, Edit Icon, Big Amount -->
       <div class="rlc-main-row" onclick="openBillModalForUnit('${unit.id}')">
         <div class="rlc-avatar-box ${cardStatusClass}">
           ${avatarLetter}
@@ -1068,7 +1045,6 @@ function renderUnitCardHTML(unit) {
                 📞 ${escapeHTML(unit.tenantPhone)}
               </a>
               <span class="rlc-due-pill ${dueInfo.class}">${dueInfo.text}</span>
-              ${prevDue > 0 ? `<span class="rlc-prev-dues-tag">⏳ ${typeof t === 'function' ? t('breakdown_prev', 'मागील बाकी') : 'Pichhla'}: ₹${prevDue.toLocaleString('en-IN')}</span>` : ''}
             `}
           </div>
         </div>
@@ -1081,20 +1057,19 @@ function renderUnitCardHTML(unit) {
         </div>
       </div>
 
-      <!-- Middle Breakdown Strip (Clickable to view/edit bill) -->
+      <!-- Middle Breakdown Strip (Clean 1-Line Summary) -->
       ${!isVacant ? `
         <div class="rlc-breakdown-strip" onclick="openBillModalForUnit('${unit.id}')" title="Click to view/edit bill">
           <span>Rent: ₹${Number(unit.rentAmount).toLocaleString('en-IN')}</span>
           <span>•</span>
-          <span>Bijli: ₹${elecTotal.toLocaleString('en-IN')} (${unitsConsumed}u)</span>
-          ${unit.maintenance ? `<span>•</span><span>Maint: ₹${Number(unit.maintenance).toLocaleString('en-IN')}</span>` : ''}
-          ${prevDue > 0 ? `<span>•</span><span style="color:#F87171;">${typeof t === 'function' ? t('breakdown_prev', 'मागील बाकी') : 'Pichhla'}: ₹${prevDue.toLocaleString('en-IN')}</span>` : ''}
-          ${paidAmount > 0 ? `<span>•</span><span style="color:#6EE7B7;">${typeof t === 'function' ? t('breakdown_paid', 'जमा') : 'Jama'}: ₹${paidAmount.toLocaleString('en-IN')}</span>` : ''}
+          <span class="rlc-elec-tag">⚡ Bijli: ₹${elecTotal.toLocaleString('en-IN')} (${unitsConsumed}u)</span>
+          ${prevDue > 0 ? `<span>•</span><span style="color:#F87171;">⏳ Pichhla: ₹${prevDue.toLocaleString('en-IN')}</span>` : ''}
+          ${paidAmount > 0 ? `<span>•</span><span style="color:#10B981;">✓ Jama: ₹${paidAmount.toLocaleString('en-IN')}</span>` : ''}
           <span style="margin-left: auto; color: #818CF8; font-weight: 600;">Bill ›</span>
         </div>
       ` : ''}
 
-      <!-- Bottom Action Row: Clean, Crisp, Native Ergonomics -->
+      <!-- Bottom Action Row: Only 2 Crisp Primary Buttons -->
       <div class="rlc-actions">
         ${isVacant ? `
           <button class="btn-rlc btn-rlc-primary" onclick="openEditTenantModal('${unit.id}')">
@@ -1107,11 +1082,7 @@ function renderUnitCardHTML(unit) {
           </button>
           <button class="btn-rlc btn-rlc-receipt" onclick="generateReceiptModal('${unit.id}')" title="Official Rent Receipt">
             <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line></svg>
-            <span>Raseed</span>
-          </button>
-          <button class="btn-rlc btn-rlc-sec" onclick="openBillModalForUnit('${unit.id}')" title="Bijli Meter Reading">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
-            <span>Bijli</span>
+            <span>Raseed PDF</span>
           </button>
           <button class="btn-rlc btn-rlc-icon" onclick="openEditTenantModal('${unit.id}')" title="Edit Room">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"></path><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path></svg>
@@ -1123,11 +1094,7 @@ function renderUnitCardHTML(unit) {
           </button>
           <button class="btn-rlc btn-rlc-pay" onclick="openPaymentModal('${unit.id}')" title="Kiraya Jama">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
-            <span>₹ Jama</span>
-          </button>
-          <button class="btn-rlc btn-rlc-sec" onclick="openBillModalForUnit('${unit.id}')" title="Bijli Meter Reading">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
-            <span>Bijli</span>
+            <span>₹ Jama Karein</span>
           </button>
           <button class="btn-rlc btn-rlc-icon" onclick="openEditTenantModal('${unit.id}')" title="Edit Room">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"></path><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path></svg>
@@ -2222,8 +2189,8 @@ function openPaymentModal(unitId) {
   if (!unit) return;
 
   const prevDue = Number(unit.previousDue || 0);
-
-  const elecTotal = unit.electricityTotal || (unitsConsumed * (unit.unitRate || 8));
+  const unitsConsumed = Math.max(0, (Number(unit.currentReading || unit.currReading) || 0) - (Number(unit.previousReading || unit.prevReading) || 0));
+  const elecTotal = unit.electricityTotal !== undefined ? Number(unit.electricityTotal) : (unitsConsumed * (unit.unitRate || 8));
   const total = Number(unit.totalDue || (unit.rentAmount || 0) + elecTotal + (unit.maintenance || 0) + (unit.otherCharges || 0) + prevDue);
   const alreadyPaid = Number(unit.paidAmount || 0);
   const remaining = Math.max(0, total - alreadyPaid);
@@ -2270,8 +2237,8 @@ function handleRecordPayment(e) {
   const payDate = document.getElementById('pay-date').value || new Date().toISOString().split('T')[0];
   const payNote = document.getElementById('pay-note')?.value.trim() || '';
   const prevDue = Number(unit.previousDue || 0);
-
-  const elecTotal = unit.electricityTotal || (unitsConsumed * (unit.unitRate || 8));
+  const unitsConsumed = Math.max(0, (Number(unit.currentReading || unit.currReading) || 0) - (Number(unit.previousReading || unit.prevReading) || 0));
+  const elecTotal = unit.electricityTotal !== undefined ? Number(unit.electricityTotal) : (unitsConsumed * (unit.unitRate || 8));
   const total = Number(unit.totalDue || (unit.rentAmount || 0) + elecTotal + (unit.maintenance || 0) + (unit.otherCharges || 0) + prevDue);
   
   const previouslyPaid = Number(unit.paidAmount || 0);
@@ -2328,8 +2295,8 @@ function setQuickPaymentAmount(type) {
   if (!unit) return;
 
   const prevDue = Number(unit.previousDue || 0);
-
-  const elecTotal = unit.electricityTotal || (unitsConsumed * (unit.unitRate || 8));
+  const unitsConsumed = Math.max(0, (Number(unit.currentReading || unit.currReading) || 0) - (Number(unit.previousReading || unit.prevReading) || 0));
+  const elecTotal = unit.electricityTotal !== undefined ? Number(unit.electricityTotal) : (unitsConsumed * (unit.unitRate || 8));
   const total = Number(unit.totalDue || (unit.rentAmount || 0) + elecTotal + (unit.maintenance || 0) + (unit.otherCharges || 0) + prevDue);
   const alreadyPaid = Number(unit.paidAmount || 0);
   const remaining = Math.max(0, total - alreadyPaid);
@@ -2355,8 +2322,8 @@ function updateLivePayPreview() {
   if (!unit) return;
 
   const prevDue = Number(unit.previousDue || 0);
-
-  const elecTotal = unit.electricityTotal || (unitsConsumed * (unit.unitRate || 8));
+  const unitsConsumed = Math.max(0, (Number(unit.currentReading || unit.currReading) || 0) - (Number(unit.previousReading || unit.prevReading) || 0));
+  const elecTotal = unit.electricityTotal !== undefined ? Number(unit.electricityTotal) : (unitsConsumed * (unit.unitRate || 8));
   const total = Number(unit.totalDue || (unit.rentAmount || 0) + elecTotal + (unit.maintenance || 0) + (unit.otherCharges || 0) + prevDue);
   const alreadyPaid = Number(unit.paidAmount || 0);
   const remainingCurrent = Math.max(0, total - alreadyPaid);
@@ -3538,8 +3505,8 @@ function sendWhatsAppMonthlyStatement(unitId) {
   const cycle = unit.billingMonth || state.settings.currentCycle || 'October 2026';
 
   const prevDue = Number(unit.previousDue || 0);
-
-  const elecTotal = unit.electricityTotal || (unitsConsumed * (unit.unitRate || 8));
+  const unitsConsumed = Math.max(0, (Number(unit.currentReading || unit.currReading) || 0) - (Number(unit.previousReading || unit.prevReading) || 0));
+  const elecTotal = unit.electricityTotal !== undefined ? Number(unit.electricityTotal) : (unitsConsumed * (unit.unitRate || 8));
   const total = Number(unit.totalDue || (unit.rentAmount || 0) + elecTotal + (unit.maintenance || 0) + (unit.otherCharges || 0) + prevDue);
   const paid = Number(unit.paidAmount || 0);
   const remaining = Math.max(0, total - paid);
@@ -4142,3 +4109,131 @@ document.addEventListener('click', (e) => {
     toggleLangMenu(false);
   }
 });
+
+// ==========================================
+// Khata Segmented Sub-View Switcher
+// ==========================================
+function switchKhataSubTab(subTab) {
+  triggerHaptic(8);
+  const receiptsView = document.getElementById('khata-subview-receipts');
+  const reportView = document.getElementById('khata-subview-report');
+  const btnReceipts = document.getElementById('btn-khata-tab-receipts');
+  const btnReport = document.getElementById('btn-khata-tab-report');
+
+  if (subTab === 'report') {
+    if (receiptsView) receiptsView.style.display = 'none';
+    if (reportView) reportView.style.display = 'block';
+    if (btnReceipts) btnReceipts.classList.remove('active');
+    if (btnReport) btnReport.classList.add('active');
+    renderMonthlyReportView();
+  } else {
+    if (reportView) reportView.style.display = 'none';
+    if (receiptsView) receiptsView.style.display = 'block';
+    if (btnReport) btnReport.classList.remove('active');
+    if (btnReceipts) btnReceipts.classList.add('active');
+    renderHistoryTable();
+  }
+}
+
+// ==========================================
+// Fast Room-by-Room Meter Reading Board
+// ==========================================
+function renderQuickMeterBoard() {
+  const container = document.getElementById('quick-meter-container');
+  if (!container) return;
+
+  const occupied = state.units.filter(u => u.status !== 'vacant');
+  const rateVal = document.getElementById('qmb-rate-val');
+  if (rateVal) rateVal.innerText = state.settings.defaultUnitRate || 8;
+
+  if (occupied.length === 0) {
+    container.innerHTML = `<div style="grid-column: 1/-1; text-align: center; color: var(--text-muted); padding: 18px; font-size: 0.85rem;">
+      Abhi koi occupied room nahi hai. Room add karne ke baad yahan meter reading dikhegi.
+    </div>`;
+    return;
+  }
+
+  container.innerHTML = occupied.map(u => {
+    const prev = Number(u.previousReading || 0);
+    const curr = u.currentReading !== undefined ? Number(u.currentReading) : '';
+    const rate = Number(u.unitRate || state.settings.defaultUnitRate || 8);
+    const units = curr !== '' ? Math.max(0, curr - prev) : 0;
+    const bill = units * rate;
+
+    return `
+      <div class="qmb-card" id="qmb-card-${u.id}">
+        <div class="qmb-card-top">
+          <div class="qmb-room-badge">${escapeHTML(u.unitName)}</div>
+          <div class="qmb-tenant-name">${escapeHTML(u.tenantName)}</div>
+        </div>
+        <div class="qmb-readings-row">
+          <div class="qmb-col">
+            <span class="qmb-lbl">Old:</span>
+            <strong class="qmb-old-val">${prev}</strong>
+          </div>
+          <div class="qmb-arrow">➔</div>
+          <div class="qmb-col">
+            <span class="qmb-lbl">New:</span>
+            <input type="number" class="qmb-curr-input" id="qmb-input-${u.id}" 
+              placeholder="${prev}" value="${curr}" oninput="onQmbReadingInput('${u.id}')">
+          </div>
+        </div>
+        <div class="qmb-card-bottom">
+          <div class="qmb-calc-preview" id="qmb-calc-${u.id}">
+            ${units} u = ₹${bill.toLocaleString('en-IN')}
+          </div>
+          <button type="button" class="btn-qmb-save" onclick="saveQmbReading('${u.id}')">
+            ✓ Save
+          </button>
+        </div>
+      </div>
+    `;
+  }).join('');
+}
+
+function onQmbReadingInput(unitId) {
+  const unit = state.units.find(u => u.id === unitId);
+  if (!unit) return;
+  const input = document.getElementById(`qmb-input-${unitId}`);
+  const calcBox = document.getElementById(`qmb-calc-${unitId}`);
+  if (!input || !calcBox) return;
+
+  const prev = Number(unit.previousReading || 0);
+  const curr = Number(input.value || 0);
+  const rate = Number(unit.unitRate || state.settings.defaultUnitRate || 8);
+  const units = Math.max(0, curr - prev);
+  const bill = units * rate;
+
+  calcBox.innerText = `${units} u = ₹${bill.toLocaleString('en-IN')}`;
+}
+
+function saveQmbReading(unitId) {
+  const unit = state.units.find(u => u.id === unitId);
+  if (!unit) return;
+  const input = document.getElementById(`qmb-input-${unitId}`);
+  if (!input) return;
+
+  const newReading = Number(input.value);
+  if (isNaN(newReading)) {
+    showToast('Kripya valid meter reading enter karein.');
+    return;
+  }
+
+  const prev = Number(unit.previousReading || 0);
+  const rate = Number(unit.unitRate || state.settings.defaultUnitRate || 8);
+  const unitsConsumed = Math.max(0, newReading - prev);
+  const elecTotal = unitsConsumed * rate;
+
+  unit.currentReading = newReading;
+  unit.electricityTotal = elecTotal;
+
+  // Recalculate totalDue
+  const prevDue = Number(unit.previousDue || 0);
+  unit.totalDue = (Number(unit.rentAmount) || 0) + elecTotal + (Number(unit.maintenance) || 0) + (Number(unit.otherCharges) || 0) + prevDue;
+
+  saveToStorage();
+  renderDashboard();
+  renderQuickMeterBoard();
+  triggerHaptic(12);
+  showToast(`${unit.unitName}: ${unitsConsumed} Units (₹${elecTotal}) save ho gaya! ⚡`);
+}
