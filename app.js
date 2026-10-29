@@ -1,3 +1,11 @@
+function triggerHaptic(duration = 10) {
+  try {
+    if (window.navigator && window.navigator.vibrate) {
+      window.navigator.vibrate(duration);
+    }
+  } catch (e) {}
+}
+
 /**
  * Nivas KirayaBook - Master Application Core Logic
  * Local-First, High-Performance Landlord & Tenant Management System
@@ -671,6 +679,7 @@ function updateOwnerUI() {
 // ==========================================
 
 function switchView(viewName) {
+  triggerHaptic(10);
   state.currentView = viewName;
 
   // Hide all screens
@@ -826,6 +835,7 @@ function getDueStatus(unit) {
   if (unit.status === 'partial') {
     const prevDue = Number(unit.previousDue || 0);
 
+  const unitsConsumed = Math.max(0, (Number(unit.currentReading) || 0) - (Number(unit.previousReading) || 0));
   const elecTotal = unit.electricityTotal || (unitsConsumed * (unit.unitRate || 8));
   const total = Number(unit.totalDue || (unit.rentAmount || 0) + elecTotal + (unit.maintenance || 0) + (unit.otherCharges || 0) + prevDue);
     const paid = Number(unit.paidAmount || 0);
@@ -960,6 +970,15 @@ function renderDashboard() {
   const pendSubEl = document.getElementById('stat-pending-sub');
   if (pendSubEl) pendSubEl.innerText = pendingCount > 0 ? `${pendingCount} Room Pending` : 'Sabhi Kiraya Clear';
 
+  const progBar = document.getElementById('dashboard-collection-bar');
+  if (progBar) progBar.style.width = `${percentCollected}%`;
+
+  const progPct = document.getElementById('dashboard-collection-pct');
+  if (progPct) progPct.innerText = `${percentCollected}% Vasool Hua`;
+
+  const progRooms = document.getElementById('dashboard-collection-rooms');
+  if (progRooms) progRooms.innerText = `${paidCount}/${occupiedCount} Rooms Clear`;
+
   // Badge Counts for Segment Tabs
   const cAll = document.getElementById('count-all');
   if (cAll) cAll.innerText = state.units.length;
@@ -1022,7 +1041,8 @@ function renderUnitCardHTML(unit) {
   const paidAmount = Number(unit.paidAmount || 0);
   const remainingDue = Math.max(0, totalDue - paidAmount);
 
-  const cardStatusClass = isVacant ? 'card-vacant' : (isPaid ? 'card-paid' : 'card-pending');
+  const cardStatusClass = isVacant ? 'card-vacant' : (isPaid ? 'card-paid' : (isPartial ? 'card-partial' : 'card-pending'));
+  const avatarLetter = isVacant ? '🏠' : (unit.tenantName ? unit.tenantName.trim().charAt(0).toUpperCase() : '👤');
   const amountColorClass = isVacant ? 'text-muted' : (isPaid ? 'text-success' : 'text-danger');
   const displayAmount = isVacant ? unit.rentAmount : (isPaid ? (paidAmount || totalDue) : (isPartial ? remainingDue : totalDue));
   const amountSubText = isVacant ? 'Expected Rent' : (isPaid ? 'Fully Paid' : (isPartial ? `Partially Paid (₹${paidAmount} in)` : `Due: ${unit.dueDay || 5}th`));
@@ -1031,6 +1051,9 @@ function renderUnitCardHTML(unit) {
     <div class="room-ledger-card ${cardStatusClass}" id="card-${unit.id}">
       <!-- Top Row: Unit, Tenant & Bold Amount -->
       <div class="rlc-main-row" onclick="openBillModalForUnit('${unit.id}')">
+        <div class="rlc-avatar-box ${cardStatusClass}">
+          ${avatarLetter}
+        </div>
         <div class="rlc-left">
           <div class="rlc-title-line">
             <span class="rlc-unit">${escapeHTML(unit.unitName)}</span>
@@ -1116,6 +1139,7 @@ function renderUnitCardHTML(unit) {
 }
 
 function setFilter(filterType) {
+  triggerHaptic(8);
   state.activeFilter = filterType;
   document.querySelectorAll('.ledger-tab').forEach(btn => {
     btn.classList.toggle('active', btn.dataset.filter === filterType);
@@ -1230,11 +1254,16 @@ function renderTenantsView() {
     const dueInfo = getDueStatus(unit);
     const cardStatusClass = isVacant ? 'card-vacant' : (isPaid ? 'card-paid' : 'card-pending');
     const amountColorClass = isVacant ? 'text-muted' : (isPaid ? 'text-success' : 'text-danger');
+    const prevDue = Number(unit.previousDue || 0);
+    const avatarLetter = isVacant ? '🏠' : (unit.tenantName ? unit.tenantName.trim().charAt(0).toUpperCase() : '👤');
 
     return `
       <div class="room-ledger-card ${cardStatusClass}" id="tenant-screen-card-${unit.id}">
         <!-- Top Row: Unit, Tenant & Bold Amount -->
         <div class="rlc-main-row" onclick="openEditTenantModal('${unit.id}')">
+          <div class="rlc-avatar-box ${cardStatusClass}">
+            ${avatarLetter}
+          </div>
           <div class="rlc-left">
             <div class="rlc-title-line">
               <span class="rlc-unit">${escapeHTML(unit.unitName)}</span>

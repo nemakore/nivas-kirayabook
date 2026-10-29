@@ -433,26 +433,55 @@
 
           <!-- Unified Single Financial Ledger Strip (Khatabook Style) -->
           <div class="ledger-summary-strip">
-            <div class="ledger-kpi-col">
-              <span class="ledger-label">KUL AAYA (COLLECTED)</span>
-              <div class="ledger-val text-success" id="stat-collected">₹0</div>
-              <span class="ledger-sub" id="stat-collected-sub">0 Rooms Clear</span>
+            <div class="ledger-main-cols">
+              <div class="ledger-kpi-col">
+                <span class="ledger-label">KUL AAYA (COLLECTED)</span>
+                <div class="ledger-val text-success" id="stat-collected">₹0</div>
+                <span class="ledger-sub" id="stat-collected-sub">0 Rooms Clear</span>
+              </div>
+
+              <div class="ledger-divider"></div>
+
+              <div class="ledger-kpi-col">
+                <span class="ledger-label">KUL BAAKI (PENDING)</span>
+                <div class="ledger-val text-danger" id="stat-pending">₹0</div>
+                <span class="ledger-sub" id="stat-pending-sub">0 Room Pending</span>
+              </div>
+
+              <button type="button" class="ledger-report-btn" onclick="switchView('reports')" title="View Monthly Audit">
+                <span>Report</span>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                  <polyline points="9 18 15 12 9 6"></polyline>
+                </svg>
+              </button>
             </div>
 
-            <div class="ledger-divider"></div>
-
-            <div class="ledger-kpi-col">
-              <span class="ledger-label">KUL BAAKI (PENDING)</span>
-              <div class="ledger-val text-danger" id="stat-pending">₹0</div>
-              <span class="ledger-sub" id="stat-pending-sub">0 Room Pending</span>
+            <!-- Native Progress Indicator -->
+            <div class="ledger-progress-wrap">
+              <div class="ledger-progress-bar">
+                <div class="ledger-progress-fill" id="dashboard-collection-bar" style="width: 0%;"></div>
+              </div>
+              <div class="ledger-progress-meta">
+                <span id="dashboard-collection-pct">0% Vasool Hua</span>
+                <span id="dashboard-collection-rooms">0/0 Rooms Clear</span>
+              </div>
             </div>
 
-            <button type="button" class="ledger-report-btn" onclick="switchView('reports')" title="View Monthly Audit">
-              <span>Report</span>
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-                <polyline points="9 18 15 12 9 6"></polyline>
-              </svg>
-            </button>
+            <!-- Quick Action Shortcuts -->
+            <div class="ledger-quick-actions">
+              <button type="button" class="lqa-btn" onclick="openAddTenantModal()">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                <span>+ Room</span>
+              </button>
+              <button type="button" class="lqa-btn" onclick="switchView('calculator')">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
+                <span>Bijli Calc</span>
+              </button>
+              <button type="button" class="lqa-btn" onclick="switchView('tenants')">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle></svg>
+                <span>Rooms List</span>
+              </button>
+            </div>
           </div>
 
           <!-- Search & Filter Controls (Clean Native App Bar) -->

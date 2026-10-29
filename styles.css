@@ -5081,3 +5081,594 @@ html.show-privacy-page body {
     transform: translateY(0);
   }
 }
+
+
+/* ===================================================================
+   NATIVE MOBILE APP UI / UX ENGINE (True Native Look & Feel)
+   Designed for Android & iOS PWA Experience
+   =================================================================== */
+
+:root {
+  --native-bg: #090D16;
+  --native-surface: #0F1626;
+  --native-card: linear-gradient(180deg, #151D30 0%, #0F1626 100%);
+  --native-card-elevated: linear-gradient(180deg, #1B253D 0%, #131C30 100%);
+  --native-border: rgba(255, 255, 255, 0.08);
+  --native-border-hover: rgba(255, 255, 255, 0.16);
+  --native-accent: #6366F1;
+  --native-accent-glow: rgba(99, 102, 241, 0.35);
+  --native-green: #10B981;
+  --native-green-glow: rgba(16, 185, 129, 0.3);
+  --native-red: #F43F5E;
+  --native-red-glow: rgba(244, 63, 94, 0.3);
+  --native-amber: #F59E0B;
+  --native-sky: #38BDF8;
+  --native-radius-card: 18px;
+  --native-radius-btn: 12px;
+  --native-radius-pill: 999px;
+  --safe-top: env(safe-area-inset-top, 0px);
+  --safe-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+/* Base Mobile Polish & Inertia */
+html, body {
+  background-color: var(--native-bg) !important;
+  overscroll-behavior-y: contain;
+  -webkit-touch-callout: none;
+}
+
+/* Touch active micro-animations */
+button, .btn, .btn-rlc, .bnav-tab, .app-fab, .ledger-tab, .card-options-btn {
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+button:active, .btn:active, .btn-rlc:active, .bnav-tab:active, .app-fab:active, .ledger-tab:active {
+  transform: scale(0.96) !important;
+  transition: transform 0.1s cubic-bezier(0.2, 0, 0, 1) !important;
+}
+
+/* Screen Switch Animation (Native Fade & Slide) */
+.view-screen.active {
+  animation: nativeScreenIn 0.22s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes nativeScreenIn {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Header: Edge-to-Edge with Safe Area & Glassmorphism */
+.app-header {
+  background: rgba(9, 13, 22, 0.92) !important;
+  backdrop-filter: blur(24px) !important;
+  -webkit-backdrop-filter: blur(24px) !important;
+  border-bottom: 1px solid var(--native-border) !important;
+  padding-top: max(8px, var(--safe-top)) !important;
+  min-height: calc(54px + max(0px, var(--safe-top))) !important;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25) !important;
+}
+
+/* Viewport safe spacing */
+.app-viewport {
+  padding-bottom: calc(84px + var(--safe-bottom)) !important;
+}
+
+/* Executive Financial Ledger Hero Strip */
+.ledger-summary-strip {
+  background: linear-gradient(135deg, #131B2E 0%, #0F172A 100%) !important;
+  border: 1px solid rgba(99, 102, 241, 0.22) !important;
+  border-radius: var(--native-radius-card) !important;
+  padding: 14px 16px !important;
+  box-shadow: 0 8px 24px -4px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(255, 255, 255, 0.04) inset !important;
+  position: relative;
+  overflow: hidden;
+}
+
+.ledger-summary-strip::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, #6366F1 0%, #10B981 50%, #F59E0B 100%);
+}
+
+.ledger-label {
+  font-size: 0.68rem !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.05em !important;
+  text-transform: uppercase !important;
+  color: #94A3B8 !important;
+}
+
+.ledger-val {
+  font-family: var(--font-display) !important;
+  font-size: 1.45rem !important;
+  font-weight: 800 !important;
+  letter-spacing: -0.02em !important;
+}
+
+.ledger-sub {
+  font-size: 0.72rem !important;
+  font-weight: 600 !important;
+  color: #64748B !important;
+}
+
+/* Segmented Control Tabs (iOS Native Style) */
+.ledger-controls-row {
+  margin-bottom: 12px !important;
+  gap: 10px !important;
+}
+
+.ledger-search-box {
+  background: rgba(15, 22, 38, 0.8) !important;
+  border: 1px solid var(--native-border) !important;
+  border-radius: 12px !important;
+  padding: 10px 14px !important;
+  transition: all 0.2s ease !important;
+}
+
+.ledger-search-box:focus-within {
+  border-color: var(--native-accent) !important;
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2) !important;
+  background: rgba(21, 29, 48, 0.95) !important;
+}
+
+.ledger-tabs {
+  background: rgba(15, 22, 38, 0.7) !important;
+  border: 1px solid var(--native-border) !important;
+  border-radius: 14px !important;
+  padding: 4px !important;
+  gap: 4px !important;
+  overflow-x: auto !important;
+  scrollbar-width: none !important;
+  -webkit-overflow-scrolling: touch !important;
+}
+
+.ledger-tab {
+  background: transparent !important;
+  border: none !important;
+  border-radius: 10px !important;
+  padding: 6px 12px !important;
+  font-size: 0.78rem !important;
+  font-weight: 600 !important;
+  color: #94A3B8 !important;
+  transition: all 0.18s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+
+.ledger-tab.active {
+  background: #6366F1 !important;
+  color: #fff !important;
+  font-weight: 700 !important;
+  box-shadow: 0 2px 10px rgba(99, 102, 241, 0.4) !important;
+}
+
+.ledger-tab.tab-pending.active {
+  background: linear-gradient(135deg, #F43F5E 0%, #E11D48 100%) !important;
+  box-shadow: 0 2px 10px rgba(244, 63, 94, 0.4) !important;
+}
+
+.ledger-tab.tab-partial.active {
+  background: linear-gradient(135deg, #0284C7 0%, #0369A1 100%) !important;
+  box-shadow: 0 2px 10px rgba(2, 132, 199, 0.4) !important;
+}
+
+.ledger-tab.tab-paid.active {
+  background: linear-gradient(135deg, #10B981 0%, #059669 100%) !important;
+  box-shadow: 0 2px 10px rgba(16, 185, 129, 0.4) !important;
+}
+
+.ledger-tab.tab-vacant.active {
+  background: #475569 !important;
+  box-shadow: 0 2px 8px rgba(71, 85, 105, 0.4) !important;
+}
+
+/* ===================================================================
+   Ultra-Clean Native Room Ledger Cards
+   =================================================================== */
+.rooms-ledger-list {
+  gap: 12px !important;
+}
+
+.room-ledger-card {
+  background: var(--native-card) !important;
+  border: 1px solid var(--native-border) !important;
+  border-radius: var(--native-radius-card) !important;
+  padding: 14px 16px !important;
+  gap: 10px !important;
+  box-shadow: 0 4px 18px -2px rgba(0, 0, 0, 0.38), 0 0 0 1px rgba(255, 255, 255, 0.03) inset !important;
+  transition: transform 0.16s ease, border-color 0.16s ease, box-shadow 0.16s ease !important;
+  border-left-width: 4px !important;
+}
+
+.room-ledger-card:hover {
+  border-color: var(--native-border-hover) !important;
+  transform: translateY(-1px) !important;
+}
+
+.room-ledger-card.card-paid {
+  border-left-color: var(--native-green) !important;
+}
+
+.room-ledger-card.card-pending {
+  border-left-color: var(--native-red) !important;
+}
+
+.room-ledger-card.card-partial {
+  border-left-color: var(--native-sky) !important;
+}
+
+.room-ledger-card.card-vacant {
+  border-left-color: #64748B !important;
+}
+
+/* Card Header: Unit & Tenant Name */
+.rlc-main-row {
+  gap: 12px !important;
+}
+
+.rlc-title-line {
+  gap: 8px !important;
+}
+
+.rlc-unit {
+  font-family: var(--font-display) !important;
+  font-weight: 800 !important;
+  font-size: 1rem !important;
+  color: #fff !important;
+  background: rgba(99, 102, 241, 0.15) !important;
+  border: 1px solid rgba(99, 102, 241, 0.28) !important;
+  border-radius: 8px !important;
+  padding: 2px 7px !important;
+}
+
+.card-paid .rlc-unit {
+  background: rgba(16, 185, 129, 0.15) !important;
+  border-color: rgba(16, 185, 129, 0.28) !important;
+  color: #6EE7B7 !important;
+}
+
+.card-pending .rlc-unit {
+  background: rgba(244, 63, 94, 0.15) !important;
+  border-color: rgba(244, 63, 94, 0.28) !important;
+  color: #FDA4AF !important;
+}
+
+.card-vacant .rlc-unit {
+  background: rgba(100, 116, 139, 0.15) !important;
+  border-color: rgba(100, 116, 139, 0.28) !important;
+  color: #CBD5E1 !important;
+}
+
+.rlc-tenant {
+  font-size: 0.96rem !important;
+  font-weight: 700 !important;
+  color: #F8FAFC !important;
+}
+
+.rlc-sub-line {
+  margin-top: 5px !important;
+  gap: 8px !important;
+}
+
+.rlc-phone {
+  background: rgba(255, 255, 255, 0.04) !important;
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+  border-radius: 6px !important;
+  padding: 1px 6px !important;
+  color: #94A3B8 !important;
+  font-weight: 600 !important;
+}
+
+.rlc-due-pill {
+  border-radius: 6px !important;
+  padding: 2px 7px !important;
+  font-weight: 700 !important;
+  font-size: 0.7rem !important;
+}
+
+/* Card Rupee Amount Typography */
+.rlc-amount {
+  font-family: var(--font-display) !important;
+  font-size: 1.38rem !important;
+  font-weight: 800 !important;
+  letter-spacing: -0.02em !important;
+}
+
+.rlc-amount.text-danger { color: #FB7185 !important; }
+.rlc-amount.text-success { color: #34D399 !important; }
+.rlc-amount.text-amber { color: #38BDF8 !important; }
+
+.rlc-amount-sub {
+  font-size: 0.7rem !important;
+  font-weight: 600 !important;
+  color: #64748B !important;
+}
+
+/* Breakdown Strip */
+.rlc-breakdown-strip {
+  background: rgba(255, 255, 255, 0.035) !important;
+  border: 1px solid rgba(255, 255, 255, 0.06) !important;
+  border-radius: 8px !important;
+  padding: 6px 10px !important;
+  font-size: 0.74rem !important;
+  color: #94A3B8 !important;
+  font-weight: 500 !important;
+}
+
+/* Card Bottom Action Buttons (Touch Ergonomics) */
+.rlc-actions {
+  gap: 8px !important;
+  padding-top: 8px !important;
+  border-top: 1px solid rgba(255, 255, 255, 0.06) !important;
+}
+
+.btn-rlc {
+  height: 40px !important;
+  border-radius: var(--native-radius-btn) !important;
+  font-size: 0.8rem !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.01em !important;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2) !important;
+}
+
+.btn-rlc-whatsapp {
+  background: linear-gradient(135deg, #25D366 0%, #128C7E 100%) !important;
+  color: #fff !important;
+  box-shadow: 0 4px 12px rgba(37, 211, 102, 0.28) !important;
+}
+
+.btn-rlc-pay {
+  background: linear-gradient(135deg, #10B981 0%, #059669 100%) !important;
+  color: #fff !important;
+  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.28) !important;
+}
+
+.btn-rlc-receipt {
+  background: linear-gradient(135deg, #6366F1 0%, #4F46E5 100%) !important;
+  color: #fff !important;
+  box-shadow: 0 4px 12px rgba(99, 102, 241, 0.28) !important;
+}
+
+.btn-rlc-primary {
+  background: linear-gradient(135deg, #3B82F6 0%, #2563EB 100%) !important;
+  color: #fff !important;
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.28) !important;
+}
+
+.btn-rlc-sec {
+  background: rgba(255, 255, 255, 0.06) !important;
+  border: 1px solid rgba(255, 255, 255, 0.12) !important;
+  color: #E2E8F0 !important;
+}
+
+.btn-rlc-icon {
+  width: 40px !important;
+  height: 40px !important;
+  flex: 0 0 40px !important;
+  background: rgba(255, 255, 255, 0.05) !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  color: #CBD5E1 !important;
+}
+
+/* ===================================================================
+   Mobile Bottom Navigation Bar (True Native Dock)
+   =================================================================== */
+.app-bottom-nav {
+  height: calc(62px + var(--safe-bottom)) !important;
+  padding-bottom: max(6px, var(--safe-bottom)) !important;
+  background: rgba(9, 13, 22, 0.94) !important;
+  backdrop-filter: blur(28px) !important;
+  -webkit-backdrop-filter: blur(28px) !important;
+  border-top: 1px solid var(--native-border) !important;
+  box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.4) !important;
+}
+
+.bnav-tab {
+  gap: 3px !important;
+}
+
+.bnav-icon-wrap {
+  width: 42px !important;
+  height: 26px !important;
+  border-radius: 13px !important;
+}
+
+.bnav-tab.active .bnav-icon-wrap {
+  background: linear-gradient(135deg, rgba(99, 102, 241, 0.24), rgba(79, 70, 229, 0.24)) !important;
+  color: #818CF8 !important;
+  border: 1px solid rgba(99, 102, 241, 0.35) !important;
+  box-shadow: 0 2px 8px rgba(99, 102, 241, 0.25) !important;
+}
+
+.bnav-title {
+  font-size: 0.68rem !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.01em !important;
+}
+
+.bnav-tab.active .bnav-title {
+  color: #A5B4FC !important;
+}
+
+/* Floating Action Button (FAB) */
+.app-fab {
+  bottom: calc(76px + var(--safe-bottom)) !important;
+  right: 18px !important;
+  background: linear-gradient(135deg, #6366F1 0%, #4F46E5 100%) !important;
+  border: 1.5px solid rgba(255, 255, 255, 0.25) !important;
+  box-shadow: 0 10px 25px -4px rgba(99, 102, 241, 0.5), 0 2px 6px rgba(0, 0, 0, 0.35) !important;
+  border-radius: var(--native-radius-pill) !important;
+  padding: 11px 18px !important;
+  font-size: 0.85rem !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.02em !important;
+}
+
+/* Native Bottom Sheet Modals */
+@media (max-width: 992px) {
+  .modal-overlay {
+    padding: 0 !important;
+    align-items: flex-end !important;
+  }
+
+  .modal-card {
+    border-radius: 24px 24px 0 0 !important;
+    max-height: 86vh !important;
+    padding: 16px 16px calc(24px + var(--safe-bottom)) !important;
+    border-bottom: none !important;
+    background: #0F1626 !important;
+    border-color: rgba(255, 255, 255, 0.1) !important;
+    box-shadow: 0 -8px 30px rgba(0, 0, 0, 0.6) !important;
+  }
+
+  .modal-sheet-handle {
+    display: block !important;
+    width: 42px !important;
+    height: 5px !important;
+    border-radius: 99px !important;
+    background: rgba(255, 255, 255, 0.25) !important;
+    margin: 2px auto 14px !important;
+  }
+
+  /* Form inputs native styling (No iOS auto-zoom) */
+  .form-group input,
+  .form-group select,
+  .form-group textarea {
+    font-size: 16px !important;
+    min-height: 48px !important;
+    border-radius: 12px !important;
+    background: #0B111E !important;
+    border: 1.5px solid #1E293B !important;
+  }
+
+  .form-group input:focus,
+  .form-group select:focus,
+  .form-group textarea:focus {
+    border-color: #6366F1 !important;
+    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.25) !important;
+  }
+}
+
+
+/* Avatar and Hero Progress */
+.rlc-avatar-box {
+  width: 42px;
+  height: 42px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-display);
+  font-size: 1.1rem;
+  font-weight: 800;
+  flex-shrink: 0;
+  background: rgba(99, 102, 241, 0.15);
+  color: #A5B4FC;
+  border: 1px solid rgba(99, 102, 241, 0.3);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.card-paid .rlc-avatar-box {
+  background: rgba(16, 185, 129, 0.15) !important;
+  color: #6EE7B7 !important;
+  border-color: rgba(16, 185, 129, 0.3) !important;
+}
+
+.card-partial .rlc-avatar-box {
+  background: rgba(56, 189, 248, 0.15) !important;
+  color: #7DD3FC !important;
+  border-color: rgba(56, 189, 248, 0.3) !important;
+}
+
+.card-pending .rlc-avatar-box {
+  background: rgba(244, 63, 94, 0.15) !important;
+  color: #FDA4AF !important;
+  border-color: rgba(244, 63, 94, 0.3) !important;
+}
+
+.card-vacant .rlc-avatar-box {
+  background: rgba(100, 116, 139, 0.15) !important;
+  color: #94A3B8 !important;
+  border-color: rgba(100, 116, 139, 0.3) !important;
+}
+
+.ledger-main-cols {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  width: 100%;
+}
+
+.ledger-progress-wrap {
+  width: 100%;
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.ledger-progress-bar {
+  width: 100%;
+  height: 6px;
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 99px;
+  overflow: hidden;
+}
+
+.ledger-progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #6366F1 0%, #10B981 100%);
+  border-radius: 99px;
+  transition: width 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.ledger-progress-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 6px;
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: #94A3B8;
+}
+
+.ledger-quick-actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 12px;
+  width: 100%;
+}
+
+.lqa-btn {
+  flex: 1;
+  height: 36px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+  color: #E2E8F0;
+  font-size: 0.76rem;
+  font-weight: 700;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.lqa-btn:hover {
+  background: rgba(99, 102, 241, 0.18);
+  border-color: rgba(99, 102, 241, 0.35);
+  color: #A5B4FC;
+}
