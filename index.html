@@ -22,7 +22,10 @@
 
   <link rel="stylesheet" href="styles.css">
   <link rel="icon" type="image/svg+xml" href="icon.svg">
+  <meta name="apple-mobile-web-app-title" content="KirayaBook">
   <link rel="apple-touch-icon" href="icon-192.png">
+  <link rel="apple-touch-icon" sizes="192x192" href="icon-192.png">
+  <link rel="apple-touch-icon" sizes="512x512" href="icon-512.png">
   <link rel="manifest" href="manifest.json">
 
   <!-- Firebase App, Auth & Firestore SDKs (Compat for static/Blogger) -->
@@ -235,6 +238,15 @@
         </button>
       </nav>
 
+      <!-- Sidebar PWA Install Banner -->
+      <div class="sidebar-install-banner" id="sidebar-pwa-banner" onclick="triggerPWAInstall()" title="Install Nivas KirayaBook App">
+        <div class="sib-top">
+          <span>📲 PWA APP</span>
+        </div>
+        <div class="sib-title" data-i18n="install_app">ऐप इनस्टॉल करें</div>
+        <div class="sib-sub">Android &amp; iPhone Home Screen</div>
+      </div>
+
       <!-- Sidebar App Guide Box -->
       <div class="sidebar-guide-box" onclick="openAppIntroModal()" title="यह ऐप क्या है &amp; कैसे काम करती है?">
         <div class="sidebar-guide-top">
@@ -280,6 +292,31 @@
         </div>
 
         <div class="header-right">
+          <!-- Multi-Language Selector (मराठी / हिंदी / English) -->
+          <div class="header-lang-wrap">
+            <button type="button" class="header-lang-btn" id="header-lang-btn" onclick="toggleLangMenu()" title="भाषा निवडा / भाषा चुनें / Language">
+              <span>🌐</span>
+              <span id="current-lang-code">मराठी</span>
+              <span class="lang-caret">▾</span>
+            </button>
+            <div class="lang-dropdown-menu" id="lang-dropdown-menu">
+              <button type="button" class="lang-option-btn" data-lang="mr" onclick="setLanguage('mr'); toggleLangMenu(false);">
+                <span>🇮🇳</span> <span>मराठी (Marathi)</span>
+              </button>
+              <button type="button" class="lang-option-btn" data-lang="hi" onclick="setLanguage('hi'); toggleLangMenu(false);">
+                <span>🇮🇳</span> <span>हिंदी (Hindi)</span>
+              </button>
+              <button type="button" class="lang-option-btn" data-lang="en" onclick="setLanguage('en'); toggleLangMenu(false);">
+                <span>🇬🇧</span> <span>English</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- PWA Install Button -->
+          <button type="button" class="header-install-btn" id="header-pwa-install-btn" onclick="triggerPWAInstall()" title="Install App on Phone">
+            <span>📲</span>
+            <span data-i18n="install_app">ऐप इनस्टॉल</span>
+          </button>
           <button class="header-guide-pill" onclick="openAppIntroModal()" title="App Guide: Yeh app kya hai? (गाइड)">
             <span class="guide-icon">💡</span>
             <span class="guide-text">गाइड</span>
@@ -297,7 +334,7 @@
               <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
             </svg>
           </button>
-          <div class="header-cycle-pill" id="header-cycle-pill" onclick="switchView('settings')" title="Billing Month">
+          <div class="header-cycle-pill" id="header-cycle-pill" onclick="openMonthRolloverModal()" title="Billing Month & New Cycle Rollover">
             <span class="cycle-dot"></span>
             <span id="current-month-display">Oct 2026</span>
           </div>
@@ -438,6 +475,9 @@
               </button>
               <button type="button" class="ledger-tab tab-pending" data-filter="pending" onclick="setFilter('pending')">
                 Baaki (<span id="count-pending">0</span>)
+              </button>
+              <button type="button" class="ledger-tab tab-partial" data-filter="partial" onclick="setFilter('partial')">
+                <span data-i18n="tab_partial">आधा जमा</span> (<span id="count-partial">0</span>)
               </button>
               <button type="button" class="ledger-tab tab-paid" data-filter="paid" onclick="setFilter('paid')">
                 Jama (<span id="count-paid">0</span>)
@@ -624,7 +664,11 @@
                   <input type="number" id="calc-screen-other" value="0" oninput="runScreenCalc()">
                 </div>
                 <div class="form-group">
-                  <label for="calc-screen-month">Billing Month</label>
+                  <label for="calc-screen-prev-dues" data-i18n="prev_dues_label">Previous Dues / पिछला बकाया (₹)</label>
+                  <input type="number" id="calc-screen-prev-dues" value="0" oninput="runScreenCalc()">
+                </div>
+                <div class="form-group">
+                  <label for="calc-screen-month" data-i18n="billing_month_label">Billing Month</label>
                   <input type="text" id="calc-screen-month" value="October 2026" oninput="runScreenCalc()">
                 </div>
               </div>
@@ -641,6 +685,7 @@
                   <div class="t-row"><span>Electricity Bill:</span><strong id="gt-row-elec">₹0</strong></div>
                   <div class="t-row"><span>Water / Maintenance:</span><strong id="gt-row-maint">₹0</strong></div>
                   <div class="t-row"><span>Other Dues:</span><strong id="gt-row-other">₹0</strong></div>
+                  <div class="t-row"><span data-i18n="prev_dues_label">Previous Dues:</span><strong id="gt-row-prev" class="gt-row-prev">₹0</strong></div>
                 </div>
               </div>
 
@@ -1039,6 +1084,14 @@
                     <input type="text" id="set-screen-current-cycle" placeholder="e.g. October 2026">
                   </div>
                   <div class="form-group">
+                    <label for="set-screen-language" data-i18n="set_language_label">App Language (भाषा)</label>
+                    <select id="set-screen-language" class="select-app" onchange="setLanguage(this.value)">
+                      <option value="mr">🇮🇳 मराठी (Marathi)</option>
+                      <option value="hi">🇮🇳 हिंदी (Hindi)</option>
+                      <option value="en">🇬🇧 English</option>
+                    </select>
+                  </div>
+                  <div class="form-group">
                     <label for="set-screen-owner-pan">Owner PAN Card (For HRA Tax Exemption)</label>
                     <input type="text" id="set-screen-owner-pan" placeholder="e.g. ABCDE1234F">
                   </div>
@@ -1348,7 +1401,11 @@
             <input type="number" id="bill-other-charges" value="0" oninput="calculateBillTotals()">
           </div>
           <div class="form-group">
-            <label for="bill-month-for">Billing Month</label>
+            <label for="bill-prev-dues" data-i18n="prev_dues_label">Previous Pending Dues / पिछला बकाया (₹)</label>
+            <input type="number" id="bill-prev-dues" value="0" oninput="calculateBillTotals()">
+          </div>
+          <div class="form-group">
+            <label for="bill-month-for" data-i18n="billing_month_label">Billing Month</label>
             <input type="text" id="bill-month-for" value="October 2026">
           </div>
         </div>
@@ -1392,8 +1449,24 @@
         </div>
 
         <div class="form-group">
-          <label for="pay-amount">Amount Received (₹) *</label>
-          <input type="number" id="pay-amount" required min="1">
+        <!-- Quick Pay Shortcuts (Full, Half) -->
+        <div class="quick-pay-group">
+          <button type="button" class="btn-quick-pay" id="btn-quick-full" onclick="setQuickPaymentAmount('full')">
+            <span data-i18n="quick_pay_full">Full Balance (100%)</span>
+            <small id="quick-full-val">₹0</small>
+          </button>
+          <button type="button" class="btn-quick-pay" id="btn-quick-half" onclick="setQuickPaymentAmount('half')">
+            <span data-i18n="quick_pay_half">Half Pay (50%)</span>
+            <small id="quick-half-val">₹0</small>
+          </button>
+        </div>
+          <label for="pay-amount" data-i18n="pay_amount_label">Amount Received (₹) *</label>
+          <input type="number" id="pay-amount" required min="1" oninput="updateLivePayPreview()">
+        </div>
+
+        <div class="pay-live-preview" id="pay-live-preview">
+          <span data-i18n="pay_after_balance">Balance remaining after this:</span>
+          <strong id="pay-live-balance" style="color: #60A5FA;">₹0</strong>
         </div>
 
         <div class="form-group">
@@ -1409,6 +1482,11 @@
         <div class="form-group">
           <label for="pay-date">Payment Date</label>
           <input type="date" id="pay-date">
+        </div>
+
+        <div class="form-group">
+          <label for="pay-note" data-i18n="pay_note_label">Note / Remark (Optional)</label>
+          <input type="text" id="pay-note" placeholder="e.g. Aadhe paise diye, baaki agle hafte" data-i18n-ph="pay_note_placeholder">
         </div>
 
         <div class="modal-footer">
@@ -1908,6 +1986,93 @@
   <!-- Toast Notification -->
   <div class="toast" id="toast"></div>
 
+  <!-- MODAL: Month Cycle Rollover (Carries over unpaid dues / arrears automatically) -->
+  <div class="modal-overlay" id="modal-rollover" onclick="closeModalOnOverlay(event, 'modal-rollover')">
+    <div class="modal-card">
+      <div class="modal-sheet-handle"></div>
+      <div class="modal-header">
+        <div>
+          <h3 class="modal-title" data-i18n="rollover_title">Start New Month Billing Cycle</h3>
+          <p class="modal-subtitle" data-i18n="rollover_sub">Previous unpaid dues will carry over automatically.</p>
+        </div>
+        <button class="modal-close" onclick="closeModal('modal-rollover')" aria-label="Close">&times;</button>
+      </div>
+
+      <div class="bill-modal-body">
+        <div class="form-grid">
+          <div class="form-group">
+            <label data-i18n="rollover_current_label">Current Billing Month:</label>
+            <div class="calc-output-box" id="rollover-current-month" style="font-weight: 700; color: #818CF8;">October 2026</div>
+          </div>
+          <div class="form-group">
+            <label for="rollover-next-month" data-i18n="rollover_new_label">New Billing Month Name *</label>
+            <input type="text" id="rollover-next-month" placeholder="e.g. November 2026" required>
+          </div>
+        </div>
+
+        <div class="form-section-head" style="margin-top: 14px;">
+          <span class="fsh-title" data-i18n="rollover_summary_title">Tenants Dues Rollover Preview:</span>
+        </div>
+        <div class="rollover-summary-box" id="rollover-summary-list">
+          <!-- Dynamically populated room-by-room status preview -->
+        </div>
+
+        <div style="background: rgba(99, 102, 241, 0.1); border: 1px dashed rgba(99, 102, 241, 0.35); border-radius: var(--radius-sm); padding: 10px 12px; font-size: 0.78rem; color: #C7D2FE; margin-bottom: 14px;">
+          ℹ️ <span data-i18n="rollover_hint">Note: Current readings will become the previous readings for the next cycle, and unpaid arrears will be preserved safely.</span>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" onclick="closeModal('modal-rollover')" data-i18n="btn_cancel">Cancel</button>
+          <button type="button" class="btn btn-primary" onclick="confirmMonthRollover()">
+            <span data-i18n="btn_confirm_rollover">🚀 Confirm &amp; Start Cycle</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: iOS Safari PWA Install Instructions -->
+  <div class="modal-overlay" id="modal-ios-install" onclick="closeModalOnOverlay(event, 'modal-ios-install')">
+    <div class="modal-card modal-sm">
+      <div class="modal-sheet-handle"></div>
+      <div class="modal-header">
+        <div>
+          <h3 class="modal-title" data-i18n="ios_install_title">Install on iPhone / iPad</h3>
+          <p class="modal-subtitle">Add to Home Screen in 3 steps</p>
+        </div>
+        <button class="modal-close" onclick="closeModal('modal-ios-install')" aria-label="Close">&times;</button>
+      </div>
+
+      <div class="ios-instruction-card">
+        <div class="ios-step-box">
+          <div class="ios-step-icon">📤</div>
+          <div class="ios-step-text" data-i18n="ios_step1">
+            1. Tap the <strong>Share (Share 📤)</strong> button at the bottom of Safari.
+          </div>
+        </div>
+        <div class="ios-step-box">
+          <div class="ios-step-icon">➕</div>
+          <div class="ios-step-text" data-i18n="ios_step2">
+            2. Scroll down and tap <strong>'Add to Home Screen' (➕)</strong>.
+          </div>
+        </div>
+        <div class="ios-step-box">
+          <div class="ios-step-icon">⚡</div>
+          <div class="ios-step-text" data-i18n="ios_step3">
+            3. Tap <strong>'Add'</strong> at top right corner. App is ready!
+          </div>
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" style="width: 100%; justify-content: center;" onclick="closeModal('modal-ios-install')" data-i18n="btn_got_it">
+          Got It, Thanks!
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script src="i18n.js"></script>
   <script src="app.js"></script>
 </body>
 
